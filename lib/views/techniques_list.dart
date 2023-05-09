@@ -12,6 +12,31 @@ class TechniquesList extends StatefulWidget {
   _TechniquesListState createState() => _TechniquesListState();
 }
 
+class TechniqueDetail extends StatelessWidget {
+  final Technique technique;
+
+  const TechniqueDetail({Key? key, required this.technique}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Détails de la technique'),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text('Nom de la technique : ${technique.nom}'),
+            Text('Référence : ${technique.ref}'),
+            // Ajoutez d'autres détails de la technique ici
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class _TechniquesListState extends State<TechniquesList> {
   late Future<List<Technique>> _futureTechniques;
 
@@ -52,8 +77,28 @@ class _TechniquesListState extends State<TechniquesList> {
                   rows: techniques
                       .map((technique) => DataRow(cells: [
                             DataCell(Text('${technique.grade}')),
-                            DataCell(Text('${technique.ref.substring(3)}')),
-                            DataCell(Text('${technique.nom}')),
+                            DataCell(Text(technique.ref.substring(3))),
+                            DataCell(InkWell(
+                               onTap: () {
+                                Navigator.of(context).push(
+                                  PageRouteBuilder(
+                                    transitionDuration: Duration(milliseconds: 200),
+                                    pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+                                      return TechniqueDetail(technique: technique);
+                                    },
+                                    transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+                                      return SlideTransition(
+                                        position: Tween<Offset>(
+                                          begin: const Offset(1.0, 0.0),
+                                          end: Offset.zero,
+                                        ).animate(animation),
+                                        child: child,
+                                      );
+                                    },
+                                  ),
+                                );
+                              },
+                              child: Text(technique.nom))),
                             if (showKeywordsColumn)
                               DataCell(Wrap(
                                 spacing: 4.0, // Espacement entre les boutons
@@ -61,43 +106,43 @@ class _TechniquesListState extends State<TechniquesList> {
                                 children: [
                                   if (technique.kw1 != null) OutlinedButton(
                                     onPressed: () {}, 
-                                    child: Text('${technique.kw1}'),
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                     ),
+                                    child: Text('${technique.kw1}'),
                                   ),
                                   if (technique.kw2 != null) OutlinedButton(
                                     onPressed: () {}, 
-                                    child: Text('${technique.kw2}'),
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                     ),
+                                    child: Text('${technique.kw2}'),
                                   ),
                                   if (technique.kw3 != null) OutlinedButton(
                                     onPressed: () {}, 
-                                    child: Text('${technique.kw3}'),
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                     ),
+                                    child: Text('${technique.kw3}'),
                                   ),
                                   if (technique.kw4 != null) OutlinedButton(
                                     onPressed: () {}, 
-                                    child: Text('${technique.kw4}'),
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                     ),
+                                    child: Text('${technique.kw4}'),
                                   ),
                                   if (technique.kw5 != null) OutlinedButton(
                                     onPressed: () {}, 
-                                    child: Text('${technique.kw5}'),
                                     style: ButtonStyle(
                                       padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                     ),
+                                    child: Text('${technique.kw5}'),
                                   ),
                                 ],
                               )),
                               DataCell(
-                                Container(
+                                SizedBox(
                                   width: 120, // Largeur souhaitée pour votre cellule
                                   child: RatingBar.builder(
                                     initialRating: 0,
@@ -133,6 +178,17 @@ class _TechniquesListState extends State<TechniquesList> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _currentIndex,
         onTap: (int index) {
+          switch (index) {
+            case 0:
+              Navigator.of(context).pushNamed('/home');
+              break;
+            case 1:
+              // Ne faites rien, l'utilisateur est déjà sur la page 'Techniques'
+              break;
+            case 2:
+              Navigator.of(context).pushNamed('/compte');
+              break;
+          }
           setState(() {
             _currentIndex = index;
           });

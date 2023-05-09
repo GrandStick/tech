@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'views/menu_page.dart';
 import 'views/techniques_list.dart';
+import 'views/account_page.dart';
+import 'views/home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: TechniquesList(),
+      home: MenuPage(),
     );
   }
 }

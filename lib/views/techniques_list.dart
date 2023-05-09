@@ -3,6 +3,8 @@ import '../models/technique.dart';
 import '../services/fetch_techniques.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
+int _currentIndex = 0;
+
 class TechniquesList extends StatefulWidget {
   const TechniquesList({Key? key}) : super(key: key);
 
@@ -127,6 +129,28 @@ class _TechniquesListState extends State<TechniquesList> {
             child: CircularProgressIndicator(),
           );
         },
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shield),
+            label: 'techniques',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_identity ),
+            label: 'Compte',
+          ),
+        ],
       ),
     );
   }

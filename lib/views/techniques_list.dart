@@ -68,6 +68,9 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final screenHeight = MediaQuery.of(context).size.height;
+    final videoAspectRatio = _controller.value.aspectRatio;
     return Scaffold(
       appBar: AppBar(
         title: Text('Détails de la technique'),
@@ -75,6 +78,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 20),
             Text('${widget.technique.grade} ${widget.technique.ref.substring(3)} - ${widget.technique.nom}'),
             SizedBox(height: 20),
             Wrap(
@@ -126,43 +130,66 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
             SizedBox(height: 20),
             Container(
               constraints: BoxConstraints(
-                maxHeight: 400,
+                maxHeight: screenHeight * 0.6,
                 maxWidth: double.infinity,
               ),
-              child: Column(
+              child: Stack(
                 children: [
                   AspectRatio(
                     aspectRatio: _controller.value.aspectRatio,
                     child: VideoPlayer(_controller),
                   ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      IconButton(
-                        icon: Icon(
-                          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            if (_controller.value.isPlaying) {
-                              _controller.pause();
-                            } else {
-                              _controller.play();
-                            }
-                          });
-                        },
+                  Positioned(
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    child: Container(
+                      color: Color.fromRGBO(0, 0, 0, 0.5),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.replay,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _controller.seekTo(Duration.zero);
+                                _controller.play();
+                              });
+                            },
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                              color: Colors.white,
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                if (_controller.value.isPlaying) {
+                                  _controller.pause();
+                                } else {
+                                  _controller.play();
+                                }
+                              });
+                            },
+                          ),
+                          TextButton(
+                            child: Text(
+                              _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
+                              style: TextStyle(
+                                color: Colors.white,
+                              ),
+                            ),
+                            onPressed: () {
+                              setState(() {
+                                _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
+                              });
+                            },
+                          ),
+                        ],
                       ),
-                      TextButton(
-                        child: Text(
-                          _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
-                        ),
-                        onPressed: () {
-                          setState(() {
-                            _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
-                          });
-                        },
-                      ),
-                    ],
+                    ),
                   ),
                 ],
               ),

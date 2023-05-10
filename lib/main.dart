@@ -14,8 +14,9 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Krav Maga Techniques',
-      theme: ThemeData(
-        primarySwatch: Colors.blueGrey,
+      theme: ThemeData.dark().copyWith(
+        primaryColor: Colors.grey[800],
+        accentColor: Colors.white,
       ),
       home: MenuPage(),
     );

@@ -9,8 +9,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  http: ^0.13.3
-  flutter_rating_bar: ^4.0.0
+  http: ^0.13.6
+  flutter_rating_bar: ^4.0.1
+  video_player: ^2.6.1
+  chewie: ^1.4.0
 
 dev_dependencies:
   flutter_test:

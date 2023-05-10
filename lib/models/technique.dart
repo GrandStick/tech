@@ -2,6 +2,7 @@ class Technique {
   final int id;
   final String nom;
   final String ref;
+  final String gif;
   final String? grade;
   final String? kw1;
   final String? kw2;
@@ -15,6 +16,7 @@ class Technique {
     required this.id,
     required this.nom,
     required this.ref,
+    required this.gif,
     required this.grade,
     required this.kw1,
     required this.kw2,
@@ -29,6 +31,7 @@ class Technique {
       id: json['id'],
       nom: json['nom'],
       ref: json['ref'],
+      gif: json['gif'],
       grade: json['grade'],
       kw1: json['kw1'],
       kw2: json['kw2'],

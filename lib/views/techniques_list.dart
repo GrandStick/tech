@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/technique.dart';
 import '../services/fetch_techniques.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
+import 'package:video_player/video_player.dart';
 
 int _currentIndex = 0;
 
@@ -12,10 +13,58 @@ class TechniquesList extends StatefulWidget {
   _TechniquesListState createState() => _TechniquesListState();
 }
 
-class TechniqueDetail extends StatelessWidget {
+class TechniqueDetail extends StatefulWidget {
   final Technique technique;
 
   const TechniqueDetail({Key? key, required this.technique}) : super(key: key);
+
+  @override
+  _TechniqueDetailState createState() => _TechniqueDetailState();
+}
+
+class _TechniqueDetailState extends State<TechniqueDetail> {
+  late VideoPlayerController _controller;
+  bool _isPlaying = true;
+  double _playbackSpeed = 1.0;
+
+  @override
+  void initState() {
+    super.initState();
+    print('Initializing video player...');
+    _controller = VideoPlayerController.network(
+      'https://self-defense.app/videos/mp4/${widget.technique.gif}.mp4',
+    )
+      ..initialize().then((_) {
+        // Ensure the first frame is shown after the video is initialized
+        setState(() {});
+      })
+      ..setLooping(true)
+      ..play();
+  }
+
+  @override
+  void dispose() {
+    super.dispose();
+    _controller.dispose();
+  }
+
+  void _togglePlayback() {
+    if (_isPlaying) {
+      _controller.pause();
+    } else {
+      _controller.play();
+    }
+    setState(() {
+      _isPlaying = !_isPlaying;
+    });
+  }
+
+  void _setPlaybackSpeed(double speed) {
+    _controller.setPlaybackSpeed(speed);
+    setState(() {
+      _playbackSpeed = speed;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +74,99 @@ class TechniqueDetail extends StatelessWidget {
       ),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text('Nom de la technique : ${technique.nom}'),
-            Text('Référence : ${technique.ref}'),
-            // Ajoutez d'autres détails de la technique ici
+            Text('${widget.technique.grade} ${widget.technique.ref.substring(3)} - ${widget.technique.nom}'),
+            SizedBox(height: 20),
+            Wrap(
+              spacing: 4.0, // Espacement entre les boutons
+              runSpacing: 4.0, // Espacement entre les lignes de boutons
+              children: [
+                if (widget.technique.kw1 != null)
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                    ),
+                    child: Text('${widget.technique.kw1}'),
+                  ),
+                if (widget.technique.kw2 != null)
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                    ),
+                    child: Text('${widget.technique.kw2}'),
+                  ),
+                if (widget.technique.kw3 != null)
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                    ),
+                    child: Text('${widget.technique.kw3}'),
+                  ),
+                if (widget.technique.kw4 != null)
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                    ),
+                    child: Text('${widget.technique.kw4}'),
+                  ),
+                if (widget.technique.kw5 != null)
+                  OutlinedButton(
+                    onPressed: () {},
+                    style: ButtonStyle(
+                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                    ),
+                    child: Text('${widget.technique.kw5}'),
+                  ),
+              ],
+            ),
+            SizedBox(height: 20),
+            Container(
+              constraints: BoxConstraints(
+                maxHeight: 400,
+                maxWidth: double.infinity,
+              ),
+              child: Column(
+                children: [
+                  AspectRatio(
+                    aspectRatio: _controller.value.aspectRatio,
+                    child: VideoPlayer(_controller),
+                  ),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      IconButton(
+                        icon: Icon(
+                          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            if (_controller.value.isPlaying) {
+                              _controller.pause();
+                            } else {
+                              _controller.play();
+                            }
+                          });
+                        },
+                      ),
+                      TextButton(
+                        child: Text(
+                          _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
+                          });
+                        },
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),

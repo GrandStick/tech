@@ -10,6 +10,16 @@ class Technique {
   final String? kw4;
   final String? kw5;
   final num? maitrise;
+  final String? kp1;
+  final String? kp2;
+  final String? kp3;
+  final String? kp4;
+  final String? kp5;
+  final String? kp6;
+  final String? kp7;
+  final String? kp8;
+  final String? kp9;
+  final String? kp10;
 
 
   Technique({
@@ -24,6 +34,16 @@ class Technique {
     required this.kw4,
     required this.kw5,
     required this.maitrise,
+    required this.kp1,
+    required this.kp2,
+    required this.kp3,
+    required this.kp4,
+    required this.kp5,
+    required this.kp6,
+    required this.kp7,
+    required this.kp8,
+    required this.kp9,
+    required this.kp10,
   });
 
   factory Technique.fromJson(Map<String, dynamic> json) {
@@ -39,6 +59,28 @@ class Technique {
       kw4: json['kw4'],
       kw5: json['kw5'],
       maitrise: json['maitrise'],
+      kp1: json['kp1'],
+      kp2: json['kp2'],
+      kp3: json['kp3'],
+      kp4: json['kp4'],
+      kp5: json['kp5'],
+      kp6: json['kp6'],
+      kp7: json['kp7'],
+      kp8: json['kp8'],
+      kp9: json['kp9'],
+      kp10: json['kp10'],
     );
   }
+}
+
+List<Technique> filterTechniquesByKeywords(List<Technique> techniques, List<String> keywords) {
+  return techniques.where((technique) => 
+    keywords.any((keyword) => 
+      technique.kw1?.toLowerCase().contains(keyword.toLowerCase()) == true ||
+      technique.kw2?.toLowerCase().contains(keyword.toLowerCase()) == true ||
+      technique.kw3?.toLowerCase().contains(keyword.toLowerCase()) == true ||
+      technique.kw4?.toLowerCase().contains(keyword.toLowerCase()) == true ||
+      technique.kw5?.toLowerCase().contains(keyword.toLowerCase()) == true
+    )
+  ).toList();
 }

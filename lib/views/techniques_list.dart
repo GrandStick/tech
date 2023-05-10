@@ -202,13 +202,24 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
 }
 
 class _TechniquesListState extends State<TechniquesList> {
+  // La liste complète de toutes les techniques
   late Future<List<Technique>> _futureTechniques;
+  // La liste de techniques affichées en fonction du filtre
+  late Future< List<Technique>> _filteredTechniques;
+
+  // Le mot-clé actuellement sélectionné pour le filtre
+  String? selectedKeyword;
+
+  
 
   @override
   void initState() {
     super.initState();
     _futureTechniques = fetchTechniques();
+    _filteredTechniques = _futureTechniques;
   }
+  
+  
 
   @override
   Widget build(BuildContext context) {

@@ -84,3 +84,17 @@ List<Technique> filterTechniquesByKeywords(List<Technique> techniques, List<Stri
     )
   ).toList();
 }
+
+class Keywords {
+  final String kw;
+ 
+  Keywords({
+    required this.kw,
+  });
+
+  factory Keywords.fromJson(Map<String, dynamic> json) {
+    return Keywords(
+      kw: json['kw'],
+    );
+  }
+}

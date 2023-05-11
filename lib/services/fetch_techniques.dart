@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/technique.dart';
 
+//RECUPERER LA LISTE DES TECHNIQUES
 Future<List<Technique>> fetchTechniques() async {
   final response = await http.get(Uri.parse('https://self-defense.app/techniques_list'));
 
@@ -10,5 +11,41 @@ Future<List<Technique>> fetchTechniques() async {
     return techniquesJson.map((json) => Technique.fromJson(json)).toList();
   } else {
     throw Exception('Failed to fetch techniques');
+  }
+}
+//RECUPERER LA LISTE DES MOTS CLES
+/*
+Future<List<Keywords>> fetchKeywords() async {
+  final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=fr'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> keywordsJson = jsonDecode(response.body);
+    List<Keywords> keywordsList = [];
+    for (var keyword in keywordsJson) {
+      if (keyword['kw'] != null) {
+        keywordsList.add(keyword['kw']);
+      }
+    }
+    return keywordsList;
+  } else {
+    throw Exception('Failed to fetch keywords');
+  }
+}
+*/
+Future<List<Keywords>> fetchKeywords() async {
+  final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=fr'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> keywordsJson = jsonDecode(response.body);
+    List<Keywords> keywordsList = [];
+    for (var keywordJson in keywordsJson) {
+      if (keywordJson['kw'] != null) {
+        Keywords keyword = Keywords.fromJson(keywordJson);
+        keywordsList.add(keyword);
+      }
+    }
+    return keywordsList;
+  } else {
+    throw Exception('Failed to fetch keywords');
   }
 }

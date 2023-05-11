@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:video_player/video_player.dart';
+import 'package:tech/views/account_page.dart';
+import 'package:tech/views/techniques_list.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -7,58 +8,111 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  late VideoPlayerController _controller;
-
-  @override
-  void initState() {
-    super.initState();
-    _controller = VideoPlayerController.network(
-        'https://flutter.github.io/assets-for-api-docs/assets/videos/bee.mp4')
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized, even before the play button has been pressed.
-        setState(() {});
-      });
-  }
+  int _currentIndex = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Stack(
-        children: [
-          Center(
-            child: Text(
-              'Bienvenue dans l\'application Krav Maga Techniques !',
-              style: TextStyle(fontSize: 24),
-            ),
+      appBar: AppBar(
+        title: const Text('Acceuil'),
+      ),
+      body: Padding(
+        padding: EdgeInsets.all(16.0),
+        child: Center(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Text(
+                'Bienvenue sur l\'application Self-defense . app.',
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 24.0,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'Cette application a été développée afin d\'offrir aux instructeurs de la fédération SMART Krav Maga une base de données de techniques.',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'La base de données est faite selon le canvas SMART Krav Maga et comprend pour chaque technique :',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              SizedBox(height: 8.0),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text('- une vidéo'),
+                  Text('- les mots-clés'),
+                  Text('- les points clés'),
+                  Text('- la possibilité d\'encoder votre niveau de maîtrise'),
+                  Text('- la possibilité d\'encoder vos notes personnelles'),
+                ],
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'Un système de mots-clés, de tri et de recherche vous permet de classer les techniques.',
+                style: TextStyle(
+                  fontSize: 16.0,
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Text(
+                'Créez un compte pour accéder à la liste des techniques.',
+                style: TextStyle(
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
           ),
-          Center(
-            child: _controller.value.isInitialized
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  )
-                : Container(),
+        ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _currentIndex,
+        onTap: (int index) {
+          switch (index) {
+            case 0:
+              
+              // Ne faites rien, l'utilisateur est déjà sur la page 'Home'
+              break;
+            case 1:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => TechniquesList()),
+              );
+              break;
+            case 2:
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => AccountPage()),
+              );
+              break;
+          }
+          setState(() {
+            _currentIndex = index;
+          });
+        },
+        items: [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shield),
+            label: 'techniques',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.perm_identity),
+            label: 'Compte',
           ),
         ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          setState(() {
-            _controller.value.isPlaying
-                ? _controller.pause()
-                : _controller.play();
-          });
-        },
-        child: Icon(
-          _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-        ),
-      ),
     );
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
   }
 }

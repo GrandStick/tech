@@ -222,8 +222,9 @@ class TechniquesList extends StatefulWidget {
 
 class KeywordList extends StatelessWidget {
   final List<Keywords> keywords;
+  final Function(String?) onKeywordSelected;
 
-  KeywordList({required this.keywords});
+  KeywordList({required this.keywords, required this.onKeywordSelected});
 
   @override
   Widget build(BuildContext context) {
@@ -243,18 +244,25 @@ class KeywordList extends StatelessWidget {
           child: Wrap(
             spacing: 8.0,
             runSpacing: 8.0,
-            children: keywords.map((kw) {
-              return ElevatedButton(
-                onPressed: () {},
-                child: Text(kw.kw),
-              );
-            }).toList(),
+            children: [
+              ElevatedButton(
+                onPressed: () { onKeywordSelected(null); },
+                child: Text('Tous'),
+              ),
+              ...keywords.map((kw) {
+                return ElevatedButton(
+                  onPressed: () { onKeywordSelected(kw.kw); },
+                  child: Text(kw.kw),
+                );
+              }).toList(),
+            ],
           ),
         ),
       ],
     );
   }
 }
+
 
 
 
@@ -286,22 +294,23 @@ class _TechniquesListState extends State<TechniquesList> {
     
   }
   
-  void _filterTechniques(String keyword) {
-      print('Filtering techniques with keyword: $keyword');
-      _futureTechniques.then((techniques) {
-        setState(() {
-          _filteredTechniques = techniques
-              .where((technique) =>
-                  technique.kw1 == keyword ||
-                  technique.kw2 == keyword ||
-                  technique.kw3 == keyword ||
-                  technique.kw4 == keyword ||
-                  technique.kw5 == keyword)
-              .toList();
-              selectedKeyword = keyword;
-        });
-      });
-    }
+  void filterTechniques(String? keyword) {
+  print('Filtering techniques with keyword: $keyword');
+  _futureTechniques.then((techniques) {
+    setState(() {
+      _filteredTechniques = keyword == null
+          ? techniques
+          : techniques.where((technique) =>
+              technique.kw1 == keyword ||
+              technique.kw2 == keyword ||
+              technique.kw3 == keyword ||
+              technique.kw4 == keyword ||
+              technique.kw5 == keyword).toList();
+      selectedKeyword = keyword;
+    });
+  });
+}
+
       
 
   @override
@@ -321,7 +330,10 @@ class _TechniquesListState extends State<TechniquesList> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
-                  KeywordList(keywords: _keywords), // Ajouter cette ligne pour afficher les mots-clés
+                  KeywordList(
+                    keywords: _keywords,
+                    onKeywordSelected: filterTechniques, // mise à jour
+                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DataTable(
@@ -367,35 +379,35 @@ class _TechniquesListState extends State<TechniquesList> {
                                     runSpacing: 4.0, // Espacement entre les lignes de boutons
                                     children: [
                                       if (technique.kw1 != null) OutlinedButton(
-                                        onPressed: () { _filterTechniques('${technique.kw1}'); }, 
+                                        onPressed: () { filterTechniques('${technique.kw1}'); }, 
                                         style: ButtonStyle(
                                           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
                                         child: Text('${technique.kw1}'),
                                       ),
                                       if (technique.kw2 != null) OutlinedButton(
-                                        onPressed: () { _filterTechniques('${technique.kw2}'); }, 
+                                        onPressed: () { filterTechniques('${technique.kw2}'); }, 
                                         style: ButtonStyle(
                                           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
                                         child: Text('${technique.kw2}'),
                                       ),
                                       if (technique.kw3 != null) OutlinedButton(
-                                        onPressed: () { _filterTechniques('${technique.kw3}'); }, 
+                                        onPressed: () { filterTechniques('${technique.kw3}'); }, 
                                         style: ButtonStyle(
                                           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
                                         child: Text('${technique.kw3}'),
                                       ),
                                       if (technique.kw4 != null) OutlinedButton(
-                                        onPressed: () { _filterTechniques('${technique.kw4}'); }, 
+                                        onPressed: () { filterTechniques('${technique.kw4}'); }, 
                                         style: ButtonStyle(
                                           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
                                         child: Text('${technique.kw4}'),
                                       ),
                                       if (technique.kw5 != null) OutlinedButton(
-                                        onPressed: () { _filterTechniques('${technique.kw5}'); }, 
+                                        onPressed: () { filterTechniques('${technique.kw5}'); }, 
                                         style: ButtonStyle(
                                           padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),

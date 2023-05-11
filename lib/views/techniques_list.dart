@@ -220,6 +220,55 @@ class TechniquesList extends StatefulWidget {
   _TechniquesListState createState() => _TechniquesListState();
 }
 
+//LISTE DES GRADES
+
+class GradeList extends StatelessWidget {
+  final List<Grade> grades;
+  final Function(String?) onGradeSelected;
+
+  GradeList({required this.grades, required this.onGradeSelected});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16.0),
+        Text(
+          'Grades :',
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 14.0,
+          ),
+        ),
+        SizedBox(height: 8.0),
+        Center(
+          child: Wrap(
+            spacing: 8.0,
+            runSpacing: 8.0,
+            children: [
+              ElevatedButton(
+                onPressed: () { onGradeSelected(null); },
+                child: Text('Tous'),
+              ),
+              ...grades
+                  .map((grade) {
+                    return ElevatedButton(
+                      onPressed: () { onGradeSelected(grade.grade); },
+                      child: Text(grade.grade),
+                    );
+                  })
+                  .toList(),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+}
+
+
+//LISTE DES MOTS CLES
 class KeywordList extends StatelessWidget {
   final List<Keywords> keywords;
   final Function(String?) onKeywordSelected;
@@ -266,6 +315,7 @@ class KeywordList extends StatelessWidget {
 
 
 
+
 class _TechniquesListState extends State<TechniquesList> {
   // La liste complète de toutes les techniques
   late Future<List<Technique>> _futureTechniques;
@@ -274,25 +324,31 @@ class _TechniquesListState extends State<TechniquesList> {
 
   // Le mot-clé actuellement sélectionné pour le filtre
   String? selectedKeyword;
+  String? selectedGrade;
 
   bool get _isFiltering => selectedKeyword != null;
 
   List<Keywords> _keywords = [];
+  List<Grade> _grades = [];
 
   
   
 
-  @override
-  void initState() {
-    super.initState();
-    _futureTechniques = fetchTechniques();
-    fetchKeywords().then((keywords) {
-      setState(() {
-        _keywords = keywords;
-      });
+@override
+void initState() {
+  super.initState();
+  _futureTechniques = fetchTechniques();
+  fetchKeywords().then((keywords) {
+    setState(() {
+      _keywords = keywords;
     });
-    
-  }
+  });
+  fetchGrade().then((grades) {
+    setState(() {
+      _grades = grades;
+    });
+  });
+}
   
   void filterTechniques(String? keyword) {
   print('Filtering techniques with keyword: $keyword');
@@ -305,13 +361,12 @@ class _TechniquesListState extends State<TechniquesList> {
               technique.kw2 == keyword ||
               technique.kw3 == keyword ||
               technique.kw4 == keyword ||
-              technique.kw5 == keyword).toList();
+              technique.kw5 == keyword ||
+              technique.grade == keyword).toList();
       selectedKeyword = keyword;
     });
   });
 }
-
-      
 
   @override
   Widget build(BuildContext context) {
@@ -330,9 +385,16 @@ class _TechniquesListState extends State<TechniquesList> {
               scrollDirection: Axis.vertical,
               child: Column(
                 children: [
+                  _grades != null
+                  ? GradeList(
+                      grades: _grades,
+                      onGradeSelected: filterTechniques,
+                    )
+                  : CircularProgressIndicator(),
+                  
                   KeywordList(
                     keywords: _keywords,
-                    onKeywordSelected: filterTechniques, // mise à jour
+                    onKeywordSelected: filterTechniques, 
                   ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,

@@ -14,24 +14,6 @@ Future<List<Technique>> fetchTechniques() async {
   }
 }
 //RECUPERER LA LISTE DES MOTS CLES
-/*
-Future<List<Keywords>> fetchKeywords() async {
-  final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=fr'));
-
-  if (response.statusCode == 200) {
-    final List<dynamic> keywordsJson = jsonDecode(response.body);
-    List<Keywords> keywordsList = [];
-    for (var keyword in keywordsJson) {
-      if (keyword['kw'] != null) {
-        keywordsList.add(keyword['kw']);
-      }
-    }
-    return keywordsList;
-  } else {
-    throw Exception('Failed to fetch keywords');
-  }
-}
-*/
 Future<List<Keywords>> fetchKeywords() async {
   final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=fr'));
 
@@ -47,5 +29,27 @@ Future<List<Keywords>> fetchKeywords() async {
     return keywordsList;
   } else {
     throw Exception('Failed to fetch keywords');
+  }
+}
+
+
+
+// RECUPERER LA LISTE DES GRADES
+Future<List<Grade>> fetchGrade() async {
+  final response = await http.get(Uri.parse('https://self-defense.app/techniques_grade'));
+
+  if (response.statusCode == 200) {
+    final List<dynamic> gradeJson = jsonDecode(response.body);
+    List<Grade> gradeList = [];
+    for (var grade in gradeJson) { 
+      if (grade['grade'] != null) {
+        Grade gradeObj = Grade.fromJson(grade);
+        gradeList.add(gradeObj);
+      }
+    }
+    print(gradeList);
+    return gradeList;
+  } else {
+    throw Exception('Failed to fetch grades');
   }
 }

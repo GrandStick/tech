@@ -98,3 +98,20 @@ class Keywords {
     );
   }
 }
+
+class Grade {
+  final String grade;
+  final String grade_n;
+ 
+  Grade({
+    required this.grade,
+    required this.grade_n,
+  });
+
+  factory Grade.fromJson(Map<String, dynamic> json) {
+    return Grade(
+      grade: json['grade'],
+      grade_n: json['grade_n'],
+    );
+  }
+}

@@ -75,131 +75,270 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
         title: Text('Détails de la technique'),
       ),
       body: Center(
-        child: Column(
-          children: [
-            SizedBox(height: 20),
-            Text(
-              '${widget.technique.grade} ${widget.technique.ref.substring(3)} - ${widget.technique.nom}',
-              style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 24.0,
-                  )
-                ),
-            SizedBox(height: 20),
-            Wrap(
-              spacing: 4.0, // Espacement entre les boutons
-              runSpacing: 4.0, // Espacement entre les lignes de boutons
-              children: [
-                if (widget.technique.kw1 != null)
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                    ),
-                    child: Text('${widget.technique.kw1}'),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(height: 20),
+              Text(
+                '${widget.technique.grade} ${widget.technique.ref.substring(3)} - ${widget.technique.nom}',
+                style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24.0,
+                    )
                   ),
-                if (widget.technique.kw2 != null)
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                    ),
-                    child: Text('${widget.technique.kw2}'),
-                  ),
-                if (widget.technique.kw3 != null)
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                    ),
-                    child: Text('${widget.technique.kw3}'),
-                  ),
-                if (widget.technique.kw4 != null)
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                    ),
-                    child: Text('${widget.technique.kw4}'),
-                  ),
-                if (widget.technique.kw5 != null)
-                  OutlinedButton(
-                    onPressed: () {},
-                    style: ButtonStyle(
-                      padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                    ),
-                    child: Text('${widget.technique.kw5}'),
-                  ),
-              ],
-            ),
-            SizedBox(height: 20),
-            Container(
-              constraints: BoxConstraints(
-                maxHeight: screenHeight * 0.6,
-                maxWidth: double.infinity,
-              ),
-              child: Stack(
+              SizedBox(height: 20),
+              Wrap(
+                spacing: 4.0, // Espacement entre les boutons
+                runSpacing: 4.0, // Espacement entre les lignes de boutons
                 children: [
-                  AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    left: 0,
-                    right: 0,
-                    child: Container(
-                      color: Color.fromRGBO(0, 0, 0, 0.5),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.replay,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                _controller.seekTo(Duration.zero);
-                                _controller.play();
-                              });
-                            },
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                              color: Colors.white,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (_controller.value.isPlaying) {
-                                  _controller.pause();
-                                } else {
+                  if (widget.technique.kw1 != null)
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                      ),
+                      child: Text('${widget.technique.kw1}'),
+                    ),
+                  if (widget.technique.kw2 != null)
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                      ),
+                      child: Text('${widget.technique.kw2}'),
+                    ),
+                  if (widget.technique.kw3 != null)
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                      ),
+                      child: Text('${widget.technique.kw3}'),
+                    ),
+                  if (widget.technique.kw4 != null)
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                      ),
+                      child: Text('${widget.technique.kw4}'),
+                    ),
+                  if (widget.technique.kw5 != null)
+                    OutlinedButton(
+                      onPressed: () {},
+                      style: ButtonStyle(
+                        padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                      ),
+                      child: Text('${widget.technique.kw5}'),
+                    ),
+                ],
+              ),
+              SizedBox(height: 20),
+              Container(
+                constraints: BoxConstraints(
+                  maxHeight: screenHeight * 0.6,
+                  maxWidth: double.infinity,
+                ),
+                
+                child: Stack(
+                  children: [
+                    AspectRatio(
+                      aspectRatio: _controller.value.aspectRatio,
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10.0),
+                        child: VideoPlayer(_controller)),
+                    ),
+                    Positioned(
+                      bottom: 0,
+                      left: 0,
+                      right: 0,
+                      child: Container(
+                        color: Color.fromRGBO(0, 0, 0, 0.5),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            IconButton(
+                              icon: Icon(
+                                Icons.replay,
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _controller.seekTo(Duration.zero);
                                   _controller.play();
-                                }
-                              });
-                            },
-                          ),
-                          TextButton(
-                            child: Text(
-                              _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
-                              style: TextStyle(
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: Icon(
+                                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
                                 color: Colors.white,
                               ),
+                              onPressed: () {
+                                setState(() {
+                                  if (_controller.value.isPlaying) {
+                                    _controller.pause();
+                                  } else {
+                                    _controller.play();
+                                  }
+                                });
+                              },
                             ),
-                            onPressed: () {
-                              setState(() {
-                                _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
-                              });
-                            },
-                          ),
-                        ],
+                            TextButton(
+                              child: Text(
+                                _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                ),
+                              ),
+                              onPressed: () {
+                                setState(() {
+                                  _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  SizedBox(height: 20),
+                  Center(
+                    child: Text(
+                      'Points clés :',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
                   ),
+                  SizedBox(height: 10),
+                  if (widget.technique.kp1 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp1}.'),
+                    ),
+                  if (widget.technique.kp2 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp2}.'),
+                    ),
+                  if (widget.technique.kp3 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp3}.'),
+                    ),
+                  if (widget.technique.kp4 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp4}.'),
+                    ),
+                  if (widget.technique.kp5 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp5}.'),
+                    ),
+                  if (widget.technique.kp6 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp6}.'),
+                    ),
+                  if (widget.technique.kp7 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp7}.'),
+                    ),
+                  if (widget.technique.kp8 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp8}.'),
+                    ),
+                  if (widget.technique.kp9 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp9}.'),
+                    ),
+                  if (widget.technique.kp10 != null)
+                    ListTile(
+                      leading: Icon(Icons.check),
+                      title: Text('${widget.technique.kp10}.'),
+                    ),
+                    SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        'Maitrise :',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Center(
+                      child: SizedBox(
+                        width: 180, // Largeur souhaitée pour votre cellule
+                        child: RatingBar.builder(
+                        initialRating: 0,
+                        minRating: 1,
+                        direction: Axis.horizontal,
+                        allowHalfRating: false,
+                        itemCount: 5,
+                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                        itemBuilder: (context, _) => Icon(
+                          Icons.star,
+                            color: Colors.amber,
+                          ),
+                          onRatingUpdate: (rating) {
+                            // TODO: Add your code for updating the rating here
+                          },
+                        itemSize: 30.0, // Définir la taille des étoiles à 20 pixels
+                          ),
+                        ),
+                    ),
+                    SizedBox(height: 20),
+                    Center(
+                      child: Text(
+                        'Notes personnelles :',
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    TextField(
+                      maxLines: 5, // Permet à l'utilisateur de saisir plusieurs lignes
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
+                      //controller: _notesController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        fillColor: Color.fromARGB(255, 245, 245, 245),
+                        hintText: 'Entrez vos notes personnelles ici',
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                      ),
+                    ),
+                    // Créer un bouton de sauvegarde
+                    Center(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          //_saveNotes(_notesController.text);
+                        },
+                        child: Text('Sauvegarder'),
+                      ),
+                    ),
                 ],
+                
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
@@ -858,7 +997,7 @@ String removeDiacritics(String str) {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield),
+            icon: Icon(Icons.sports_kabaddi),
             label: 'techniques',
           ),
           BottomNavigationBarItem(

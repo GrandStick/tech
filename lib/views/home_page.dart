@@ -104,7 +104,7 @@ class _HomePageState extends State<HomePage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield),
+            icon: Icon(Icons.sports_kabaddi),
             label: 'techniques',
           ),
           BottomNavigationBarItem(

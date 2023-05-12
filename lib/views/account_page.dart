@@ -78,7 +78,7 @@ class _AccountPageState extends State<AccountPage> {
             label: 'Home',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.shield),
+            icon: Icon(Icons.sports_kabaddi),
             label: 'techniques',
           ),
           BottomNavigationBarItem(

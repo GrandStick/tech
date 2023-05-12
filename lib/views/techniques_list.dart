@@ -4,7 +4,6 @@ import '../services/fetch_techniques.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tech/views/home_page.dart';
-import 'package:tech/views/techniques_list.dart';
 import 'package:tech/views/account_page.dart';
 
 

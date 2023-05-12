@@ -7,7 +7,7 @@ import 'package:tech/views/home_page.dart';
 import 'package:tech/views/account_page.dart';
 
 
-int _currentIndex = 1;
+
 
 
 //PARTIE DETAIL DE LA TECHNIQUE 
@@ -78,13 +78,22 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              Text(
-                '${widget.technique.grade} ${widget.technique.ref.substring(3)} - ${widget.technique.nom}',
+              Center(
+                child: Text(
+                  '${widget.technique.nom}',
+                  style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24.0,
+                      )
+                    ),
+              ),
+               SizedBox(height: 10),
+               Text(
+                '${widget.technique.grade} - ${widget.technique.ref.substring(3)}',
                 style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 24.0,
+                      fontSize: 14.0,
                     )
-                  ),
+                  ),   
               SizedBox(height: 20),
               Wrap(
                 spacing: 4.0, // Espacement entre les boutons
@@ -279,13 +288,13 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     SizedBox(height: 10),
                     Center(
                       child: SizedBox(
-                        width: 180, // Largeur souhaitée pour votre cellule
+                        width: 150, // Largeur souhaitée pour votre cellule
                         child: RatingBar.builder(
                         initialRating: 0,
                         minRating: 1,
                         direction: Axis.horizontal,
-                        allowHalfRating: false,
-                        itemCount: 5,
+                        allowHalfRating: true,
+                        itemCount: 3,
                         itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => Icon(
                           Icons.star,
@@ -294,7 +303,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           onRatingUpdate: (rating) {
                             // TODO: Add your code for updating the rating here
                           },
-                        itemSize: 30.0, // Définir la taille des étoiles à 20 pixels
+                        itemSize: 45.0, // Définir la taille des étoiles à 20 pixels
                           ),
                         ),
                     ),
@@ -404,12 +413,15 @@ class _FilterButtonsState extends State<FilterButtons> {
   void _toggleGradesList() {
     setState(() {
       _showGradesList = !_showGradesList;
+      _showKWList = false; //  pour fermer la liste des grades
     });
   }
 
   void _toggleKWList() {
     setState(() {
       _showKWList = !_showKWList;
+      _showGradesList = false; //  pour fermer la liste des grades
+
     });
   }
 
@@ -424,6 +436,28 @@ class _FilterButtonsState extends State<FilterButtons> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 16.0),
+        // Nouveau champ de recherche
+        TextField(
+          controller: _searchTextController,
+          onChanged: widget.onSearchTextChanged,
+          style: TextStyle(
+            color: Colors.black,
+            backgroundColor: Colors.white,
+            fontSize: 16.0,
+          ),
+          decoration: InputDecoration(
+            hintText: 'Rechercher une technique',
+            hintStyle: TextStyle(color: Colors.grey),
+            contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+            filled: true,
+            fillColor: Colors.white,
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(8.0),
+              borderSide: BorderSide.none,
+            ),
+          ),
+        ),
+        SizedBox(height: 8.0),
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
@@ -442,15 +476,9 @@ class _FilterButtonsState extends State<FilterButtons> {
             ),
           ],
         ),
-        SizedBox(height: 8.0),
-        // Nouveau champ de recherche
-        TextField(
-          controller: _searchTextController,
-          decoration: InputDecoration(
-            hintText: 'Rechercher une technique',
-          ),
-          onChanged: widget.onSearchTextChanged,
-        ),
+        
+        
+
         SizedBox(height: 8.0),
         if (_showGradesList || _showKWList)
           Column(
@@ -516,218 +544,11 @@ class _FilterButtonsState extends State<FilterButtons> {
   }
 }
 
-//LISTE DES GRADES
-/*
-class GradeListButton extends StatefulWidget {
-  final List<Grade> grades;
-  final Function(String?) onGradeSelected;
-
-  GradeListButton({required this.grades, required this.onGradeSelected});
-
-  @override
-  _GradeListButtonState createState() => _GradeListButtonState();
-}
-
-class _GradeListButtonState extends State<GradeListButton> {
-  bool _showGradesList = false;
-
-  void _toggleGradesList() {
-    setState(() {
-      _showGradesList = !_showGradesList;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 16.0),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: _toggleGradesList,
-              child: Text('Grades'),
-            ),
-            Icon(
-              _showGradesList ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: Colors.white,
-            ),
-          ],
-        ),
-        SizedBox(height: 8.0),
-        if (_showGradesList)
-          Center(
-            child: Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    widget.onGradeSelected(null);
-                    _toggleGradesList();
-                  },
-                  child: Text('Tous'),
-                ),
-                ...widget.grades
-                    .map((grade) {
-                      return ElevatedButton(
-                        onPressed: () {
-                          widget.onGradeSelected(grade.grade);
-                          _toggleGradesList();
-                        },
-                        child: Text(grade.grade),
-                      );
-                    })
-                    .toList(),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
-*/
-//LISTE DES MOTS CLES
-/*
-class KWListButton extends StatefulWidget {
-  final List<Keywords> keywords;
-  final Function(String?) onKeywordSelected;
-
-  KWListButton({required this.keywords, required this.onKeywordSelected});
-
-  @override
-  _KWListButtonState createState() => _KWListButtonState();
-}
-
-class _KWListButtonState extends State<KWListButton> {
-  bool _showKWList = false;
-
-  void _toggleKWList() {
-    setState(() {
-      _showKWList = !_showKWList;
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 16.0),
-        Row(
-          children: [
-            ElevatedButton(
-              onPressed: _toggleKWList,
-              child: Text('Mots-Clés'),
-            ),
-            Icon(
-              _showKWList ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: Colors.white,
-            ),
-          ],
-        ),
-        SizedBox(height: 8.0),
-        if (_showKWList)
-          Center(
-            child: Wrap(
-              spacing: 8.0,
-              runSpacing: 8.0,
-              children: [
-                ElevatedButton(
-                  onPressed: () {
-                    widget.onKeywordSelected(null);
-                    _toggleKWList();
-                  },
-                  child: Text('tous'),
-                ),
-                ...widget.keywords.map((kw) {
-                    return ElevatedButton(
-                      onPressed: () { 
-                        widget.onKeywordSelected(kw.kw);
-                        _toggleKWList(); },
-                      child: Text(kw.kw),
-                    );
-                  }).toList(),
-              ],
-            ),
-          ),
-      ],
-    );
-  }
-}
-*/
-//LISTE DES MOTS CLES BU
-
-/*
-class KeywordList extends StatefulWidget {
-  final List<Keywords> keywords;
-  final Function(String?) onKeywordSelected;
-
-  KeywordList({required this.keywords, required this.onKeywordSelected});
-
-  @override
-  _KeywordListState createState() => _KeywordListState();
-}
-
-class _KeywordListState extends State<KeywordList> {
-  bool _showKeywords = false;
-
-  @override
-  Widget build(BuildContext context) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        SizedBox(height: 16.0),
-        Wrap(
-          children: [
-            ElevatedButton(
-              onPressed: () {
-                setState(() {
-                  _showKeywords = !_showKeywords;
-                });
-              },
-              child: Text('Mots-clés'),
-            ), 
-            Icon(
-              _showKeywords ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
-              color: Colors.white,
-            ),
-            SizedBox(width: 8.0),
-            _showKeywords ? Center(
-              child: Wrap(
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: ElevatedButton(
-                      onPressed: () { widget.onKeywordSelected(null); },
-                      child: Text('Tous'),
-                    ),
-                  ),
-                  ...widget.keywords.map((kw) {
-                    return Padding(
-                      padding: const EdgeInsets.all(4.0),
-                      child: ElevatedButton(
-                        onPressed: () { widget.onKeywordSelected(kw.kw); },
-                        child: Text(kw.kw),
-                      ),
-                    );
-                  }).toList(),
-                ],
-              ),
-            ) : SizedBox.shrink(),
-          ],
-        ),
-      ],
-    );
-  }
-}
-*/
-
-
-
 
 class _TechniquesListState extends State<TechniquesList> {
+
+  int _currentIndex = 1;
+  
   // La liste complète de toutes les techniques
   late Future<List<Technique>> _futureTechniques;
   // La liste de techniques affichées en fonction du filtre
@@ -851,108 +672,131 @@ String removeDiacritics(String str) {
                   : CircularProgressIndicator(),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: DataTable(
-                      horizontalMargin: 24,
-                      columnSpacing: 10,
-                      dataRowHeight: 80.0,
-                      columns: <DataColumn>[
-                        DataColumn(label: Text('Grade', style: TextStyle(fontFamily: 'depot'),)),
-                        DataColumn(label: Text('Réf',style: TextStyle(fontFamily: 'depot'),)),
-                        DataColumn(label: Text('Nom', style: TextStyle(fontFamily: 'depot'),)),
-                        if (showKeywordsColumn)
-                          DataColumn(label: Text('Mots-clés')),
-                        DataColumn(label: Text('Maitrise')),
-                      ],
-                      rows: (_isFiltering ? _filteredTechniques : techniques)
-                          .map((technique) => DataRow(cells: [
-                                DataCell(Text('${technique.grade}')),
-                                DataCell(Text(technique.ref.substring(3))),
-                                DataCell(InkWell(
-                                   onTap: () {
-                                    Navigator.of(context).push(
-                                      PageRouteBuilder(
-                                        transitionDuration: Duration(milliseconds: 200),
-                                        pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-                                          return TechniqueDetail(technique: technique);
-                                        },
-                                        transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-                                          return SlideTransition(
-                                            position: Tween<Offset>(
-                                              begin: const Offset(1.0, 0.0),
-                                              end: Offset.zero,
-                                            ).animate(animation),
-                                            child: child,
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                  child: Text(technique.nom))),
-                                if (showKeywordsColumn)
-                                  DataCell(Wrap(
-                                    spacing: 4.0, // Espacement entre les boutons
-                                    runSpacing: 4.0, // Espacement entre les lignes de boutons
-                                    children: [
-                                      if (technique.kw1 != null) OutlinedButton(
-                                        onPressed: () { filterTechniques('${technique.kw1}'); }, 
-                                        style: ButtonStyle(
-                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                    child: Expanded(
+                      child: DataTable(
+                        horizontalMargin: 24,
+                        columnSpacing: 10,
+                        dataRowHeight: 85.0,
+                        columns: <DataColumn>[
+                          //DataColumn(label: Text('Grade', style: TextStyle(fontFamily: 'depot'),)),
+                          DataColumn(label: Text('Réf',style: TextStyle(fontFamily: 'depot'),)),
+                          DataColumn(label: Text('Nom', style: TextStyle(fontFamily: 'depot'),)),
+                          if (showKeywordsColumn)
+                            DataColumn(label: Text('Mots-clés')),
+                          DataColumn(label: Text('Maîtrise')),
+                        ],
+                        rows: (_isFiltering ? _filteredTechniques : techniques)
+                            .map((technique) => DataRow(cells: [
+                                  //DataCell(Text('${technique.grade}')),
+                                  DataCell(InkWell(
+                                     onTap: () {
+                                      Navigator.of(context).push(
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200),
+                                          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+                                            return TechniqueDetail(technique: technique);
+                                          },
+                                          transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: const Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
                                         ),
-                                        child: Text('${technique.kw1}'),
-                                      ),
-                                      if (technique.kw2 != null) OutlinedButton(
-                                        onPressed: () { filterTechniques('${technique.kw2}'); }, 
-                                        style: ButtonStyle(
-                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                      );
+                                    },
+                                    child: Text('${technique.grade} - ${technique.ref.substring(3)}'))),
+                                  DataCell(InkWell(
+                                     onTap: () {
+                                      Navigator.of(context).push(
+                                        PageRouteBuilder(
+                                          transitionDuration: Duration(milliseconds: 200),
+                                          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+                                            return TechniqueDetail(technique: technique);
+                                          },
+                                          transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+                                            return SlideTransition(
+                                              position: Tween<Offset>(
+                                                begin: const Offset(1.0, 0.0),
+                                                end: Offset.zero,
+                                              ).animate(animation),
+                                              child: child,
+                                            );
+                                          },
                                         ),
-                                        child: Text('${technique.kw2}'),
-                                      ),
-                                      if (technique.kw3 != null) OutlinedButton(
-                                        onPressed: () { filterTechniques('${technique.kw3}'); }, 
-                                        style: ButtonStyle(
-                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                      );
+                                    },
+                                    child: Text(technique.nom,
+                                      style: TextStyle(fontSize:16 ,fontFamily: 'depot'),))),
+                                  if (showKeywordsColumn)
+                                    DataCell(Wrap(
+                                      spacing: 4.0, // Espacement entre les boutons
+                                      runSpacing: -8.0, // Espacement entre les lignes de boutons
+                                      children: [
+                                        if (technique.kw1 != null) OutlinedButton(
+                                          onPressed: () { filterTechniques('${technique.kw1}'); }, 
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                          ),
+                                          child: Text('${technique.kw1}'),
                                         ),
-                                        child: Text('${technique.kw3}'),
-                                      ),
-                                      if (technique.kw4 != null) OutlinedButton(
-                                        onPressed: () { filterTechniques('${technique.kw4}'); }, 
-                                        style: ButtonStyle(
-                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                        if (technique.kw2 != null) OutlinedButton(
+                                          onPressed: () { filterTechniques('${technique.kw2}'); }, 
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                          ),
+                                          child: Text('${technique.kw2}'),
                                         ),
-                                        child: Text('${technique.kw4}'),
-                                      ),
-                                      if (technique.kw5 != null) OutlinedButton(
-                                        onPressed: () { filterTechniques('${technique.kw5}'); }, 
-                                        style: ButtonStyle(
-                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                        if (technique.kw3 != null) OutlinedButton(
+                                          onPressed: () { filterTechniques('${technique.kw3}'); }, 
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                          ),
+                                          child: Text('${technique.kw3}'),
                                         ),
-                                        child: Text('${technique.kw5}'),
-                                      ),
-                                    ],
-                                  )),
-                                  DataCell(
-                                    SizedBox(
-                                      width: 120, // Largeur souhaitée pour votre cellule
-                                      child: RatingBar.builder(
-                                        initialRating: 0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        itemCount: 5,
-                                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
+                                        if (technique.kw4 != null) OutlinedButton(
+                                          onPressed: () { filterTechniques('${technique.kw4}'); }, 
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                          ),
+                                          child: Text('${technique.kw4}'),
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          // TODO: Add your code for updating the rating here
-                                        },
-                                        itemSize: 20.0, // Définir la taille des étoiles à 20 pixels
+                                        if (technique.kw5 != null) OutlinedButton(
+                                          onPressed: () { filterTechniques('${technique.kw5}'); }, 
+                                          style: ButtonStyle(
+                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
+                                          ),
+                                          child: Text('${technique.kw5}'),
+                                        ),
+                                      ],
+                                    )),
+                                    DataCell(
+                                      SizedBox(
+                                        width: 80, // Largeur souhaitée pour votre cellule
+                                        child: RatingBar.builder(
+                                          initialRating: 0,
+                                          minRating: 1,
+                                          direction: Axis.horizontal,
+                                          allowHalfRating: true,
+                                          itemCount: 3,
+                                          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                                          itemBuilder: (context, _) => Icon(
+                                            Icons.star,
+                                            color: Colors.amber,
+                                          ),
+                                          onRatingUpdate: (rating) {
+                                            // TODO: Add your code for updating the rating here
+                                          },
+                                          itemSize: 20.0, // Définir la taille des étoiles à 20 pixels
+                                        ),
                                       ),
                                     ),
-                                  ),
-                              ]))
-                          .toList(),
+                                ]))
+                            .toList(),
+                      ),
                     ),
                   ),
                 ],

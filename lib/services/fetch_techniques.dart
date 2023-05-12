@@ -47,7 +47,6 @@ Future<List<Grade>> fetchGrade() async {
         gradeList.add(gradeObj);
       }
     }
-    print(gradeList);
     return gradeList;
   } else {
     throw Exception('Failed to fetch grades');

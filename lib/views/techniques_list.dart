@@ -220,13 +220,65 @@ class TechniquesList extends StatefulWidget {
   _TechniquesListState createState() => _TechniquesListState();
 }
 
-//LISTE DES GRADES
 
-class GradeList extends StatelessWidget {
+//PARTIE FILTRE GRADES ET MOTS CLES
+
+
+class FilterButtons extends StatefulWidget {
   final List<Grade> grades;
+  final List<Keywords> keywords;
   final Function(String?) onGradeSelected;
+  final Function(String?) onKeywordSelected;
+  final Function(String?) onSearchTextChanged; // Nouvelle fonction callback
 
-  GradeList({required this.grades, required this.onGradeSelected});
+
+  FilterButtons({
+    required this.grades,
+    required this.keywords,
+    required this.onGradeSelected,
+    required this.onKeywordSelected,
+    required this.onSearchTextChanged, // Nouvel argument
+
+  });
+
+  @override
+  _FilterButtonsState createState() => _FilterButtonsState();
+}
+
+class _FilterButtonsState extends State<FilterButtons> {
+  bool _showGradesList = false;
+  bool _showKWList = false;
+  late TextEditingController _searchTextController; // Nouveau champ de texte
+
+  @override
+  void initState() {
+    super.initState();
+    _searchTextController = TextEditingController();
+  }
+
+  @override
+  void dispose() {
+    _searchTextController.dispose();
+    super.dispose();
+  }
+
+
+  void _toggleGradesList() {
+    setState(() {
+      _showGradesList = !_showGradesList;
+    });
+  }
+
+  void _toggleKWList() {
+    setState(() {
+      _showKWList = !_showKWList;
+    });
+  }
+
+  void _filterTechniques() {
+    widget.onSearchTextChanged(_searchTextController.text.trim()); // appeler la fonction de rappel avec le texte filtré
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -234,84 +286,305 @@ class GradeList extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 16.0),
-        Text(
-          'Grades :',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14.0,
-          ),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: ElevatedButton(
+                onPressed: _toggleGradesList,
+                child: Text('Grades'),
+              ),
+            ),
+            SizedBox(width: 8.0),
+            Expanded(
+              child: ElevatedButton(
+                onPressed: _toggleKWList,
+                child: Text('Mots-Clés'),
+              ),
+            ),
+          ],
         ),
         SizedBox(height: 8.0),
-        Center(
-          child: Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
+        // Nouveau champ de recherche
+        TextField(
+          controller: _searchTextController,
+          decoration: InputDecoration(
+            hintText: 'Rechercher une technique',
+          ),
+          onChanged: widget.onSearchTextChanged,
+        ),
+        SizedBox(height: 8.0),
+        if (_showGradesList || _showKWList)
+          Column(
             children: [
-              ElevatedButton(
-                onPressed: () { onGradeSelected(null); },
-                child: Text('Tous'),
-              ),
-              ...grades
-                  .map((grade) {
-                    return ElevatedButton(
-                      onPressed: () { onGradeSelected(grade.grade); },
-                      child: Text(grade.grade),
-                    );
-                  })
-                  .toList(),
+              if (_showGradesList)
+                Center(
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          widget.onGradeSelected(null);
+                          _toggleGradesList();
+                        },
+                        child: Text('Tous'),
+                      ),
+                      ...widget.grades
+                          .map(
+                            (grade) => ElevatedButton(
+                              onPressed: () {
+                                widget.onGradeSelected(grade.grade);
+                                _toggleGradesList();
+                              },
+                              child: Text(grade.grade),
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  ),
+                ),
+              if (_showKWList)
+                Center(
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: [
+                      ElevatedButton(
+                        onPressed: () {
+                          widget.onKeywordSelected(null);
+                          _toggleKWList();
+                        },
+                        child: Text('Tous'),
+                      ),
+                      ...widget.keywords
+                          .map(
+                            (kw) => ElevatedButton(
+                              onPressed: () {
+                                widget.onKeywordSelected(kw.kw);
+                                _toggleKWList();
+                              },
+                              child: Text(kw.kw),
+                            ),
+                          )
+                          .toList(),
+                    ],
+                  ),
+                ),
             ],
           ),
-        ),
       ],
     );
   }
 }
 
+//LISTE DES GRADES
+/*
+class GradeListButton extends StatefulWidget {
+  final List<Grade> grades;
+  final Function(String?) onGradeSelected;
 
+  GradeListButton({required this.grades, required this.onGradeSelected});
+
+  @override
+  _GradeListButtonState createState() => _GradeListButtonState();
+}
+
+class _GradeListButtonState extends State<GradeListButton> {
+  bool _showGradesList = false;
+
+  void _toggleGradesList() {
+    setState(() {
+      _showGradesList = !_showGradesList;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16.0),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: _toggleGradesList,
+              child: Text('Grades'),
+            ),
+            Icon(
+              _showGradesList ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+          ],
+        ),
+        SizedBox(height: 8.0),
+        if (_showGradesList)
+          Center(
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    widget.onGradeSelected(null);
+                    _toggleGradesList();
+                  },
+                  child: Text('Tous'),
+                ),
+                ...widget.grades
+                    .map((grade) {
+                      return ElevatedButton(
+                        onPressed: () {
+                          widget.onGradeSelected(grade.grade);
+                          _toggleGradesList();
+                        },
+                        child: Text(grade.grade),
+                      );
+                    })
+                    .toList(),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+*/
 //LISTE DES MOTS CLES
-class KeywordList extends StatelessWidget {
+/*
+class KWListButton extends StatefulWidget {
+  final List<Keywords> keywords;
+  final Function(String?) onKeywordSelected;
+
+  KWListButton({required this.keywords, required this.onKeywordSelected});
+
+  @override
+  _KWListButtonState createState() => _KWListButtonState();
+}
+
+class _KWListButtonState extends State<KWListButton> {
+  bool _showKWList = false;
+
+  void _toggleKWList() {
+    setState(() {
+      _showKWList = !_showKWList;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        SizedBox(height: 16.0),
+        Row(
+          children: [
+            ElevatedButton(
+              onPressed: _toggleKWList,
+              child: Text('Mots-Clés'),
+            ),
+            Icon(
+              _showKWList ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+          ],
+        ),
+        SizedBox(height: 8.0),
+        if (_showKWList)
+          Center(
+            child: Wrap(
+              spacing: 8.0,
+              runSpacing: 8.0,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    widget.onKeywordSelected(null);
+                    _toggleKWList();
+                  },
+                  child: Text('tous'),
+                ),
+                ...widget.keywords.map((kw) {
+                    return ElevatedButton(
+                      onPressed: () { 
+                        widget.onKeywordSelected(kw.kw);
+                        _toggleKWList(); },
+                      child: Text(kw.kw),
+                    );
+                  }).toList(),
+              ],
+            ),
+          ),
+      ],
+    );
+  }
+}
+*/
+//LISTE DES MOTS CLES BU
+
+/*
+class KeywordList extends StatefulWidget {
   final List<Keywords> keywords;
   final Function(String?) onKeywordSelected;
 
   KeywordList({required this.keywords, required this.onKeywordSelected});
 
   @override
+  _KeywordListState createState() => _KeywordListState();
+}
+
+class _KeywordListState extends State<KeywordList> {
+  bool _showKeywords = false;
+
+  @override
   Widget build(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         SizedBox(height: 16.0),
-        Text(
-          'Mots-clés :',
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 14.0,
-          ),
-        ),
-        SizedBox(height: 8.0),
-        Center(
-          child: Wrap(
-            spacing: 8.0,
-            runSpacing: 8.0,
-            children: [
-              ElevatedButton(
-                onPressed: () { onKeywordSelected(null); },
-                child: Text('Tous'),
+        Wrap(
+          children: [
+            ElevatedButton(
+              onPressed: () {
+                setState(() {
+                  _showKeywords = !_showKeywords;
+                });
+              },
+              child: Text('Mots-clés'),
+            ), 
+            Icon(
+              _showKeywords ? Icons.keyboard_arrow_up : Icons.keyboard_arrow_down,
+              color: Colors.white,
+            ),
+            SizedBox(width: 8.0),
+            _showKeywords ? Center(
+              child: Wrap(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(4.0),
+                    child: ElevatedButton(
+                      onPressed: () { widget.onKeywordSelected(null); },
+                      child: Text('Tous'),
+                    ),
+                  ),
+                  ...widget.keywords.map((kw) {
+                    return Padding(
+                      padding: const EdgeInsets.all(4.0),
+                      child: ElevatedButton(
+                        onPressed: () { widget.onKeywordSelected(kw.kw); },
+                        child: Text(kw.kw),
+                      ),
+                    );
+                  }).toList(),
+                ],
               ),
-              ...keywords.map((kw) {
-                return ElevatedButton(
-                  onPressed: () { onKeywordSelected(kw.kw); },
-                  child: Text(kw.kw),
-                );
-              }).toList(),
-            ],
-          ),
+            ) : SizedBox.shrink(),
+          ],
         ),
       ],
     );
   }
 }
-
+*/
 
 
 
@@ -334,38 +607,82 @@ class _TechniquesListState extends State<TechniquesList> {
   
   
 
-@override
-void initState() {
-  super.initState();
-  _futureTechniques = fetchTechniques();
-  fetchKeywords().then((keywords) {
-    setState(() {
-      _keywords = keywords;
+  @override
+  void initState() {
+    super.initState();
+    _futureTechniques = fetchTechniques();
+    fetchKeywords().then((keywords) {
+      setState(() {
+        _keywords = keywords;
+      });
     });
-  });
-  fetchGrade().then((grades) {
-    setState(() {
-      _grades = grades;
+    fetchGrade().then((grades) {
+      setState(() {
+        _grades = grades;
+      });
     });
-  });
-}
+  }
   
   void filterTechniques(String? keyword) {
-  print('Filtering techniques with keyword: $keyword');
-  _futureTechniques.then((techniques) {
-    setState(() {
-      _filteredTechniques = keyword == null
-          ? techniques
-          : techniques.where((technique) =>
-              technique.kw1 == keyword ||
-              technique.kw2 == keyword ||
-              technique.kw3 == keyword ||
-              technique.kw4 == keyword ||
-              technique.kw5 == keyword ||
-              technique.grade == keyword).toList();
-      selectedKeyword = keyword;
+    print('Filtering techniques with keyword: $keyword');
+    _futureTechniques.then((techniques) {
+      setState(() {
+        if (keyword == null) {
+          // Si aucun mot clé n'est sélectionné, afficher toutes les techniques
+          _filteredTechniques = techniques;
+        } else {
+          // Sinon, filtrer les techniques qui contiennent le mot clé
+          _filteredTechniques = techniques.where((technique) {
+            // Vérifier si le mot clé correspond à un grade ou à un mot-clé de la technique
+            if (technique.grade == keyword || technique.kw1 == keyword || technique.kw2 == keyword || technique.kw3 == keyword || technique.kw4 == keyword || technique.kw5 == keyword) {
+              return true;
+            }
+
+            // Vérifier si le mot clé est contenu dans le nom de la technique
+            final String techniqueNameWithoutAccents = removeDiacritics(technique.nom.toLowerCase());
+            final String keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
+            //print(techniqueNameWithoutAccents);
+            //print(keywordWithoutAccents);
+            return techniqueNameWithoutAccents.contains(keywordWithoutAccents);
+            }).toList();
+        }
+
+        // Enregistrer le mot clé sélectionné
+        selectedKeyword = keyword;
+      });
     });
-  });
+  }
+
+//RENDRE INSENSIBLE AUX ACCENTS
+String removeDiacritics(String str) {
+  final Map<String, String> charMap = {
+    'À': 'A',
+    'Á': 'A',
+    'Â': 'A',
+    'Ã': 'A',
+    'Ä': 'A',
+    'Å': 'A',
+    'à': 'a',
+    'á': 'a',
+    'â': 'a',
+    'ã': 'a',
+    'ä': 'a',
+    'å': 'a',
+    'È': 'E',
+    'É': 'E',
+    'Ê': 'E',
+    'Ë': 'E',
+    'è': 'e',
+    'é': 'e',
+    'ê': 'e',
+    'ë': 'e',
+    // Add all the accented characters you want to take into account
+  };
+
+  return str.replaceAllMapped(
+      RegExp('[${charMap.keys.join()}]'),
+      (Match m) => charMap[m.group(0)]!,
+  );
 }
 
   @override
@@ -386,16 +703,14 @@ void initState() {
               child: Column(
                 children: [
                   _grades != null
-                  ? GradeList(
+                  ? FilterButtons (
+                      keywords: _keywords,
                       grades: _grades,
                       onGradeSelected: filterTechniques,
+                      onKeywordSelected: filterTechniques,
+                      onSearchTextChanged: filterTechniques,
                     )
                   : CircularProgressIndicator(),
-                  
-                  KeywordList(
-                    keywords: _keywords,
-                    onKeywordSelected: filterTechniques, 
-                  ),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DataTable(

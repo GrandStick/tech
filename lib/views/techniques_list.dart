@@ -152,7 +152,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       left: 0,
                       right: 0,
                       child: Container(
-                        color: Color.fromRGBO(0, 0, 0, 0.5),
+                        color: Color.fromRGBO(0, 0, 0, 0.3),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
@@ -856,9 +856,9 @@ String removeDiacritics(String str) {
                       columnSpacing: 10,
                       dataRowHeight: 80.0,
                       columns: <DataColumn>[
-                        DataColumn(label: Text('Grade')),
-                        DataColumn(label: Text('Réf')),
-                        DataColumn(label: Text('Nom')),
+                        DataColumn(label: Text('Grade', style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(label: Text('Réf',style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(label: Text('Nom', style: TextStyle(fontFamily: 'depot'),)),
                         if (showKeywordsColumn)
                           DataColumn(label: Text('Mots-clés')),
                         DataColumn(label: Text('Maitrise')),

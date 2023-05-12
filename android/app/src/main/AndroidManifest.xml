@@ -1,5 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.tech">
+    <!-- Ajouter la balise uses-permission ici -->
+    <uses-permission android:name="android.permission.INTERNET" />
    <application
         android:label="tech"
         android:name="${applicationName}"

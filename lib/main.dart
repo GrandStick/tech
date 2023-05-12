@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'views/techniques_list.dart';
+import 'views/login_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
           secondary: Colors.white,
         ),
       ),
-      home: TechniquesList(),
+      home: LoginPage(),
     );
   }
 }

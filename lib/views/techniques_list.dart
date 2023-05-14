@@ -672,131 +672,129 @@ String removeDiacritics(String str) {
                   : CircularProgressIndicator(),
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
-                    child: Expanded(
-                      child: DataTable(
-                        horizontalMargin: 24,
-                        columnSpacing: 10,
-                        dataRowHeight: 85.0,
-                        columns: <DataColumn>[
-                          //DataColumn(label: Text('Grade', style: TextStyle(fontFamily: 'depot'),)),
-                          DataColumn(label: Text('Réf',style: TextStyle(fontFamily: 'depot'),)),
-                          DataColumn(label: Text('Nom', style: TextStyle(fontFamily: 'depot'),)),
-                          if (showKeywordsColumn)
-                            DataColumn(label: Text('Mots-clés')),
-                          DataColumn(label: Text('Maîtrise')),
-                        ],
-                        rows: (_isFiltering ? _filteredTechniques : techniques)
-                            .map((technique) => DataRow(cells: [
-                                  //DataCell(Text('${technique.grade}')),
-                                  DataCell(InkWell(
-                                     onTap: () {
-                                      Navigator.of(context).push(
-                                        PageRouteBuilder(
-                                          transitionDuration: Duration(milliseconds: 200),
-                                          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-                                            return TechniqueDetail(technique: technique);
-                                          },
-                                          transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-                                            return SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: const Offset(1.0, 0.0),
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              child: child,
-                                            );
-                                          },
+                    child: DataTable(
+                      horizontalMargin: 24,
+                      columnSpacing: 10,
+                      dataRowHeight: 85.0,
+                      columns: <DataColumn>[
+                        //DataColumn(label: Text('Grade', style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(label: Text('Réf',style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(label: Text('Nom', style: TextStyle(fontFamily: 'depot'),)),
+                        if (showKeywordsColumn)
+                          DataColumn(label: Text('Mots-clés')),
+                        DataColumn(label: Text('Maîtrise')),
+                      ],
+                      rows: (_isFiltering ? _filteredTechniques : techniques)
+                          .map((technique) => DataRow(cells: [
+                                //DataCell(Text('${technique.grade}')),
+                                DataCell(InkWell(
+                                   onTap: () {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+                                          return TechniqueDetail(technique: technique);
+                                        },
+                                        transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: const Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Text('${technique.grade} - ${technique.ref.substring(3)}'))),
+                                DataCell(InkWell(
+                                   onTap: () {
+                                    Navigator.of(context).push(
+                                      PageRouteBuilder(
+                                        transitionDuration: Duration(milliseconds: 200),
+                                        pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
+                                          return TechniqueDetail(technique: technique);
+                                        },
+                                        transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
+                                          return SlideTransition(
+                                            position: Tween<Offset>(
+                                              begin: const Offset(1.0, 0.0),
+                                              end: Offset.zero,
+                                            ).animate(animation),
+                                            child: child,
+                                          );
+                                        },
+                                      ),
+                                    );
+                                  },
+                                  child: Text(technique.nom,
+                                    style: TextStyle(fontSize:16 ,fontFamily: 'depot'),))),
+                                if (showKeywordsColumn)
+                                  DataCell(Wrap(
+                                    spacing: 4.0, // Espacement entre les boutons
+                                    runSpacing: -8.0, // Espacement entre les lignes de boutons
+                                    children: [
+                                      if (technique.kw1 != null) OutlinedButton(
+                                        onPressed: () { filterTechniques('${technique.kw1}'); }, 
+                                        style: ButtonStyle(
+                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
-                                      );
-                                    },
-                                    child: Text('${technique.grade} - ${technique.ref.substring(3)}'))),
-                                  DataCell(InkWell(
-                                     onTap: () {
-                                      Navigator.of(context).push(
-                                        PageRouteBuilder(
-                                          transitionDuration: Duration(milliseconds: 200),
-                                          pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
-                                            return TechniqueDetail(technique: technique);
-                                          },
-                                          transitionsBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation, Widget child) {
-                                            return SlideTransition(
-                                              position: Tween<Offset>(
-                                                begin: const Offset(1.0, 0.0),
-                                                end: Offset.zero,
-                                              ).animate(animation),
-                                              child: child,
-                                            );
-                                          },
+                                        child: Text('${technique.kw1}'),
+                                      ),
+                                      if (technique.kw2 != null) OutlinedButton(
+                                        onPressed: () { filterTechniques('${technique.kw2}'); }, 
+                                        style: ButtonStyle(
+                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
-                                      );
-                                    },
-                                    child: Text(technique.nom,
-                                      style: TextStyle(fontSize:16 ,fontFamily: 'depot'),))),
-                                  if (showKeywordsColumn)
-                                    DataCell(Wrap(
-                                      spacing: 4.0, // Espacement entre les boutons
-                                      runSpacing: -8.0, // Espacement entre les lignes de boutons
-                                      children: [
-                                        if (technique.kw1 != null) OutlinedButton(
-                                          onPressed: () { filterTechniques('${technique.kw1}'); }, 
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                                          ),
-                                          child: Text('${technique.kw1}'),
+                                        child: Text('${technique.kw2}'),
+                                      ),
+                                      if (technique.kw3 != null) OutlinedButton(
+                                        onPressed: () { filterTechniques('${technique.kw3}'); }, 
+                                        style: ButtonStyle(
+                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
-                                        if (technique.kw2 != null) OutlinedButton(
-                                          onPressed: () { filterTechniques('${technique.kw2}'); }, 
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                                          ),
-                                          child: Text('${technique.kw2}'),
+                                        child: Text('${technique.kw3}'),
+                                      ),
+                                      if (technique.kw4 != null) OutlinedButton(
+                                        onPressed: () { filterTechniques('${technique.kw4}'); }, 
+                                        style: ButtonStyle(
+                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
-                                        if (technique.kw3 != null) OutlinedButton(
-                                          onPressed: () { filterTechniques('${technique.kw3}'); }, 
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                                          ),
-                                          child: Text('${technique.kw3}'),
+                                        child: Text('${technique.kw4}'),
+                                      ),
+                                      if (technique.kw5 != null) OutlinedButton(
+                                        onPressed: () { filterTechniques('${technique.kw5}'); }, 
+                                        style: ButtonStyle(
+                                          padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
                                         ),
-                                        if (technique.kw4 != null) OutlinedButton(
-                                          onPressed: () { filterTechniques('${technique.kw4}'); }, 
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                                          ),
-                                          child: Text('${technique.kw4}'),
+                                        child: Text('${technique.kw5}'),
+                                      ),
+                                    ],
+                                  )),
+                                  DataCell(
+                                    SizedBox(
+                                      width: 80, // Largeur souhaitée pour votre cellule
+                                      child: RatingBar.builder(
+                                        initialRating: 0,
+                                        minRating: 1,
+                                        direction: Axis.horizontal,
+                                        allowHalfRating: true,
+                                        itemCount: 3,
+                                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
+                                        itemBuilder: (context, _) => Icon(
+                                          Icons.star,
+                                          color: Colors.amber,
                                         ),
-                                        if (technique.kw5 != null) OutlinedButton(
-                                          onPressed: () { filterTechniques('${technique.kw5}'); }, 
-                                          style: ButtonStyle(
-                                            padding: MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(4.0)),
-                                          ),
-                                          child: Text('${technique.kw5}'),
-                                        ),
-                                      ],
-                                    )),
-                                    DataCell(
-                                      SizedBox(
-                                        width: 80, // Largeur souhaitée pour votre cellule
-                                        child: RatingBar.builder(
-                                          initialRating: 0,
-                                          minRating: 1,
-                                          direction: Axis.horizontal,
-                                          allowHalfRating: true,
-                                          itemCount: 3,
-                                          itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                                          itemBuilder: (context, _) => Icon(
-                                            Icons.star,
-                                            color: Colors.amber,
-                                          ),
-                                          onRatingUpdate: (rating) {
-                                            // TODO: Add your code for updating the rating here
-                                          },
-                                          itemSize: 20.0, // Définir la taille des étoiles à 20 pixels
-                                        ),
+                                        onRatingUpdate: (rating) {
+                                          // TODO: Add your code for updating the rating here
+                                        },
+                                        itemSize: 20.0, // Définir la taille des étoiles à 20 pixels
                                       ),
                                     ),
-                                ]))
-                            .toList(),
-                      ),
+                                  ),
+                              ]))
+                          .toList(),
                     ),
                   ),
                 ],

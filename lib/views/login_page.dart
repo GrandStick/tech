@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:tech/views/techniques_list.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -39,7 +40,10 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('token', response.body);
 
         // Naviguer vers une nouvelle page après la connexion réussie
-        Navigator.pushReplacementNamed(context, '/home');
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => TechniquesList()),
+        );
       } else {
         throw Exception('Failed to login');
       }

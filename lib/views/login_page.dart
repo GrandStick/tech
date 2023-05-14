@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech/views/techniques_list.dart';
+import '../services/fetch_techniques.dart';
+
 
 class LoginPage extends StatefulWidget {
   @override
@@ -25,21 +27,26 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final http.Response response = await http.post(
-        Uri.parse('https://self-defense.app/login'),
+        Uri.parse('https:self-defense.app/loginapp'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },
         body: jsonEncode(<String, String>{
-          'username': username,
+          'email': username,
           'password': password,
         }),
+        
       );
 
       if (response.statusCode == 200) {
+        final Map<String, dynamic> data = jsonDecode(response.body);
+        final String token = data['token'];
         final SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('token', response.body);
+        await prefs.setString('token', token);
 
         // Naviguer vers une nouvelle page après la connexion réussie
+        testProtectedRoute();
+        fetchTechniques();
         Navigator.pushReplacement(
           context,
           MaterialPageRoute(builder: (context) => TechniquesList()),

@@ -1,6 +1,8 @@
 import 'dart:convert';
 import 'package:http/http.dart' as http;
 import '../models/technique.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 //RECUPERER LA LISTE DES TECHNIQUES
 Future<List<Technique>> fetchTechniques() async {
@@ -50,5 +52,25 @@ Future<List<Grade>> fetchGrade() async {
     return gradeList;
   } else {
     throw Exception('Failed to fetch grades');
+  }
+}
+
+//TEST LOGIN
+Future<void> testProtectedRoute() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? token = prefs.getString('token');
+  
+  final response = await http.get(
+    Uri.parse('https://self-defense.app/protected'),
+    headers: <String, String>{
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    print('Protected route accessed successfully!');
+    print(response.body); // Affiche le corps de la réponse dans la console
+  } else {
+    print('Failed to access protected route');
   }
 }

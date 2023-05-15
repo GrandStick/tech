@@ -24,10 +24,17 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
   late VideoPlayerController _controller;
   bool _isPlaying = true;
   double _playbackSpeed = 1.0;
+  double? selectedRating = 0;
+  TextEditingController _notesController = TextEditingController();
+
 
   @override
   void initState() {
     super.initState();
+    selectedRating = widget.technique.maitrise?.toDouble() ?? 0.0;
+    _notesController.text = widget.technique.notes == null ? "" : widget.technique.notes!;
+
+    //_rating = widget.technique.maitrise.toDouble();
     print('Initializing video player...');
     _controller = VideoPlayerController.network(
       'https://self-defense.app/videos/mp4/${widget.technique.gif}.mp4',
@@ -37,6 +44,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
         setState(() {});
       })
       ..setLooping(true)
+      ..setVolume(0) // Mute the video
       ..play();
   }
 
@@ -290,7 +298,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       child: SizedBox(
                         width: 150, // Largeur souhaitée pour votre cellule
                         child: RatingBar.builder(
-                        initialRating: 0,
+                        initialRating: selectedRating ?? 0.0,
                         minRating: 1,
                         direction: Axis.horizontal,
                         allowHalfRating: true,
@@ -302,6 +310,11 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           ),
                           onRatingUpdate: (rating) {
                             // TODO: Add your code for updating the rating here
+                            setState(() {
+                              selectedRating  = rating;
+                              //widget.technique.maitrise = rating;
+                            });
+                            
                           },
                         itemSize: 45.0, // Définir la taille des étoiles à 20 pixels
                           ),
@@ -310,7 +323,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        'Notes personnelles :',
+                        'Mes notes personnelles :',
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -323,7 +336,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       style: TextStyle(
                         color: Colors.black,
                       ),
-                      //controller: _notesController,
+                      controller: _notesController, // pass the controller to the TextField
                       decoration: InputDecoration(
                         filled: true,
                         fillColor: Color.fromARGB(255, 245, 245, 245),
@@ -333,6 +346,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                         ),
                       ),
                     ),
+                    SizedBox(height: 20),
                     // Créer un bouton de sauvegarde
                     Center(
                       child: ElevatedButton(
@@ -776,7 +790,7 @@ String removeDiacritics(String str) {
                                     SizedBox(
                                       width: 80, // Largeur souhaitée pour votre cellule
                                       child: RatingBar.builder(
-                                        initialRating: 0,
+                                        initialRating: technique.maitrise ?? 0.0,
                                         minRating: 1,
                                         direction: Axis.horizontal,
                                         allowHalfRating: true,
@@ -809,45 +823,104 @@ String removeDiacritics(String str) {
         },
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-              break;
-            case 1:
-              // Ne faites rien, l'utilisateur est déjà sur la page 'Techniques'
-              break;
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AccountPage()),
-              );
-              break;
-          }
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports_kabaddi),
-            label: 'techniques',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity ),
-            label: 'Compte',
-            
-          ),
-        ],
-      ),
+      currentIndex: _currentIndex,
+      onTap: (int index) {
+        switch (index) {
+          case 0:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return HomePage();
+                },
+                transitionsBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation, Widget child) {
+                  if (index > _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else if (index < _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(-1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  }
+                },
+              ),
+            );
+            break;
+          case 1:
+            // Ne faites rien, l'utilisateur est déjà sur la page 'Techniques'
+            break;
+          case 2:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return AccountPage();
+                },
+                transitionsBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation, Widget child) {
+                  if (index > _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else if (index < _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(-1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  }
+                },
+              ),
+            );
+            break;
+        }
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sports_kabaddi),
+          label: 'techniques',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.perm_identity ),
+          label: 'Compte',
+        ),
+      ],
+    ),
     );
   }
 }

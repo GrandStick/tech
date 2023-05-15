@@ -74,45 +74,104 @@ class _HomePageState extends State<HomePage> {
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _currentIndex,
-        onTap: (int index) {
-          switch (index) {
-            case 0:
-              
-              // Ne faites rien, l'utilisateur est déjà sur la page 'Home'
-              break;
-            case 1:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => TechniquesList()),
-              );
-              break;
-            case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => AccountPage()),
-              );
-              break;
-          }
-          setState(() {
-            _currentIndex = index;
-          });
-        },
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports_kabaddi),
-            label: 'techniques',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity),
-            label: 'Compte',
-          ),
-        ],
-      ),
+      currentIndex: _currentIndex,
+      onTap: (int index) {
+        switch (index) {
+          case 0:
+            // Ne faites rien, l'utilisateur est déjà sur la page 'Home'
+            break;
+          case 1:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return TechniquesList();
+                },
+                transitionsBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation, Widget child) {
+                  if (index > _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else if (index < _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(-1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  }
+                },
+              ),
+            );
+            break;
+          case 2:
+            Navigator.pushReplacement(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation) {
+                  return AccountPage();
+                },
+                transitionsBuilder: (BuildContext context, Animation<double> animation,
+                    Animation<double> secondaryAnimation, Widget child) {
+                  if (index > _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else if (index < _currentIndex) {
+                    return SlideTransition(
+                      position: Tween<Offset>(
+                        begin: Offset(-1.0, 0.0),
+                        end: Offset.zero,
+                      ).animate(animation),
+                      child: child,
+                    );
+                  } else {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  }
+                },
+              ),
+            );
+            break;
+        }
+        setState(() {
+          _currentIndex = index;
+        });
+      },
+      items: [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sports_kabaddi),
+          label: 'techniques',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.perm_identity),
+          label: 'Compte',
+        ),
+      ],
+    ),
     );
   }
 }

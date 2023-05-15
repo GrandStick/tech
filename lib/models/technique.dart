@@ -9,7 +9,7 @@ class Technique {
   final String? kw3;
   final String? kw4;
   final String? kw5;
-  final num? maitrise;
+  double? maitrise;
   final String? kp1;
   final String? kp2;
   final String? kp3;
@@ -20,6 +20,7 @@ class Technique {
   final String? kp8;
   final String? kp9;
   final String? kp10;
+  String? notes;
 
 
   Technique({
@@ -44,6 +45,7 @@ class Technique {
     required this.kp8,
     required this.kp9,
     required this.kp10,
+    required this.notes,
   });
 
   factory Technique.fromJson(Map<String, dynamic> json) {
@@ -58,7 +60,7 @@ class Technique {
       kw3: json['kw3'],
       kw4: json['kw4'],
       kw5: json['kw5'],
-      maitrise: json['maitrise'] != null ? num.parse(json['maitrise']) : null,
+      maitrise: json['maitrise'] != null ? double.parse(json['maitrise']) : null,
       kp1: json['kp1'],
       kp2: json['kp2'],
       kp3: json['kp3'],
@@ -69,6 +71,7 @@ class Technique {
       kp8: json['kp8'],
       kp9: json['kp9'],
       kp10: json['kp10'],
+      notes: json['notes'],
     );
   }
 }

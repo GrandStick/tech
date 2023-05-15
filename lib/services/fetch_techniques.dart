@@ -5,8 +5,17 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 
 //RECUPERER LA LISTE DES TECHNIQUES
+/*
 Future<List<Technique>> fetchTechniques() async {
-  final response = await http.get(Uri.parse('https://self-defense.app/techniques_list'));
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? token = prefs.getString('token');
+  //final response = await http.get(Uri.parse('http://localhost:3000/techniques_list_app'));
+  final response = await http.get(
+    Uri.parse('http://localhost:3000/techniques_list_app),
+    headers: <String, String>{
+      'Authorization': 'Bearer $token',
+    },
+  );
 
   if (response.statusCode == 200) {
     final List<dynamic> techniquesJson = jsonDecode(response.body);
@@ -15,6 +24,28 @@ Future<List<Technique>> fetchTechniques() async {
     throw Exception('Failed to fetch techniques');
   }
 }
+*/
+
+Future<List<Technique>>  fetchTechniques() async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? token = prefs.getString('token');
+  
+  final response = await http.get(
+    Uri.parse('https://self-defense.app/techniques_list_app'),
+    headers: <String, String>{
+      'Authorization': 'Bearer $token',
+    },
+  );
+
+  if (response.statusCode == 200) {
+    final List<dynamic> techniquesJson = jsonDecode(response.body);
+    return techniquesJson.map((json) => Technique.fromJson(json)).toList();
+    print(response.body); // Affiche le corps de la réponse dans la console
+  } else {
+    throw Exception('Failed to fetch techniques');
+  }
+}
+
 //RECUPERER LA LISTE DES MOTS CLES
 Future<List<Keywords>> fetchKeywords() async {
   final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=fr'));

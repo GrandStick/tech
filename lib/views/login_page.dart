@@ -27,7 +27,7 @@ class _LoginPageState extends State<LoginPage> {
 
     try {
       final http.Response response = await http.post(
-        Uri.parse('https:self-defense.app/loginapp'),
+        Uri.parse('https://self-defense.app/loginapp'),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
         },

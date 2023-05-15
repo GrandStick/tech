@@ -58,7 +58,7 @@ class Technique {
       kw3: json['kw3'],
       kw4: json['kw4'],
       kw5: json['kw5'],
-      maitrise: json['maitrise'],
+      maitrise: json['maitrise'] != null ? num.parse(json['maitrise']) : null,
       kp1: json['kp1'],
       kp2: json['kp2'],
       kp3: json['kp3'],

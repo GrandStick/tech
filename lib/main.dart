@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'views/techniques_list.dart';
+//import 'views/techniques_list.dart';
 import 'views/login_page.dart';
 
 void main() {

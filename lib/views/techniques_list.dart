@@ -346,7 +346,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 10),
                     // Créer un bouton de sauvegarde
                     Center(
                       child: ElevatedButton(
@@ -909,15 +909,15 @@ String removeDiacritics(String str) {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Home',
+          label: 'Acceuil',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_kabaddi),
-          label: 'techniques',
+          label: 'Techniques',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.perm_identity ),
-          label: 'Compte',
+          label: 'Club',
         ),
       ],
     ),

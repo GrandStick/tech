@@ -909,14 +909,14 @@ String removeDiacritics(String str) {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Acceuil',
+          label: 'Accueil',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_kabaddi),
           label: 'Techniques',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.perm_identity ),
+          icon: Icon(Icons.groups ),
           label: 'Club',
         ),
       ],

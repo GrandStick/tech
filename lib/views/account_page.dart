@@ -15,6 +15,14 @@ class _AccountPageState extends State<AccountPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Mon Compte'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              // Mettez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
+            },
+          ),
+        ],
       ),
       body: ListView(
         children: <Widget>[
@@ -82,9 +90,9 @@ class _AccountPageState extends State<AccountPage> {
             label: 'techniques',
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.perm_identity),
-            label: 'Compte',
-          ),
+            icon: Icon(Icons.groups),
+            label: 'Club',
+        ),
         ],
       ),
     );

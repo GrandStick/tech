@@ -22,11 +22,21 @@ class _HomePageState extends State<HomePage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: <Widget>[
-              Text(
-                'Bienvenue sur l\'application Self-defense . app.',
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.0,
+              Center(
+                child: Image.asset(
+                  'assets/images/smartkm.png',
+                  width: 300.0, // Réglez la largeur en fonction de vos besoins
+                  height: 200.0, // Réglez la hauteur en fonction de vos besoins
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  'Bienvenue sur l\'application Self-defense . app.',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                  ),
                 ),
               ),
               SizedBox(height: 16.0),
@@ -63,7 +73,7 @@ class _HomePageState extends State<HomePage> {
               ),
               SizedBox(height: 16.0),
               Text(
-                'Créez un compte pour accéder à la liste des techniques.',
+                'Créez un compte pour accéder à la liste complète des techniques.',
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,
@@ -167,8 +177,8 @@ class _HomePageState extends State<HomePage> {
           label: 'techniques',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.perm_identity),
-          label: 'Compte',
+          icon: Icon(Icons.groups),
+          label: 'Club',
         ),
       ],
     ),

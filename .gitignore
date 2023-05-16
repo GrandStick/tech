@@ -52,3 +52,5 @@ windows/flutter/generated_plugin_registrant.h
 .gitignore
 macos/Flutter/GeneratedPluginRegistrant.swift
 
+android/build.gradle
+pubspec.lock

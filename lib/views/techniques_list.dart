@@ -79,7 +79,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
     final videoAspectRatio = _controller.value.aspectRatio;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Détails de la technique'),
+        title: const Text('Détails de la technique'),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -662,7 +662,15 @@ String removeDiacritics(String str) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Liste des techniques'),
+        title: const Text('Liste des techniques'),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.settings),
+            onPressed: () {
+              // Mettez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
+            },
+          ),
+        ],
       ),
       body: 
       FutureBuilder<List<Technique>>(

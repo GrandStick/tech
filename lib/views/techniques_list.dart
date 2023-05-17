@@ -78,6 +78,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
     final videoAspectRatio = _controller.value.aspectRatio;
+    
     return Scaffold(
       appBar: AppBar(
         title: const Text('Détails de la technique'),
@@ -335,9 +336,18 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                               if (response.statusCode == 200) {
                                 // Le serveur a répondu avec succès
                                 print('Changement de rating enregistré avec succès');
+                                widget.technique.maitrise = rating;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Center(child: Text('Maitrise enregistrée avec succès', style: TextStyle(color: Colors.white))),
+                                    backgroundColor: Colors.green,
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
                               } else {
                                 // Une erreur s'est produite lors de la requête
                                 print('Erreur lors de l\'enregistrement du changement de rating');
+                                  
                               }
                             } else {
                               // Le token n'est pas disponible dans les préférences partagées
@@ -398,6 +408,19 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                             if (response.statusCode == 200) {
                               // Le serveur a répondu avec succès
                               print('Notes personnelles enregistrées avec succès');
+                               setState(() {
+                                   // Effectuez ici les opérations nécessaires pour mettre à jour la liste de techniques
+                                // Par exemple, vous pouvez mettre à jour les notes de la technique concernée
+                                widget.technique.notes = _notesController.text;
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Center(child: Text('Notes enregistrées avec succès', style: TextStyle(color: Colors.white))),
+                                    backgroundColor: Colors.green,
+
+                                    duration: Duration(seconds: 2),
+                                  ),
+                                );
+                                });
                             } else {
                               // Une erreur s'est produite lors de la requête
                               print('Erreur lors de l\'enregistrement des notes personnelles');

@@ -347,6 +347,15 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                               } else {
                                 // Une erreur s'est produite lors de la requête
                                 print('Erreur lors de l\'enregistrement du changement de rating');
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                  content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 2),
+                                  ),
+                                 );
+                                                
+                                
                                   
                               }
                             } else {
@@ -424,6 +433,13 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                             } else {
                               // Une erreur s'est produite lors de la requête
                               print('Erreur lors de l\'enregistrement des notes personnelles');
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 2),
+                                ),
+                              );
                             }
                           } else {
                             // Le token n'est pas disponible dans les préférences partagées
@@ -884,8 +900,55 @@ String removeDiacritics(String str) {
                                           Icons.star,
                                           color: Colors.amber,
                                         ),
-                                        onRatingUpdate: (rating) {
-                                          // TODO: Add your code for updating the rating here
+                                        onRatingUpdate: (rating) async {
+                                          setState(() {
+                                            technique.maitrise = rating;
+                                          });
+
+                                          // Récupération du token depuis les préférences partagées
+                                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                                          final String? token = prefs.getString('token');
+
+                                          if (token != null) {
+                                            // Envoie de la requête POST au serveur Node.js
+                                            Uri url = Uri.parse('https://self-defense.app/save_maitrise');
+                                            final response = await http.post(
+                                              url,
+                                              headers: {
+                                                'Authorization': 'Bearer $token',
+                                              },
+                                              body: {
+                                                'technique_ref': technique.ref,
+                                                'maitrise': rating.toString(),
+                                              },
+                                            );
+
+                                            if (response.statusCode == 200) {
+                                              // Le serveur a répondu avec succès
+                                              print('Changement de rating enregistré avec succès');
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Center(child: Text('Maitrise enregistrée avec succès', style: TextStyle(color: Colors.white))),
+                                                  backgroundColor: Colors.green,
+                                                  duration: Duration(seconds: 2),
+                                                ),
+                                              );
+                                            } else {
+                                              // Une erreur s'est produite lors de la requête
+                                              print('Erreur lors de l\'enregistrement du changement de rating');
+                                              ScaffoldMessenger.of(context).showSnackBar(
+                                                SnackBar(
+                                                  content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                                  backgroundColor: Colors.red,
+                                                  duration: Duration(seconds: 2),
+                                                ),
+                                              );
+                                                
+                                            }
+                                          } else {
+                                            // Le token n'est pas disponible dans les préférences partagées
+                                            print('Token introuvable dans les préférences partagées');
+                                          }
                                         },
                                         itemSize: 20.0, // Définir la taille des étoiles à 20 pixels
                                       ),

@@ -1,0 +1,12 @@
+{
+"lang": "en",
+"autre_lanf" : "fr",
+"login": "Log in",
+"email":"Email",
+"password" :"Password",
+"bonjour" : "Bonjour",
+"helloWorld": "Hello World!",
+  "@helloWorld": {
+    "description": "The conventional newborn programmer greeting"
+  }
+}

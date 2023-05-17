@@ -6,8 +6,7 @@ import 'package:video_player/video_player.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/account_page.dart';
 import 'package:http/http.dart' as http;
-
-
+import 'package:shared_preferences/shared_preferences.dart';
 
 
 
@@ -27,6 +26,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
   double _playbackSpeed = 1.0;
   double? selectedRating = 0;
   TextEditingController _notesController = TextEditingController();
+ 
 
 
   @override
@@ -309,17 +309,29 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           Icons.star,
                             color: Colors.amber,
                           ),
-                          onRatingUpdate: (rating) {
+                          onRatingUpdate: (rating) async {
                             setState(() {
                               selectedRating = rating;
                             });
 
-                            // Envoie de la requête POST au serveur Node.js
-                            Uri url = Uri.parse('https://self-defense.app/save_maitrise');
-                            http.post(url, body: {
-                              'technique_ref': widget.technique.ref,
-                              'maitrise': rating.toString(),
-                            }).then((response) {
+                            // Récupération du token depuis les préférences partagées
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            final String? token = prefs.getString('token');
+
+                            if (token != null) {
+                              // Envoie de la requête POST au serveur Node.js
+                              Uri url = Uri.parse('http://localhost:3000/save_maitrise');
+                              final response = await http.post(
+                                url,
+                                headers: {
+                                  'Authorization': 'Bearer $token',
+                                },
+                                body: {
+                                  'technique_ref': widget.technique.ref,
+                                  'maitrise': rating.toString(),
+                                },
+                              );
+
                               if (response.statusCode == 200) {
                                 // Le serveur a répondu avec succès
                                 print('Changement de rating enregistré avec succès');
@@ -327,10 +339,10 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                                 // Une erreur s'est produite lors de la requête
                                 print('Erreur lors de l\'enregistrement du changement de rating');
                               }
-                            }).catchError((error) {
-                              // Une erreur s'est produite lors de l'envoi de la requête
-                              print('Erreur lors de l\'envoi de la requête');
-                            });
+                            } else {
+                              // Le token n'est pas disponible dans les préférences partagées
+                              print('Token introuvable dans les préférences partagées');
+                            }
                           },
                         itemSize: 45.0, // Définir la taille des étoiles à 20 pixels
                           ),
@@ -366,8 +378,34 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     // Créer un bouton de sauvegarde
                     Center(
                       child: ElevatedButton(
-                        onPressed: () {
-                          //_saveNotes(_notesController.text);
+                        onPressed: () async {
+                          SharedPreferences prefs = await SharedPreferences.getInstance();
+                          final String? token = prefs.getString('token');
+
+                          if (token != null) {
+                            Uri url = Uri.parse('http://localhost:3000/save_notes_techniques');
+                            final response = await http.post(
+                              url,
+                              headers: {
+                                'Authorization': 'Bearer $token',
+                              },
+                              body: {
+                                'technique_ref': widget.technique.ref,
+                                'notes': _notesController.text,
+                              },
+                            );
+
+                            if (response.statusCode == 200) {
+                              // Le serveur a répondu avec succès
+                              print('Notes personnelles enregistrées avec succès');
+                            } else {
+                              // Une erreur s'est produite lors de la requête
+                              print('Erreur lors de l\'enregistrement des notes personnelles');
+                            }
+                          } else {
+                            // Le token n'est pas disponible dans les préférences partagées
+                            print('Token introuvable dans les préférences partagées');
+                          }
                         },
                         child: Text('Sauvegarder'),
                       ),
@@ -382,7 +420,6 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
     );
   }
 }
-
 
 
 

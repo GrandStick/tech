@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/techniques_list.dart';
+import 'package:tech/views/login_page.dart'; // Assuming LoginPage is the name of your login page
 
 class AccountPage extends StatefulWidget {
   @override
@@ -9,6 +10,17 @@ class AccountPage extends StatefulWidget {
 
 class _AccountPageState extends State<AccountPage> {
   int _currentIndex = 2;
+
+  void _logout() {
+    // Add your logout logic here
+    // For example, clearing user session or token
+
+    Navigator.pushAndRemoveUntil(
+      context,
+      MaterialPageRoute(builder: (context) => LoginPage()),
+      (route) => false,
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +31,7 @@ class _AccountPageState extends State<AccountPage> {
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              // Mettez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
+              // Code for settings button
             },
           ),
         ],
@@ -28,30 +40,15 @@ class _AccountPageState extends State<AccountPage> {
         children: <Widget>[
           ListTile(
             title: const Text('Mes coordonnées'),
-            /*onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => HomePage()),
-              );
-            },*/
+            // Code for the first ListTile
           ),
           ListTile(
             title: const Text('Grade'),
-            /*onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => TechniquesList()),
-              );
-            },*/
+            // Code for the second ListTile
           ),
           ListTile(
             title: const Text('Club'),
-            /*onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => AccountPage()),
-              );
-            },*/
+            // Code for the third ListTile
           ),
         ],
       ),
@@ -72,8 +69,7 @@ class _AccountPageState extends State<AccountPage> {
               );
               break;
             case 2:
-              
-              // Ne faites rien, l'utilisateur est déjà sur la page 'Compte'
+              // Do nothing, user is already on the 'Account' page
               break;
           }
           setState(() {
@@ -92,8 +88,12 @@ class _AccountPageState extends State<AccountPage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.groups),
             label: 'Club',
-        ),
+          ),
         ],
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: _logout,
+        child: Icon(Icons.logout),
       ),
     );
   }

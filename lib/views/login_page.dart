@@ -19,30 +19,28 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    checkLoginStatus();
+    loadCredentials();
   }
 
-
-  void checkLoginStatus() async {
+  void loadCredentials() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
     String? password = prefs.getString('password');
-
     if (username != null && password != null) {
-      // Les informations d'identification sont disponibles, effectuer la connexion
-      login(username, password);
-    } else {
-      // Les informations d'identification ne sont pas disponibles, afficher l'écran de connexion
       setState(() {
-        _isLoading = false;
+        _usernameController.text = username;
+        _passwordController.text = password;
       });
     }
   }
-  
-    Future<void> login(String username, String password) async {
+
+  Future<void> _submitForm() async {
     setState(() {
       _isLoading = true;
     });
+
+    final String username = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
 
     try {
       final http.Response response = await http.post(
@@ -98,24 +96,12 @@ class _LoginPageState extends State<LoginPage> {
       );
     }
   }
-  
-
-  Future<void> _submitForm() async {
-    setState(() {
-      _isLoading = true;
-    });
-
-    final String username = _usernameController.text.trim();
-    final String password = _passwordController.text.trim();
-
-    login(username, password);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connexion'),
+        title: const Text('Login Page'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -125,21 +111,21 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextFormField(
                 controller: _usernameController,
-                decoration: const InputDecoration(labelText: 'Adresse email'),
+                decoration: const InputDecoration(labelText: 'Username'),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Entrez votre adress email';
+                    return 'Please enter your username';
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Mot de passe'),
+                decoration: const InputDecoration(labelText: 'Password'),
                 obscureText: true,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Entrez votre mot de passe';
+                    return 'Please enter your password';
                   }
                   return null;
                 },
@@ -149,7 +135,7 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: _isLoading ? null : _submitForm,
                 child: _isLoading
                     ? const CircularProgressIndicator()
-                    : const Text('Connexion'),
+                    : const Text('Login'),
               ),
             ],
           ),

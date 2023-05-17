@@ -5,6 +5,7 @@ import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/account_page.dart';
+import 'package:http/http.dart' as http;
 
 
 
@@ -235,52 +236,52 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   SizedBox(height: 10),
                   if (widget.technique.kp1 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp1}.'),
                     ),
                   if (widget.technique.kp2 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp2}.'),
                     ),
                   if (widget.technique.kp3 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp3}.'),
                     ),
                   if (widget.technique.kp4 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp4}.'),
                     ),
                   if (widget.technique.kp5 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp5}.'),
                     ),
                   if (widget.technique.kp6 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp6}.'),
                     ),
                   if (widget.technique.kp7 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp7}.'),
                     ),
                   if (widget.technique.kp8 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp8}.'),
                     ),
                   if (widget.technique.kp9 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp9}.'),
                     ),
                   if (widget.technique.kp10 != null)
                     ListTile(
-                      leading: Icon(Icons.check),
+                      leading: Text('-'),
                       title: Text('${widget.technique.kp10}.'),
                     ),
                     SizedBox(height: 20),
@@ -309,12 +310,27 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                             color: Colors.amber,
                           ),
                           onRatingUpdate: (rating) {
-                            // TODO: Add your code for updating the rating here
                             setState(() {
-                              selectedRating  = rating;
-                              //widget.technique.maitrise = rating;
+                              selectedRating = rating;
                             });
-                            
+
+                            // Envoie de la requête POST au serveur Node.js
+                            Uri url = Uri.parse('https://self-defense.app/save_maitrise');
+                            http.post(url, body: {
+                              'technique_ref': widget.technique.ref,
+                              'maitrise': rating.toString(),
+                            }).then((response) {
+                              if (response.statusCode == 200) {
+                                // Le serveur a répondu avec succès
+                                print('Changement de rating enregistré avec succès');
+                              } else {
+                                // Une erreur s'est produite lors de la requête
+                                print('Erreur lors de l\'enregistrement du changement de rating');
+                              }
+                            }).catchError((error) {
+                              // Une erreur s'est produite lors de l'envoi de la requête
+                              print('Erreur lors de l\'envoi de la requête');
+                            });
                           },
                         itemSize: 45.0, // Définir la taille des étoiles à 20 pixels
                           ),

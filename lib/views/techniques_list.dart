@@ -320,7 +320,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
 
                             if (token != null) {
                               // Envoie de la requête POST au serveur Node.js
-                              Uri url = Uri.parse('http://localhost:3000/save_maitrise');
+                              Uri url = Uri.parse('https://self-defense.app/save_maitrise');
                               final response = await http.post(
                                 url,
                                 headers: {
@@ -383,7 +383,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           final String? token = prefs.getString('token');
 
                           if (token != null) {
-                            Uri url = Uri.parse('http://localhost:3000/save_notes_techniques');
+                            Uri url = Uri.parse('https://self-defense.app/save_notes_techniques');
                             final response = await http.post(
                               url,
                               headers: {

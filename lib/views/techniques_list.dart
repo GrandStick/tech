@@ -7,6 +7,7 @@ import 'package:tech/views/home_page.dart';
 import 'package:tech/views/account_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:easy_debounce/easy_debounce.dart';
 
 
 
@@ -801,7 +802,12 @@ String removeDiacritics(String str) {
                       grades: _grades,
                       onGradeSelected: filterTechniques,
                       onKeywordSelected: filterTechniques,
-                      onSearchTextChanged: filterTechniques,
+                      onSearchTextChanged: (String? keyword) => EasyDebounce.debounce(
+                        'my-debouncer',
+                        Duration(milliseconds: 500),
+                        () => filterTechniques(keyword),
+                      ),
+
                     )
                   : CircularProgressIndicator(),
                   SizedBox(

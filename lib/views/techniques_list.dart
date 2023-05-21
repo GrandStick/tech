@@ -804,7 +804,7 @@ String removeDiacritics(String str) {
                       onKeywordSelected: filterTechniques,
                       onSearchTextChanged: (String? keyword) => EasyDebounce.debounce(
                         'my-debouncer',
-                        Duration(milliseconds: 500),
+                        Duration(milliseconds: 400),
                         () => filterTechniques(keyword),
                       ),
 

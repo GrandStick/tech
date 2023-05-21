@@ -21,6 +21,9 @@ class Technique {
   final String? kp9;
   final String? kp10;
   String? notes;
+  final List<String> keywords;
+  //final String nameWithoutAccents;
+  
 
 
   Technique({
@@ -46,7 +49,18 @@ class Technique {
     required this.kp9,
     required this.kp10,
     required this.notes,
+    required this.keywords,
+   // required this.nameWithoutAccents,
   });
+
+    String get nameWithoutAccents => removeDiacritics(nom.toLowerCase());
+
+  bool matchesKeyword(String keyword) {
+    final keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
+    return nameWithoutAccents.contains(keywordWithoutAccents);
+  }
+
+
 
   factory Technique.fromJson(Map<String, dynamic> json) {
     return Technique(
@@ -72,8 +86,99 @@ class Technique {
       kp9: json['kp9'],
       kp10: json['kp10'],
       notes: json['notes'],
+      keywords: [
+      json['kw1'],
+      json['kw2'],
+      json['kw3'],
+      json['kw4'],
+      json['kw5'],
+      // Add more keywords if necessary
+    ].where((kw) => kw != null).toList().cast<String>(),
+      //nameWithoutAccents: json['nameWithoutAccents'],
+      
     );
   }
+}
+
+//index des techniques et mots clés poura optimiser la recherche
+class KeywordIndex {
+  Map<String, List<Technique>> index = {};
+
+  void buildIndex(List<Technique> techniques) {
+  for (var technique in techniques) {
+    addTechniqueToIndex(technique);
+    addKeywordsFromTechniqueName(technique);
+  }
+}
+
+void addKeywordsFromTechniqueName(Technique technique) {
+  final words = technique.nom.split(' '); // Divisez le nom de la technique en mots
+
+  for (var word in words) {
+    final keywordWithoutAccents = removeDiacritics(word.toLowerCase());
+
+    if (index.containsKey(keywordWithoutAccents)) {
+      index[keywordWithoutAccents]!.add(technique);
+    } else {
+      index[keywordWithoutAccents] = [technique];
+    }
+  }
+}
+
+  void addTechniqueToIndex(Technique technique) {
+    for (var keyword in technique.keywords) {
+      final keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
+      if (index.containsKey(keywordWithoutAccents)) {
+        index[keywordWithoutAccents]!.add(technique);
+      } else {
+        index[keywordWithoutAccents] = [technique];
+      }
+      print('add to indexindex[keywordWithoutAccents]');
+    print(index[keywordWithoutAccents]);
+    }
+  }
+
+  List<Technique>? getTechniquesForKeyword(String keyword) {
+    final keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
+    print('keywordWithoutAccents');
+    print(keywordWithoutAccents);
+    
+      print('index[keywordWithoutAccents]');
+      print(index[keywordWithoutAccents]);
+    return index[keywordWithoutAccents];
+  }
+}
+
+//RENDRE INSENSIBLE AUX ACCENTS
+String removeDiacritics(String str) {
+  final Map<String, String> charMap = {
+    'À': 'A',
+    'Á': 'A',
+    'Â': 'A',
+    'Ã': 'A',
+    'Ä': 'A',
+    'Å': 'A',
+    'à': 'a',
+    'á': 'a',
+    'â': 'a',
+    'ã': 'a',
+    'ä': 'a',
+    'å': 'a',
+    'È': 'E',
+    'É': 'E',
+    'Ê': 'E',
+    'Ë': 'E',
+    'è': 'e',
+    'é': 'e',
+    'ê': 'e',
+    'ë': 'e',
+    // Add all the accented characters you want to take into account
+  };
+
+  return str.replaceAllMapped(
+      RegExp('[${charMap.keys.join()}]'),
+      (Match m) => charMap[m.group(0)]!,
+  );
 }
 
 List<Technique> filterTechniquesByKeywords(List<Technique> techniques, List<String> keywords) {

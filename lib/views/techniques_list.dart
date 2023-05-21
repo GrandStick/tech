@@ -477,6 +477,8 @@ class TechniquesList extends StatefulWidget {
 //PARTIE FILTRE GRADES ET MOTS CLES
 
 
+
+
 class FilterButtons extends StatefulWidget {
   final List<Grade> grades;
   final List<Keywords> keywords;
@@ -502,6 +504,8 @@ class _FilterButtonsState extends State<FilterButtons> {
   bool _showGradesList = false;
   bool _showKWList = false;
   late TextEditingController _searchTextController; // Nouveau champ de texte
+
+
 
   @override
   void initState() {
@@ -668,14 +672,28 @@ class _TechniquesListState extends State<TechniquesList> {
 
   List<Keywords> _keywords = [];
   List<Grade> _grades = [];
+  List<Technique> techniques = []; // Declare an empty list initially
+  late KeywordIndex keywordIndex; // Déclarer l'instance de KeywordIndex
 
   
   
 
-  @override
-  void initState() {
-    super.initState();
-    _futureTechniques = fetchTechniques();
+@override
+void initState() {
+  super.initState();
+
+  _futureTechniques = fetchTechniques();
+
+  _futureTechniques.then((fetchedTechniques) {
+    setState(() {
+      techniques = fetchedTechniques;
+    });
+
+    keywordIndex = KeywordIndex();
+    keywordIndex.buildIndex(fetchedTechniques);
+  });
+
+  _futureTechniques.then((_) {
     fetchKeywords().then((keywords) {
       setState(() {
         _keywords = keywords;
@@ -686,37 +704,39 @@ class _TechniquesListState extends State<TechniquesList> {
         _grades = grades;
       });
     });
-  }
+  });
+}
+
   
-  void filterTechniques(String? keyword) {
-    print('Filtering techniques with keyword: $keyword');
-    _futureTechniques.then((techniques) {
-      setState(() {
-        if (keyword == null) {
-          // Si aucun mot clé n'est sélectionné, afficher toutes les techniques
-          _filteredTechniques = techniques;
+void filterTechniques(String? keyword) {
+  print('Filtering techniques with keyword: $keyword');
+
+  _futureTechniques.then((techniques) {
+    setState(() {
+      if (keyword == null || keyword.isEmpty) {
+        // Si aucun mot-clé n'est saisi, afficher toutes les techniques
+        _filteredTechniques = techniques;
+      } else {
+        final keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
+
+        // Rechercher les techniques correspondant au mot-clé depuis l'index
+        final techniquesForKeyword = keywordIndex.getTechniquesForKeyword(keywordWithoutAccents);
+
+        if (techniquesForKeyword != null) {
+          // Si des techniques sont trouvées, les utiliser comme résultat filtré
+          _filteredTechniques = techniquesForKeyword;
         } else {
-          // Sinon, filtrer les techniques qui contiennent le mot clé
-          _filteredTechniques = techniques.where((technique) {
-            // Vérifier si le mot clé correspond à un grade ou à un mot-clé de la technique
-            if (technique.grade == keyword || technique.kw1 == keyword || technique.kw2 == keyword || technique.kw3 == keyword || technique.kw4 == keyword || technique.kw5 == keyword) {
-              return true;
-            }
-
-            // Vérifier si le mot clé est contenu dans le nom de la technique
-            final String techniqueNameWithoutAccents = removeDiacritics(technique.nom.toLowerCase());
-            final String keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
-            //print(techniqueNameWithoutAccents);
-            //print(keywordWithoutAccents);
-            return techniqueNameWithoutAccents.contains(keywordWithoutAccents);
-            }).toList();
+          // Si aucune technique n'est trouvée, effectuer une recherche "en direct"
+          _filteredTechniques = techniques.where((technique) =>
+              technique.nameWithoutAccents.contains(keywordWithoutAccents)).toList();
         }
+      }
 
-        // Enregistrer le mot clé sélectionné
-        selectedKeyword = keyword;
-      });
+      // Enregistrer le mot-clé sélectionné
+      selectedKeyword = keyword;
     });
-  }
+  });
+}
 
 //RENDRE INSENSIBLE AUX ACCENTS
 String removeDiacritics(String str) {

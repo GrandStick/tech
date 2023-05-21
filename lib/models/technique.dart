@@ -92,6 +92,7 @@ class Technique {
       json['kw3'],
       json['kw4'],
       json['kw5'],
+      json['grade'],
       // Add more keywords if necessary
     ].where((kw) => kw != null).toList().cast<String>(),
       //nameWithoutAccents: json['nameWithoutAccents'],

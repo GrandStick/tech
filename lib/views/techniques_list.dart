@@ -1085,60 +1085,62 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 10),
                     // Créer un bouton de sauvegarde
                     Center(
-                      child: ElevatedButton(
-                        onPressed: () async {
-                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                          final String? token = prefs.getString('token');
-
-                          if (token != null) {
-                            Uri url = Uri.parse('https://self-defense.app/save_notes_techniques');
-                            final response = await http.post(
-                              url,
-                              headers: {
-                                'Authorization': 'Bearer $token',
-                              },
-                              body: {
-                                'technique_ref': widget.technique.ref,
-                                'notes': _notesController.text,
-                              },
-                            );
-
-                            if (response.statusCode == 200) {
-                              // Le serveur a répondu avec succès
-                              print('Notes personnelles enregistrées avec succès');
-                               setState(() {
-                                   // Effectuez ici les opérations nécessaires pour mettre à jour la liste de techniques
-                                // Par exemple, vous pouvez mettre à jour les notes de la technique concernée
-                                widget.technique.notes = _notesController.text;
+                      child: Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: ElevatedButton(
+                          onPressed: () async {
+                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                            final String? token = prefs.getString('token');
+                      
+                            if (token != null) {
+                              Uri url = Uri.parse('https://self-defense.app/save_notes_techniques');
+                              final response = await http.post(
+                                url,
+                                headers: {
+                                  'Authorization': 'Bearer $token',
+                                },
+                                body: {
+                                  'technique_ref': widget.technique.ref,
+                                  'notes': _notesController.text,
+                                },
+                              );
+                      
+                              if (response.statusCode == 200) {
+                                // Le serveur a répondu avec succès
+                                print('Notes personnelles enregistrées avec succès');
+                                 setState(() {
+                                     // Effectuez ici les opérations nécessaires pour mettre à jour la liste de techniques
+                                  // Par exemple, vous pouvez mettre à jour les notes de la technique concernée
+                                  widget.technique.notes = _notesController.text;
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Center(child: Text('Notes enregistrées avec succès', style: TextStyle(color: Colors.white))),
+                                      backgroundColor: Colors.green,
+                      
+                                      duration: Duration(seconds: 2),
+                                    ),
+                                  );
+                                  });
+                              } else {
+                                // Une erreur s'est produite lors de la requête
+                                print('Erreur lors de l\'enregistrement des notes personnelles');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Center(child: Text('Notes enregistrées avec succès', style: TextStyle(color: Colors.white))),
-                                    backgroundColor: Colors.green,
-
+                                    content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                    backgroundColor: Colors.red,
                                     duration: Duration(seconds: 2),
                                   ),
                                 );
-                                });
+                              }
                             } else {
-                              // Une erreur s'est produite lors de la requête
-                              print('Erreur lors de l\'enregistrement des notes personnelles');
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                SnackBar(
-                                  content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
-                                  backgroundColor: Colors.red,
-                                  duration: Duration(seconds: 2),
-                                ),
-                              );
+                              // Le token n'est pas disponible dans les préférences partagées
+                              print('Token introuvable dans les préférences partagées');
                             }
-                          } else {
-                            // Le token n'est pas disponible dans les préférences partagées
-                            print('Token introuvable dans les préférences partagées');
-                          }
-                        },
-                        child: Text('Sauvegarder'),
+                          },
+                          child: Text('Sauvegarder'),
+                        ),
                       ),
                     ),
                 ],

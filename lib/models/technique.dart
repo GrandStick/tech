@@ -134,18 +134,11 @@ void addKeywordsFromTechniqueName(Technique technique) {
       } else {
         index[keywordWithoutAccents] = [technique];
       }
-      print('add to indexindex[keywordWithoutAccents]');
-    print(index[keywordWithoutAccents]);
     }
   }
 
   List<Technique>? getTechniquesForKeyword(String keyword) {
     final keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
-    print('keywordWithoutAccents');
-    print(keywordWithoutAccents);
-    
-      print('index[keywordWithoutAccents]');
-      print(index[keywordWithoutAccents]);
     return index[keywordWithoutAccents];
   }
 }

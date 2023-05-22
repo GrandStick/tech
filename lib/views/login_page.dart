@@ -66,7 +66,6 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('password', password);
 
         // Naviguer vers une nouvelle page après la connexion réussie
-        testProtectedRoute();
         fetchTechniques();
         Navigator.pushReplacement(
           context,

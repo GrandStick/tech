@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
+import 'package:tech/views/club_page.dart';
 import 'package:tech/views/techniques_list.dart';
 import 'package:tech/views/login_page.dart'; // Assuming LoginPage is the name of your login page
 
-class AccountPage extends StatefulWidget {
+class ParametersPage extends StatefulWidget {
   @override
-  _AccountPageState createState() => _AccountPageState();
+  _ParametersPageState createState() => _ParametersPageState();
 }
 
-class _AccountPageState extends State<AccountPage> {
+class _ParametersPageState extends State<ParametersPage> {
   int _currentIndex = 2;
 
   void _logout() {
@@ -26,7 +27,7 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Mon Compte'),
+        title: const Text('Paramètres'),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
@@ -50,6 +51,10 @@ class _AccountPageState extends State<AccountPage> {
             title: const Text('Club'),
             // Code for the third ListTile
           ),
+          ListTile(
+            title: const Text('Télécharger videos'),
+            // Code for the third ListTile
+          ),
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(
@@ -69,7 +74,10 @@ class _AccountPageState extends State<AccountPage> {
               );
               break;
             case 2:
-              // Do nothing, user is already on the 'Account' page
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(builder: (context) => ClubPage()),
+              );
               break;
           }
           setState(() {

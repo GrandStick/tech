@@ -4,7 +4,8 @@ import '../services/fetch_techniques.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tech/views/home_page.dart';
-import 'package:tech/views/account_page.dart';
+import 'package:tech/views/club_page.dart';
+import 'package:tech/views/parameters_page.dart'; 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_debounce/easy_debounce.dart';
@@ -96,107 +97,116 @@ class _FilterButtonsState extends State<FilterButtons> {
       children: [
         SizedBox(height: 16.0),
         // Nouveau champ de recherche
-        TextField(
-          controller: _searchTextController,
-          onChanged: widget.onSearchTextChanged,
-          style: TextStyle(
-            color: Colors.black,
-            backgroundColor: Colors.white,
-            fontSize: 16.0,
-          ),
-          decoration: InputDecoration(
-            hintText: 'Rechercher une technique',
-            hintStyle: TextStyle(color: Colors.grey),
-            contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
-            filled: true,
-            fillColor: Colors.white,
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(8.0),
-              borderSide: BorderSide.none,
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: TextField(
+            controller: _searchTextController,
+            onChanged: widget.onSearchTextChanged,
+            style: TextStyle(
+              color: Colors.black,
+              backgroundColor: Colors.white,
+              fontSize: 16.0,
+            ),
+            decoration: InputDecoration(
+              hintText: 'Rechercher une technique',
+              hintStyle: TextStyle(color: Colors.grey),
+              contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
+              filled: true,
+              fillColor: Colors.white,
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(8.0),
+                borderSide: BorderSide.none,
+              ),
             ),
           ),
         ),
         SizedBox(height: 8.0),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Expanded(
-              child: ElevatedButton(
-                onPressed: _toggleGradesList,
-                child: Text('Grades'),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _toggleGradesList,
+                  child: Text('Grades'),
+                ),
               ),
-            ),
-            SizedBox(width: 8.0),
-            Expanded(
-              child: ElevatedButton(
-                onPressed: _toggleKWList,
-                child: Text('Mots-Clés'),
+              SizedBox(width: 8.0),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: _toggleKWList,
+                  child: Text('Mots-Clés'),
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
         
         
 
         SizedBox(height: 8.0),
         if (_showGradesList || _showKWList)
-          Column(
-            children: [
-              if (_showGradesList)
-                Center(
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          widget.onGradeSelected(null);
-                          _toggleGradesList();
-                        },
-                        child: Text('Tous'),
-                      ),
-                      ...widget.grades
-                          .map(
-                            (grade) => ElevatedButton(
-                              onPressed: () {
-                                widget.onGradeSelected(grade.grade);
-                                _toggleGradesList();
-                              },
-                              child: Text(grade.grade),
-                            ),
-                          )
-                          .toList(),
-                    ],
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                if (_showGradesList)
+                  Center(
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.onGradeSelected(null);
+                            _toggleGradesList();
+                          },
+                          child: Text('Tous'),
+                        ),
+                        ...widget.grades
+                            .map(
+                              (grade) => ElevatedButton(
+                                onPressed: () {
+                                  widget.onGradeSelected(grade.grade);
+                                  _toggleGradesList();
+                                },
+                                child: Text(grade.grade),
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ),
                   ),
-                ),
-              if (_showKWList)
-                Center(
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          widget.onKeywordSelected(null);
-                          _toggleKWList();
-                        },
-                        child: Text('Tous'),
-                      ),
-                      ...widget.keywords
-                          .map(
-                            (kw) => ElevatedButton(
-                              onPressed: () {
-                                widget.onKeywordSelected(kw.kw);
-                                _toggleKWList();
-                              },
-                              child: Text(kw.kw),
-                            ),
-                          )
-                          .toList(),
-                    ],
+                if (_showKWList)
+                  Center(
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            widget.onKeywordSelected(null);
+                            _toggleKWList();
+                          },
+                          child: Text('Tous'),
+                        ),
+                        ...widget.keywords
+                            .map(
+                              (kw) => ElevatedButton(
+                                onPressed: () {
+                                  widget.onKeywordSelected(kw.kw);
+                                  _toggleKWList();
+                                },
+                                child: Text(kw.kw),
+                              ),
+                            )
+                            .toList(),
+                      ],
+                    ),
                   ),
-                ),
-            ],
+              ],
+            ),
           ),
       ],
     );
@@ -323,12 +333,15 @@ String removeDiacritics(String str) {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Liste des techniques'),
+        title: const Text('Techniques'),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              // Mettez ici le code que vous souhaitez exécuter lorsque le bouton est cliqué
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ParametersPage()),
+              );
             },
           ),
         ],
@@ -600,7 +613,7 @@ String removeDiacritics(String str) {
               PageRouteBuilder(
                 pageBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation) {
-                  return AccountPage();
+                  return ClubPage();
                 },
                 transitionsBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation, Widget child) {
@@ -835,8 +848,13 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       aspectRatio: _controller.value.aspectRatio,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10.0),
-                        child: VideoPlayer(_controller)),
+                        child: VideoPlayer(_controller),
+                      ),
                     ),
+                    if (!_controller.value.isInitialized)
+                      Center(
+                        child: CircularProgressIndicator(),
+                      ),
                     Positioned(
                       bottom: 0,
                       left: 0,
@@ -1049,18 +1067,21 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       ),
                     ),
                     SizedBox(height: 10),
-                    TextField(
-                      maxLines: 5, // Permet à l'utilisateur de saisir plusieurs lignes
-                      style: TextStyle(
-                        color: Colors.black,
-                      ),
-                      controller: _notesController, // pass the controller to the TextField
-                      decoration: InputDecoration(
-                        filled: true,
-                        fillColor: Color.fromARGB(255, 245, 245, 245),
-                        hintText: 'Entrez vos notes personnelles ici',
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: TextField(
+                        maxLines: 5, // Permet à l'utilisateur de saisir plusieurs lignes
+                        style: TextStyle(
+                          color: Colors.black,
+                        ),
+                        controller: _notesController, // pass the controller to the TextField
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Color.fromARGB(255, 245, 245, 245),
+                          hintText: 'Entrez vos notes personnelles ici',
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),

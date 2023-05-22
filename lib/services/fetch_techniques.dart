@@ -125,7 +125,7 @@ Future<List<Grade>> fetchGrade() async {
     throw Exception('Failed to fetch grades');
   }
 }
-
+/*
 //TEST LOGIN
 Future<void> testProtectedRoute() async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -145,3 +145,4 @@ Future<void> testProtectedRoute() async {
     print('Failed to access protected route');
   }
 }
+*/

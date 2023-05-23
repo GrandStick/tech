@@ -52,6 +52,10 @@ class _ParametersPageState extends State<ParametersPage> {
             // Code for the third ListTile
           ),
           ListTile(
+            title: const Text('Langue'),
+            // Code for the third ListTile
+          ),
+          ListTile(
             title: const Text('Télécharger videos'),
             // Code for the third ListTile
           ),

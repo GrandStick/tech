@@ -385,7 +385,7 @@ String removeDiacritics(String str) {
                         DataColumn(label: Text('Maîtrise')),
                       ],
                       rows: (_isFiltering ? filteredTechniques : techniques)
-                          .map((technique) => DataRow(cells: [
+                          .map((technique) => DataRow( cells: [
                                 DataCell(InkWell(
                                 onTap: () {
                                   Navigator.of(context).push(
@@ -488,7 +488,7 @@ String removeDiacritics(String str) {
                                         initialRating: technique.maitrise ?? 0.0,
                                         minRating: 1,
                                         direction: Axis.horizontal,
-                                        allowHalfRating: true,
+                                        allowHalfRating: false,
                                         itemCount: 3,
                                         itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                                         itemBuilder: (context, _) => Icon(
@@ -740,6 +740,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
       _playbackSpeed = speed;
     });
   }
+  
 
  
   @override
@@ -762,7 +763,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   '${widget.technique.nom}',
                   style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        fontSize: 24.0,
+                        fontSize: 20.0,
                       )
                     ),
               ),
@@ -773,7 +774,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       fontSize: 14.0,
                     )
                   ),   
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Wrap(
                 spacing: 4.0, // Espacement entre les boutons
                 runSpacing: 4.0, // Espacement entre les lignes de boutons
@@ -835,7 +836,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     ),
                 ],
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 0),
               Container(
                 constraints: BoxConstraints(
                   maxHeight: screenHeight * 0.6,
@@ -992,7 +993,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                         initialRating: selectedRating ?? 0.0,
                         minRating: 1,
                         direction: Axis.horizontal,
-                        allowHalfRating: true,
+                        allowHalfRating: false,
                         itemCount: 3,
                         itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                         itemBuilder: (context, _) => Icon(

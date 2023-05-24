@@ -226,14 +226,18 @@ class _TechniquesListState extends State<TechniquesList> {
   // Le mot-clé actuellement sélectionné pour le filtre
   String? selectedKeyword;
   String? selectedGrade;
+  String title = 'Techniques';
 
   bool get _isFiltering => selectedKeyword != null;
+
+   
 
   List<Keywords> _keywords = [];
   List<Grade> _grades = [];
   List<Technique> techniques = []; // Declare an empty list initially
   late KeywordIndex keywordIndex; // Déclarer l'instance de KeywordIndex
   
+
   
   
 
@@ -264,6 +268,10 @@ void initState() {
       });
     });
   });
+
+  filterTechniques('P1');
+
+  
 }
 
   
@@ -293,9 +301,19 @@ void filterTechniques(String? keyword) {
 
       // Enregistrer le mot-clé sélectionné
       selectedKeyword = keyword;
+      //Changer le titre pour inclure le mot clé
+            
+      if (selectedKeyword == null) {
+        title = 'Techniques - toutes';
+      } else {
+        title = 'Techniques - $selectedKeyword';
+      }
+
     });
   });
 }
+
+
 
 //RENDRE INSENSIBLE AUX ACCENTS
 String removeDiacritics(String str) {
@@ -329,11 +347,12 @@ String removeDiacritics(String str) {
   );
 }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Techniques'),
+        title: Text(title),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
@@ -695,6 +714,8 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
   TextEditingController _notesController = TextEditingController();
   
 
+  
+
 
   @override
   void initState() {
@@ -837,78 +858,81 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                 ],
               ),
               const SizedBox(height: 0),
-              Container(
-                constraints: BoxConstraints(
-                  maxHeight: screenHeight * 0.6,
-                  maxWidth: double.infinity,
-                ),
-                
-                child: Stack(
-                  children: [
-                    AspectRatio(
-                      aspectRatio: _controller.value.aspectRatio,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(10.0),
-                        child: VideoPlayer(_controller),
-                      ),
-                    ),
-                    if (!_controller.value.isInitialized)
-                      Center(
-                        child: CircularProgressIndicator(),
-                      ),
-                    Positioned(
-                      bottom: 0,
-                      left: 0,
-                      right: 0,
-                      child: Container(
-                        color: Color.fromRGBO(0, 0, 0, 0.3),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            IconButton(
-                              icon: Icon(
-                                Icons.replay,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _controller.seekTo(Duration.zero);
-                                  _controller.play();
-                                });
-                              },
-                            ),
-                            IconButton(
-                              icon: Icon(
-                                _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                                color: Colors.white,
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  if (_controller.value.isPlaying) {
-                                    _controller.pause();
-                                  } else {
-                                    _controller.play();
-                                  }
-                                });
-                              },
-                            ),
-                            TextButton(
-                              child: Text(
-                                _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                ),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
-                                });
-                              },
-                            ),
-                          ],
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Container(
+                  constraints: BoxConstraints(
+                    maxHeight: screenHeight * 0.6,
+                    maxWidth: double.infinity,
+                  ),
+                  
+                  child: Stack(
+                    children: [
+                      AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10.0),
+                          child: VideoPlayer(_controller),
                         ),
                       ),
-                    ),
-                  ],
+                      if (!_controller.value.isInitialized)
+                        Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      Positioned(
+                        bottom: 0,
+                        left: 0,
+                        right: 0,
+                        child: Container(
+                          color: Color.fromRGBO(0, 0, 0, 0.3),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                            children: [
+                              IconButton(
+                                icon: Icon(
+                                  Icons.replay,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.seekTo(Duration.zero);
+                                    _controller.play();
+                                  });
+                                },
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
+                                  color: Colors.white,
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    if (_controller.value.isPlaying) {
+                                      _controller.pause();
+                                    } else {
+                                      _controller.play();
+                                    }
+                                  });
+                                },
+                              ),
+                              TextButton(
+                                child: Text(
+                                  _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
+                                  style: TextStyle(
+                                    color: Colors.white,
+                                  ),
+                                ),
+                                onPressed: () {
+                                  setState(() {
+                                    _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
+                                  });
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
                 ),
               ),
               Column(

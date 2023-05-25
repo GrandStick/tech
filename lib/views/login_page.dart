@@ -6,6 +6,7 @@ import 'package:tech/views/techniques_list.dart';
 import '../services/fetch_techniques.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'registration_page.dart'; 
 
 
 class LoginPage extends StatefulWidget {
@@ -35,6 +36,14 @@ class _LoginPageState extends State<LoginPage> {
         _passwordController.text = password;
       });
     }
+  }
+
+  // Method to navigate to the registration page
+  void navigateToRegistrationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegistrationForm()), // Create an instance of the registration page class
+    );
   }
 
   Future<void> _submitForm() async {
@@ -145,6 +154,13 @@ class _LoginPageState extends State<LoginPage> {
                   child: _isLoading
                       ? const CircularProgressIndicator()
                       : Text(AppLocalizations.of(context)!.login),
+                ),
+                 // Add a button to navigate to the registration page
+                 const SizedBox(height: 24),
+                 Text("Vous n'avez pas encore de compte ? "),
+                TextButton(
+                  onPressed: navigateToRegistrationPage,
+                  child: Text("S'inscrire"), // Customize the button label as needed
                 ),
               ],
             ),

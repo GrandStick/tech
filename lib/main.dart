@@ -4,9 +4,7 @@ import 'views/login_page.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-
-
+import '../services/snackbar_manager.dart';
 
 
 
@@ -37,7 +35,9 @@ class MyApp extends StatelessWidget {
           secondary: Colors.white,
         ),
       ),
-      home: LoginPage(),
+      home: ScaffoldMessenger(
+        key: SnackbarManager.scaffoldMessengerKey,
+        child: LoginPage()),
     );
   }
 }

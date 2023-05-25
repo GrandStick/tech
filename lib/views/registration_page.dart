@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:tech/views/login_page.dart';
+
 
 class RegistrationForm extends StatefulWidget {
   @override
@@ -32,13 +36,76 @@ class _RegistrationFormState extends State<RegistrationForm> {
     super.dispose();
   }
 
-  void _submitForm() {
-    if (_formKey.currentState?.validate() ?? false) {
-      // TODO: Submit the form data to the server
-      // You can access the form values using the TextEditingController values
-      // _codeController.text, _emailController.text, etc.
-    }
+ void _submitForm() {
+  if (_formKey.currentState?.validate() ?? false) {
+    // Access the form values using the TextEditingController values
+    final String code = _codeController.text.trim();
+    final String email = _emailController.text.trim();
+    final String password = _passwordController.text.trim();
+    final String confirmPassword = _passwordVerController.text.trim();
+    final String firstName = _prenomController.text.trim();
+    final String lastName = _nomController.text.trim();
+    final String club = _clubController.text.trim();
+    final String grade = _selectedGrade;
+    final String statut = _selectedStatut;
+
+
+    // Perform your registration API call here
+
+  
+    final String url = 'https://self-defense.app/register_user_app';
+
+    http.post(Uri.parse(url), body: {
+      'Code': code,
+      'Email': email,
+      'Password': password,
+      'Password_ver': confirmPassword,
+      'Nom': lastName,
+      'Prenom': firstName,
+      'Club': club,
+      'Grade': grade,
+      'Statut': statut,
+    }).then((response) {
+      if (response.statusCode == 200) {
+        // Registration successful
+        // Handle the response if needed
+        print('Registration successful');
+
+         ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+           content: Center(child: Text('Inscription réussie', style: TextStyle(color: Colors.white))),
+           backgroundColor: Colors.green,
+           duration: Duration(seconds: 2),
+          ),
+        );
+
+
+        Navigator.pushAndRemoveUntil(
+          context,
+          MaterialPageRoute(builder: (context) => LoginPage()),
+          (route) => false,
+        );
+      } else {
+        // Registration failed
+        // Handle the error response if needed
+        print('Registration failed');
+        final errorMessage = json.decode(response.body)['error'];
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              content: Center(child: Text(errorMessage, style: TextStyle(color: Colors.white))),
+              backgroundColor: Colors.red,
+              duration: Duration(seconds: 3),
+            ),
+          );
+      }
+    }).catchError((error) {
+      // Error occurred during registration
+      // Handle the error if needed
+      print('Error occurred during registration');
+      print(error);
+    });
   }
+}
 
   @override
   Widget build(BuildContext context) {

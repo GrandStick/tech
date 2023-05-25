@@ -178,11 +178,11 @@ class _HomePageState extends State<HomePage> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Home',
+          label: 'Accueil',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_kabaddi),
-          label: 'techniques',
+          label: 'Techniques',
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.groups),

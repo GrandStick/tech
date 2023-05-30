@@ -4,7 +4,7 @@ import '../services/fetch_techniques.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:video_player/video_player.dart';
 import 'package:tech/views/home_page.dart';
-import 'package:tech/views/club_page.dart';
+import 'package:tech/views/account_page.dart';
 import 'package:tech/views/parameters_page.dart'; 
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -632,7 +632,7 @@ String removeDiacritics(String str) {
               PageRouteBuilder(
                 pageBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation) {
-                  return ClubPage();
+                  return AccountPage();
                 },
                 transitionsBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation, Widget child) {

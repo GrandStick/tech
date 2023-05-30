@@ -9,7 +9,7 @@ class AccountPage extends StatefulWidget {
   _AccountPageState createState() => _AccountPageState();
 }
 
-class _AccountPageState extends State<ClubPage> {
+class _AccountPageState extends State<AccountPage> {
   int _currentIndex = 2;
 
   void _Addsomething() {

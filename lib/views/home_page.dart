@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:tech/views/club_page.dart';
+import 'package:tech/views/account_page.dart';
 import 'package:tech/views/techniques_list.dart';
 
 class HomePage extends StatefulWidget {
@@ -140,7 +140,7 @@ class _HomePageState extends State<HomePage> {
               PageRouteBuilder(
                 pageBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation) {
-                  return ClubPage();
+                  return AccountPage();
                 },
                 transitionsBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation, Widget child) {

@@ -1,12 +1,28 @@
 {
 "lang": "en",
-"autre_lanf" : "fr",
+"techniques_api":"https://self-defense.app/techniques_list_app",
+"autre_lang" : "fr",
 "login": "Log in",
 "email":"Email",
 "password" :"Password",
 "bonjour" : "Bonjour",
-"helloWorld": "Hello World!",
-  "@helloWorld": {
-    "description": "The conventional newborn programmer greeting"
-  }
+"home" : "Home",
+"techniques" : "Techniques",
+"account" : "Account",
+"tech_search" : "Rechercher une technique",
+"grade" : "Grades",
+"keywords" : "Keywords",
+"all" : "All",
+"tech_all" : "Techniques - toutes",
+"ref" : "Ref.",
+"name" : "Name",
+"mastery" : "Mastery",
+"success_rating" : "Maitrise enregistrée avec succès",
+"error_save" : "Une erreur s'est produite lors de l'enregistrement",
+"sucess_notes" : "Notes enregistrées avec succès",
+"tech_detail" : "Détails de la technique",
+"keypoints" : "Points clés",
+"personal_notes" : "Notes personnelles",
+"personal_notes_hint":"Entrez vos notes personnelles ici",
+"save" : "Sauvegarder"
 }

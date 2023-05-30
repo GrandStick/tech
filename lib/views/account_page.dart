@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/techniques_list.dart';
-import 'package:tech/views/login_page.dart'; 
-import 'package:tech/views/parameters_page.dart'; 
+//import 'package:tech/views/login_page.dart'; 
+import 'package:tech/views/parameters_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import 'package:intl/intl.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -77,19 +79,19 @@ class _AccountPageState extends State<AccountPage> {
           });
         },
         items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Accueil',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.sports_kabaddi),
-            label: 'Techniques',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profil',
-          ),
-        ],
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: AppLocalizations.of(context).home,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.sports_kabaddi),
+          label: AppLocalizations.of(context).techniques,
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: AppLocalizations.of(context).account,
+        ),
+      ],
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: _Addsomething,

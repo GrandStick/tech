@@ -1,10 +1,29 @@
 {
 "lang": "fr",
-"autre_lanf" : "en",
+"techniques_api":"https://self-defense.app/techniques_list_app",
+"autre_lang" : "en",
 "bonjour" : "hello",
 "login": "Connexion",
 "email":"Email",
 "password" :"Mot de passe",
-"helloWorld": "Hello World!"
+"home" : "Acceuil",
+"techniques" : "Techniques",
+"account" : "Profil",
+"tech_search" : "Rechercher une technique",
+"grade" : "Grades",
+"keywords" : "Mots-clés",
+"all" : "Tous",
+"tech_all" : "Techniques - all",
+"ref" : "Réf.",
+"name" : "Nom",
+"mastery" : "Maitrise",
+"success_rating" : "Maitrise enregistrée avec succès",
+"error_save" : "Une erreur s'est produite lors de l'enregistrement",
+"sucess_notes" : "Notes enregistrées avec succès",
+"tech_detail" : "Détails de la technique",
+"keypoints" : "Points clés",
+"personal_notes" : "Notes personnelles",
+"personal_notes_hint":"Entrez vos notes personnelles ici",
+"save" : "Sauvegarder"
 }
 

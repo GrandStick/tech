@@ -119,7 +119,7 @@ class _LoginPageState extends State<LoginPage> {
       ],
       child: Scaffold(
         appBar: AppBar(
-          title:  Text(AppLocalizations.of(context)!.login),
+          title:  Text(AppLocalizations.of(context).login),
         ),
         body: Padding(
           padding: const EdgeInsets.all(16.0),
@@ -129,7 +129,7 @@ class _LoginPageState extends State<LoginPage> {
               children: <Widget>[
                 TextFormField(
                   controller: _usernameController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.email),
+                  decoration: InputDecoration(labelText: AppLocalizations.of(context).email),
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your username';
@@ -139,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 TextFormField(
                   controller: _passwordController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context)!.password),
+                  decoration: InputDecoration(labelText: AppLocalizations.of(context).password),
                   obscureText: true,
                   validator: (String? value) {
                     if (value == null || value.isEmpty) {
@@ -153,7 +153,7 @@ class _LoginPageState extends State<LoginPage> {
                   onPressed: _isLoading ? null : _submitForm,
                   child: _isLoading
                       ? const CircularProgressIndicator()
-                      : Text(AppLocalizations.of(context)!.login),
+                      : Text(AppLocalizations.of(context).login),
                 ),
                  // Add a button to navigate to the registration page
                  const SizedBox(height: 24),

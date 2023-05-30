@@ -9,6 +9,8 @@ import 'package:tech/views/parameters_page.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_debounce/easy_debounce.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import 'package:intl/intl.dart';
 
 
 
@@ -108,7 +110,7 @@ class _FilterButtonsState extends State<FilterButtons> {
               fontSize: 16.0,
             ),
             decoration: InputDecoration(
-              hintText: 'Rechercher une technique',
+              hintText: AppLocalizations.of(context).tech_search,
               hintStyle: TextStyle(color: Colors.grey),
               contentPadding: EdgeInsets.symmetric(horizontal: 16.0, vertical: 0.0),
               filled: true,
@@ -129,14 +131,14 @@ class _FilterButtonsState extends State<FilterButtons> {
               Expanded(
                 child: ElevatedButton(
                   onPressed: _toggleGradesList,
-                  child: Text('Grades'),
+                  child: Text(AppLocalizations.of(context).grade),
                 ),
               ),
               SizedBox(width: 8.0),
               Expanded(
                 child: ElevatedButton(
                   onPressed: _toggleKWList,
-                  child: Text('Mots-Clés'),
+                  child: Text(AppLocalizations.of(context).keywords),
                 ),
               ),
             ],
@@ -162,7 +164,7 @@ class _FilterButtonsState extends State<FilterButtons> {
                             widget.onGradeSelected(null);
                             _toggleGradesList();
                           },
-                          child: Text('Tous'),
+                          child: Text(AppLocalizations.of(context).all),
                         ),
                         ...widget.grades
                             .map(
@@ -189,7 +191,7 @@ class _FilterButtonsState extends State<FilterButtons> {
                             widget.onKeywordSelected(null);
                             _toggleKWList();
                           },
-                          child: Text('Tous'),
+                          child: Text(AppLocalizations.of(context).all),
                         ),
                         ...widget.keywords
                             .map(
@@ -304,7 +306,7 @@ void filterTechniques(String? keyword) {
       //Changer le titre pour inclure le mot clé
             
       if (selectedKeyword == null) {
-        title = 'Techniques - toutes';
+        title = AppLocalizations.of(context).tech_all;
       } else {
         title = 'Techniques - $selectedKeyword';
       }
@@ -397,11 +399,11 @@ String removeDiacritics(String str) {
                       columnSpacing: 10,
                       dataRowHeight: 85.0,
                       columns: <DataColumn>[
-                        DataColumn(label: Text('Réf',style: TextStyle(fontFamily: 'depot'),)),
-                        DataColumn(label: Text('Nom', style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(label: Text(AppLocalizations.of(context).ref,style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(label: Text(AppLocalizations.of(context).name, style: TextStyle(fontFamily: 'depot'),)),
                         if (showKeywordsColumn)
-                          DataColumn(label: Text('Mots-clés')),
-                        DataColumn(label: Text('Maîtrise')),
+                          DataColumn(label: Text(AppLocalizations.of(context).keywords)),
+                        DataColumn(label: Text(AppLocalizations.of(context).mastery)),
                       ],
                       rows: (_isFiltering ? filteredTechniques : techniques)
                           .map((technique) => DataRow( cells: [
@@ -542,7 +544,7 @@ String removeDiacritics(String str) {
                                               print('Changement de rating enregistré avec succès');
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
-                                                  content: Center(child: Text('Maitrise enregistrée avec succès', style: TextStyle(color: Colors.white))),
+                                                  content: Center(child: Text(AppLocalizations.of(context).success_rating, style: TextStyle(color: Colors.white))),
                                                   backgroundColor: Colors.green,
                                                   duration: Duration(seconds: 2),
                                                 ),
@@ -552,7 +554,7 @@ String removeDiacritics(String str) {
                                               print('Erreur lors de l\'enregistrement du changement de rating');
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
-                                                  content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                                  content: Center(child: Text(AppLocalizations.of(context).error_save, style: TextStyle(color: Colors.white))),
                                                   backgroundColor: Colors.red,
                                                   duration: Duration(seconds: 2),
                                                 ),
@@ -670,21 +672,36 @@ String removeDiacritics(String str) {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Accueil',
+          label: AppLocalizations.of(context).home,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_kabaddi),
-          label: 'Techniques',
+          label: AppLocalizations.of(context).techniques,
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.person ),
-          label: 'Profil',
+          icon: Icon(Icons.person),
+          label: AppLocalizations.of(context).account,
         ),
       ],
     ),
     );
   }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 //PARTIE DETAIL DE LA TECHNIQUE 
@@ -766,13 +783,10 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
  
   @override
   Widget build(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final videoAspectRatio = _controller.value.aspectRatio;
-    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Détails de la technique'),
+        title: Text(AppLocalizations.of(context).tech_detail),
       ),
       body: Center(
         child: SingleChildScrollView(
@@ -941,7 +955,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   SizedBox(height: 20),
                   Center(
                     child: Text(
-                      'Points clés :',
+                      AppLocalizations.of(context).keypoints,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -1053,7 +1067,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                                 widget.technique.maitrise = rating;
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Center(child: Text('Maitrise enregistrée avec succès', style: TextStyle(color: Colors.white))),
+                                    content: Center(child: Text(AppLocalizations.of(context).success_rating, style: TextStyle(color: Colors.white))),
                                     backgroundColor: Colors.green,
                                     duration: Duration(seconds: 2),
                                   ),
@@ -1063,7 +1077,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                                 print('Erreur lors de l\'enregistrement du changement de rating');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                  content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                  content: Center(child: Text(AppLocalizations.of(context).error_save, style: TextStyle(color: Colors.white))),
                                   backgroundColor: Colors.red,
                                   duration: Duration(seconds: 2),
                                   ),
@@ -1084,7 +1098,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        'Mes notes personnelles :',
+                        AppLocalizations.of(context).personal_notes,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
@@ -1103,7 +1117,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                         decoration: InputDecoration(
                           filled: true,
                           fillColor: Color.fromARGB(255, 245, 245, 245),
-                          hintText: 'Entrez vos notes personnelles ici',
+                          hintText: AppLocalizations.of(context).personal_notes_hint,
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),
@@ -1141,7 +1155,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                                   widget.technique.notes = _notesController.text;
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     SnackBar(
-                                      content: Center(child: Text('Notes enregistrées avec succès', style: TextStyle(color: Colors.white))),
+                                      content: Center(child: Text(AppLocalizations.of(context).sucess_notes, style: TextStyle(color: Colors.white))),
                                       backgroundColor: Colors.green,
                       
                                       duration: Duration(seconds: 2),
@@ -1153,7 +1167,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                                 print('Erreur lors de l\'enregistrement des notes personnelles');
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
-                                    content: Center(child: Text("Une erreur s'est produite", style: TextStyle(color: Colors.white))),
+                                    content: Center(child: Text(AppLocalizations.of(context).error_save, style: TextStyle(color: Colors.white))),
                                     backgroundColor: Colors.red,
                                     duration: Duration(seconds: 2),
                                   ),
@@ -1164,7 +1178,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                               print('Token introuvable dans les préférences partagées');
                             }
                           },
-                          child: Text('Sauvegarder'),
+                          child: Text(AppLocalizations.of(context).save),
                         ),
                       ),
                     ),

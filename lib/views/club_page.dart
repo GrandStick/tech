@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/techniques_list.dart';
-import 'package:tech/views/login_page.dart'; 
+//import 'package:tech/views/login_page.dart'; 
 import 'package:tech/views/parameters_page.dart'; 
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ClubPage extends StatefulWidget {
   @override
@@ -76,18 +77,18 @@ class _ClubPageState extends State<ClubPage> {
             _currentIndex = index;
           });
         },
-        items: [
+         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Accueil',
+            label: AppLocalizations.of(context).home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sports_kabaddi),
-            label: 'Techniques',
+            label: AppLocalizations.of(context).techniques,
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.groups),
-            label: 'Club',
+            icon: Icon(Icons.person),
+            label: AppLocalizations.of(context).account,
           ),
         ],
       ),

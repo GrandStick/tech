@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/club_page.dart';
 import 'package:tech/views/techniques_list.dart';
-import 'package:tech/views/login_page.dart'; // Assuming LoginPage is the name of your login page
+import 'package:tech/views/login_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class ParametersPage extends StatefulWidget {
   @override
@@ -11,6 +12,7 @@ class ParametersPage extends StatefulWidget {
 
 class _ParametersPageState extends State<ParametersPage> {
   int _currentIndex = 2;
+  Locale _currentLocale = Locale('en'); // Locale par défaut
 
   void _logout() {
     // Add your logout logic here
@@ -23,19 +25,12 @@ class _ParametersPageState extends State<ParametersPage> {
     );
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Paramètres'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.settings),
-            onPressed: () {
-              // Code for settings button
-            },
-          ),
-        ],
       ),
       body: ListView(
         children: <Widget>[
@@ -91,15 +86,15 @@ class _ParametersPageState extends State<ParametersPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: AppLocalizations.of(context).home,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sports_kabaddi),
-            label: 'techniques',
+            label: AppLocalizations.of(context).techniques,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
-            label: 'Profil',
+            label: AppLocalizations.of(context).account,
           ),
         ],
       ),

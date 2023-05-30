@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/account_page.dart';
 import 'package:tech/views/techniques_list.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -178,15 +180,15 @@ class _HomePageState extends State<HomePage> {
       items: [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
-          label: 'Accueil',
+          label: AppLocalizations.of(context).home,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.sports_kabaddi),
-          label: 'Techniques',
+          label: AppLocalizations.of(context).techniques,
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.person),
-          label: 'Profil',
+          label: AppLocalizations.of(context).account,
         ),
       ],
     ),

@@ -185,8 +185,8 @@ class _HomePageState extends State<HomePage> {
           label: 'Techniques',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.groups),
-          label: 'Club',
+          icon: Icon(Icons.person),
+          label: 'Profil',
         ),
       ],
     ),

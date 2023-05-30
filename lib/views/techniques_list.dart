@@ -677,8 +677,8 @@ String removeDiacritics(String str) {
           label: 'Techniques',
         ),
         BottomNavigationBarItem(
-          icon: Icon(Icons.groups ),
-          label: 'Club',
+          icon: Icon(Icons.person ),
+          label: 'Profil',
         ),
       ],
     ),

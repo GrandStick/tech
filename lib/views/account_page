@@ -1,38 +1,37 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
-import 'package:tech/views/club_page.dart';
 import 'package:tech/views/techniques_list.dart';
-import 'package:tech/views/login_page.dart'; // Assuming LoginPage is the name of your login page
+import 'package:tech/views/login_page.dart'; 
+import 'package:tech/views/parameters_page.dart'; 
 
-class ParametersPage extends StatefulWidget {
+class AccountPage extends StatefulWidget {
   @override
-  _ParametersPageState createState() => _ParametersPageState();
+  _AccountPageState createState() => _AccountPageState();
 }
 
-class _ParametersPageState extends State<ParametersPage> {
+class _AccountPageState extends State<ClubPage> {
   int _currentIndex = 2;
 
-  void _logout() {
+  void _Addsomething() {
     // Add your logout logic here
     // For example, clearing user session or token
 
-    Navigator.pushAndRemoveUntil(
-      context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
-      (route) => false,
-    );
+   
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        title: const Text('Profil'),
         actions: [
           IconButton(
             icon: Icon(Icons.settings),
             onPressed: () {
-              // Code for settings button
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ParametersPage()),
+              );
             },
           ),
         ],
@@ -40,23 +39,15 @@ class _ParametersPageState extends State<ParametersPage> {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: const Text('Mes coordonnées'),
+            title: const Text('Mot de passe'),
             // Code for the first ListTile
           ),
           ListTile(
-            title: const Text('Grade'),
+            title: const Text('Club'),
             // Code for the second ListTile
           ),
           ListTile(
-            title: const Text('Club'),
-            // Code for the third ListTile
-          ),
-          ListTile(
-            title: const Text('Langue'),
-            // Code for the third ListTile
-          ),
-          ListTile(
-            title: const Text('Télécharger videos'),
+            title: const Text('Abonnement'),
             // Code for the third ListTile
           ),
         ],
@@ -78,10 +69,7 @@ class _ParametersPageState extends State<ParametersPage> {
               );
               break;
             case 2:
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(builder: (context) => ClubPage()),
-              );
+              // Do nothing, user is already on the 'Account' page
               break;
           }
           setState(() {
@@ -91,11 +79,11 @@ class _ParametersPageState extends State<ParametersPage> {
         items: [
           BottomNavigationBarItem(
             icon: Icon(Icons.home),
-            label: 'Home',
+            label: 'Accueil',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.sports_kabaddi),
-            label: 'techniques',
+            label: 'Techniques',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.person),
@@ -104,8 +92,8 @@ class _ParametersPageState extends State<ParametersPage> {
         ],
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: _logout,
-        child: Icon(Icons.logout),
+        onPressed: _Addsomething,
+        child: Icon(Icons.add),
       ),
     );
   }

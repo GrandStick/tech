@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:tech/views/account_page.dart';
 import 'package:tech/views/techniques_list.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -106,7 +106,7 @@ class _HomePageState extends State<HomePage> {
               PageRouteBuilder(
                 pageBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation) {
-                  return TechniquesList();
+                  return TechniquesList(language: AppLocalizations.of(context).lang);
                 },
                 transitionsBuilder: (BuildContext context, Animation<double> animation,
                     Animation<double> secondaryAnimation, Widget child) {

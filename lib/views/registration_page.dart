@@ -5,6 +5,8 @@ import 'package:tech/views/login_page.dart';
 
 
 class RegistrationForm extends StatefulWidget {
+  final String language;
+  RegistrationForm({required this.language});
   @override
   _RegistrationFormState createState() => _RegistrationFormState();
 }
@@ -82,7 +84,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
         Navigator.pushAndRemoveUntil(
           context,
-          MaterialPageRoute(builder: (context) => LoginPage()),
+          MaterialPageRoute(builder: (context) => LoginPage(language: widget.language)),
           (route) => false,
         );
       } else {

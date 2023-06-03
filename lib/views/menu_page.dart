@@ -28,7 +28,8 @@ class MenuPage extends StatelessWidget {
             onTap: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => TechniquesList()),
+                MaterialPageRoute(builder: (context) => TechniquesList(language: 'en')),
+
               );
             },
           ),

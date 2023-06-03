@@ -4,8 +4,11 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech/views/techniques_list.dart';
 import '../services/fetch_techniques.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
 
 class LoginPage extends StatefulWidget {
+  final String language;
+  LoginPage({required this.language});
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -28,10 +31,10 @@ class _LoginPageState extends State<LoginPage> {
 
     if (token != null) {
       // Un token est enregistré, naviguer vers la page suivante
-      fetchTechniques();
+      //fetchTechniques();
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => TechniquesList()),
+        MaterialPageRoute(builder: (context) => TechniquesList(language: widget.language)),
       );
     }
   }
@@ -60,10 +63,10 @@ class _LoginPageState extends State<LoginPage> {
         await prefs.setString('token', token);
 
         // Naviguer vers une nouvelle page après la connexion réussie
-        fetchTechniques();
+        //fetchTechniques();
         Navigator.pushReplacement(
           context,
-          MaterialPageRoute(builder: (context) => TechniquesList()),
+          MaterialPageRoute(builder: (context) => TechniquesList(language: widget.language)),
         );
       } else {
         throw Exception('Failed to login');
@@ -113,7 +116,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Connexion'),
+        title:  Text(AppLocalizations.of(context).login),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -123,21 +126,21 @@ class _LoginPageState extends State<LoginPage> {
             children: <Widget>[
               TextFormField(
                 controller: _usernameController,
-                decoration: const InputDecoration(labelText: 'Adresse email'),
+                decoration:  InputDecoration(labelText: AppLocalizations.of(context).email),
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Entrez votre adresse email';
+                    return AppLocalizations.of(context).email_hint;
                   }
                   return null;
                 },
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Mot de passe'),
+                decoration: InputDecoration(labelText: AppLocalizations.of(context).password),
                 obscureText: true,
                 validator: (String? value) {
                   if (value == null || value.isEmpty) {
-                    return 'Entrez votre mot de passe';
+                    return AppLocalizations.of(context).password_hint;
                   }
                   return null;
                 },
@@ -147,12 +150,12 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: _isLoading ? null : _submitForm,
                 child: _isLoading
                     ? const CircularProgressIndicator()
-                    : const Text('Connexion'),
+                    : Text(AppLocalizations.of(context).login),
               ),
               const SizedBox(height: 24),
               TextButton(
                 onPressed: logout,
-                child: const Text('Se déconnecter'),
+                child:  Text(AppLocalizations.of(context).register),
               ),
             ],
           ),

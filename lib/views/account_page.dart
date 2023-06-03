@@ -4,7 +4,7 @@ import 'package:tech/views/techniques_list.dart';
 //import 'package:tech/views/login_page.dart'; 
 import 'package:tech/views/parameters_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
-import 'package:intl/intl.dart';
+//import 'package:intl/intl.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -67,7 +67,7 @@ class _AccountPageState extends State<AccountPage> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => TechniquesList()),
+                MaterialPageRoute(builder: (context) => TechniquesList(language: AppLocalizations.of(context).lang)),
               );
               break;
             case 2:

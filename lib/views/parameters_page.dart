@@ -26,7 +26,7 @@ class _ParametersPageState extends State<ParametersPage> {
     
     Navigator.pushAndRemoveUntil(
       context,
-      MaterialPageRoute(builder: (context) => LoginPage()),
+      MaterialPageRoute(builder: (context) => LoginPage(language: AppLocalizations.of(context).lang)),
       (route) => false,
     );
   }
@@ -76,7 +76,7 @@ class _ParametersPageState extends State<ParametersPage> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => TechniquesList()),
+                MaterialPageRoute(builder: (context) => TechniquesList(language: AppLocalizations.of(context).lang)),
               );
               break;
             case 2:

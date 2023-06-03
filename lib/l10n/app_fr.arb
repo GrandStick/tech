@@ -22,8 +22,12 @@
 "sucess_notes" : "Notes enregistrées avec succès",
 "tech_detail" : "Détails de la technique",
 "keypoints" : "Points clés",
+"modus_operandi" : "Modus operandi",
 "personal_notes" : "Notes personnelles",
 "personal_notes_hint":"Entrez vos notes personnelles ici",
-"save" : "Sauvegarder"
+"save" : "Sauvegarder",
+"register" : "S'enregister",
+"email_hint":"Entrez votre adresse email",
+"password_hint":"Entrez votre mot de passe"
 }
 

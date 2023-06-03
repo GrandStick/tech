@@ -28,7 +28,7 @@ Future<List<Technique>> fetchTechniques() async {
 }
 */
 //recuper la liste des techniques avec mise en cache.
-Future<List<Technique>> fetchTechniques() async {
+Future<List<Technique>> fetchTechniques(String language) async {
   final SharedPreferences prefs = await SharedPreferences.getInstance();
   final String? token = prefs.getString('token');
   final String? cachedTechniques = prefs.getString('cachedTechniques');
@@ -37,7 +37,7 @@ Future<List<Technique>> fetchTechniques() async {
   if (cachedTechniques != null && cachedVersion != null) {
     // Les techniques sont en cache, vérifions la version
     final response = await http.head(
-      Uri.parse('https://self-defense.app/techniques_list_app'),
+      Uri.parse('https://self-defense.app/techniques_list_app?lang=$language'),
       headers: <String, String>{
         'Authorization': 'Bearer $token',
       },
@@ -51,9 +51,7 @@ Future<List<Technique>> fetchTechniques() async {
         return cachedTechniquesJson.map((json) => Technique.fromJson(json)).toList();
       } else {
         // Les techniques ne sont pas à jour, téléchargeons la nouvelle version
-        
-        return _downloadAndSaveTechniques(response.headers['etag'], token);
-        
+        return _downloadAndSaveTechniques(response.headers['etag'], token, language);
       }
     } else {
       // Échec de la vérification de la version, renvoyons les techniques en cache
@@ -62,13 +60,13 @@ Future<List<Technique>> fetchTechniques() async {
     }
   } else {
     // Les techniques ne sont pas en cache, téléchargeons la première version
-    return _downloadAndSaveTechniques(null, token);
+    return _downloadAndSaveTechniques(null, token, language);
   }
 }
 
-Future<List<Technique>> _downloadAndSaveTechniques(String? version, String? token) async {
+Future<List<Technique>> _downloadAndSaveTechniques(String? version, String? token, String language) async {
   final response = await http.get(
-    Uri.parse('https://self-defense.app/techniques_list_app'),
+    Uri.parse('https://self-defense.app/techniques_list_app?lang=$language'),
     headers: <String, String>{
       'Authorization': 'Bearer $token',
     },
@@ -89,8 +87,8 @@ Future<List<Technique>> _downloadAndSaveTechniques(String? version, String? toke
 }
 
 //RECUPERER LA LISTE DES MOTS CLES
-Future<List<Keywords>> fetchKeywords() async {
-  final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=fr'));
+Future<List<Keywords>> fetchKeywords(String language) async {
+  final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=$language'));
 
   if (response.statusCode == 200) {
     final List<dynamic> keywordsJson = jsonDecode(response.body);
@@ -110,13 +108,13 @@ Future<List<Keywords>> fetchKeywords() async {
 
 
 // RECUPERER LA LISTE DES GRADES
-Future<List<Grade>> fetchGrade() async {
-  final response = await http.get(Uri.parse('https://self-defense.app/techniques_grade'));
+Future<List<Grade>> fetchGrade(String language) async {
+  final response = await http.get(Uri.parse('https://self-defense.app/techniques_grade?lang=$language'));
 
   if (response.statusCode == 200) {
     final List<dynamic> gradeJson = jsonDecode(response.body);
     List<Grade> gradeList = [];
-    for (var grade in gradeJson) { 
+    for (var grade in gradeJson) {
       if (grade['grade'] != null) {
         Grade gradeObj = Grade.fromJson(grade);
         gradeList.add(gradeObj);

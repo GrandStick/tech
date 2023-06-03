@@ -66,7 +66,7 @@ class _ClubPageState extends State<ClubPage> {
             case 1:
               Navigator.pushReplacement(
                 context,
-                MaterialPageRoute(builder: (context) => TechniquesList()),
+                MaterialPageRoute(builder: (context) => TechniquesList(language: AppLocalizations.of(context).lang)),
               );
               break;
             case 2:

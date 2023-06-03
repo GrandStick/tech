@@ -20,7 +20,8 @@ import 'package:intl/intl.dart';
 //PARTIE LISTE DE TECHNIQUES
 
 class TechniquesList extends StatefulWidget {
-  const TechniquesList({Key? key}) : super(key: key);
+ final String language;
+  const TechniquesList({Key? key, required this.language}) : super(key: key);
   
 
   @override
@@ -244,38 +245,34 @@ class _TechniquesListState extends State<TechniquesList> {
   
 
 @override
-void initState() {
-  super.initState();
+  void initState() {
+    super.initState();
+    _futureTechniques = fetchTechniques(widget.language);
 
-  _futureTechniques = fetchTechniques();
+    _futureTechniques.then((fetchedTechniques) {
+      setState(() {
+        techniques = fetchedTechniques;
+      });
 
-  _futureTechniques.then((fetchedTechniques) {
-    setState(() {
-      techniques = fetchedTechniques;
+      keywordIndex = KeywordIndex();
+      keywordIndex.buildIndex(fetchedTechniques);
     });
 
-    keywordIndex = KeywordIndex();
-    keywordIndex.buildIndex(fetchedTechniques);
-  });
-
-  _futureTechniques.then((_) {
-    fetchKeywords().then((keywords) {
-      setState(() {
-        _keywords = keywords;
+    _futureTechniques.then((_) {
+      fetchKeywords(widget.language).then((keywords) {
+        setState(() {
+          _keywords = keywords;
+        });
+      });
+      fetchGrade(widget.language).then((grades) {
+        setState(() {
+          _grades = grades;
+        });
       });
     });
-    fetchGrade().then((grades) {
-      setState(() {
-        _grades = grades;
-      });
-    });
-  });
 
-  filterTechniques('P1');
-
-  
-}
-
+    filterTechniques('P1');
+  }
   
 void filterTechniques(String? keyword) {
   print('Filtering techniques with keyword: $keyword');
@@ -955,7 +952,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   SizedBox(height: 20),
                   Center(
                     child: Text(
-                      AppLocalizations.of(context).keypoints,
+                      AppLocalizations.of(context).modus_operandi,
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
@@ -1016,7 +1013,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     SizedBox(height: 20),
                     Center(
                       child: Text(
-                        'Maitrise :',
+                        AppLocalizations.of(context).mastery,
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,

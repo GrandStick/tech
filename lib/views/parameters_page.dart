@@ -4,6 +4,8 @@ import 'package:tech/views/club_page.dart';
 import 'package:tech/views/techniques_list.dart';
 import 'package:tech/views/login_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
 
 class ParametersPage extends StatefulWidget {
   @override
@@ -14,16 +16,21 @@ class _ParametersPageState extends State<ParametersPage> {
   int _currentIndex = 2;
   Locale _currentLocale = Locale('en'); // Locale par défaut
 
-  void _logout() {
+  void _logout() async {
     // Add your logout logic here
     // For example, clearing user session or token
 
+    // Clearing user token
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+    
     Navigator.pushAndRemoveUntil(
       context,
       MaterialPageRoute(builder: (context) => LoginPage()),
       (route) => false,
     );
   }
+
 
 
   @override

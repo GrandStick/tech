@@ -4,10 +4,6 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech/views/techniques_list.dart';
 import '../services/fetch_techniques.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'registration_page.dart'; 
-
 
 class LoginPage extends StatefulWidget {
   @override
@@ -23,36 +19,27 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     super.initState();
-    loadCredentials();
+    checkLoginStatus();
   }
 
-  void loadCredentials() async {
+  void checkLoginStatus() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
-    String? password = prefs.getString('password');
-    if (username != null && password != null) {
-      setState(() {
-        _usernameController.text = username;
-        _passwordController.text = password;
-      });
+    String? token = prefs.getString('token');
+
+    if (token != null) {
+      // Un token est enregistré, naviguer vers la page suivante
+      fetchTechniques();
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => TechniquesList()),
+      );
     }
   }
 
-  // Method to navigate to the registration page
-  void navigateToRegistrationPage() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => RegistrationForm()), // Create an instance of the registration page class
-    );
-  }
-
-  Future<void> _submitForm() async {
+  Future<void> login(String username, String password) async {
     setState(() {
       _isLoading = true;
     });
-
-    final String username = _usernameController.text.trim();
-    final String password = _passwordController.text.trim();
 
     try {
       final http.Response response = await http.post(
@@ -71,8 +58,6 @@ class _LoginPageState extends State<LoginPage> {
         final String token = data['token'];
         final SharedPreferences prefs = await SharedPreferences.getInstance();
         await prefs.setString('token', token);
-        await prefs.setString('username', username);
-        await prefs.setString('password', password);
 
         // Naviguer vers une nouvelle page après la connexion réussie
         fetchTechniques();
@@ -108,62 +93,68 @@ class _LoginPageState extends State<LoginPage> {
     }
   }
 
+  Future<void> logout() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    await prefs.remove('token');
+  }
+
+  Future<void> _submitForm() async {
+    setState(() {
+      _isLoading = true;
+    });
+
+    final String username = _usernameController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    login(username, password);
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Localizations(
-      locale: Locale('fr'), // Remplacez par la locale souhaitée
-      delegates: [
-        AppLocalizations.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-      ],
-      child: Scaffold(
-        appBar: AppBar(
-          title:  Text(AppLocalizations.of(context).login),
-        ),
-        body: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Form(
-            key: _formKey,
-            child: Column(
-              children: <Widget>[
-                TextFormField(
-                  controller: _usernameController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context).email),
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your username';
-                    }
-                    return null;
-                  },
-                ),
-                TextFormField(
-                  controller: _passwordController,
-                  decoration: InputDecoration(labelText: AppLocalizations.of(context).password),
-                  obscureText: true,
-                  validator: (String? value) {
-                    if (value == null || value.isEmpty) {
-                      return 'Please enter your password';
-                    }
-                    return null;
-                  },
-                ),
-                const SizedBox(height: 24),
-                ElevatedButton(
-                  onPressed: _isLoading ? null : _submitForm,
-                  child: _isLoading
-                      ? const CircularProgressIndicator()
-                      : Text(AppLocalizations.of(context).login),
-                ),
-                 // Add a button to navigate to the registration page
-                 const SizedBox(height: 24),
-                 Text("Vous n'avez pas encore de compte ? "),
-                TextButton(
-                  onPressed: navigateToRegistrationPage,
-                  child: Text("S'inscrire"), // Customize the button label as needed
-                ),
-              ],
-            ),
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Connexion'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: <Widget>[
+              TextFormField(
+                controller: _usernameController,
+                decoration: const InputDecoration(labelText: 'Adresse email'),
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Entrez votre adresse email';
+                  }
+                  return null;
+                },
+              ),
+              TextFormField(
+                controller: _passwordController,
+                decoration: const InputDecoration(labelText: 'Mot de passe'),
+                obscureText: true,
+                validator: (String? value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Entrez votre mot de passe';
+                  }
+                  return null;
+                },
+              ),
+              const SizedBox(height: 24),
+              ElevatedButton(
+                onPressed: _isLoading ? null : _submitForm,
+                child: _isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text('Connexion'),
+              ),
+              const SizedBox(height: 24),
+              TextButton(
+                onPressed: logout,
+                child: const Text('Se déconnecter'),
+              ),
+            ],
           ),
         ),
       ),

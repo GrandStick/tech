@@ -18,6 +18,9 @@ dependencies:
   intl: any
   easy_debounce: ^2.0.3
   restart_app: any
+  dio: ^5.1.2
+  path_provider: ^2.0.15
+  
 
 dev_dependencies:
   flutter_test:

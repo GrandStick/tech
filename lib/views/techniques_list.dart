@@ -10,7 +10,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
-import 'package:intl/intl.dart';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'dart:io';
 
 
 
@@ -692,7 +694,7 @@ String removeDiacritics(String str) {
 
 
 
-
+//-------------------------------------------------------------------------
 
 
 
@@ -728,35 +730,49 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
   TextEditingController _notesController = TextEditingController();
   
 
-  
+   @override
+    void initState() {
+      super.initState();
+      selectedRating = widget.technique.maitrise?.toDouble() ?? 0.0;
+      _notesController.text = widget.technique.notes == null ? "" : widget.technique.notes!;
 
+      _controller = VideoPlayerController.network('');
+      initializeVideoPlayer();
+    }
 
-  @override
-  void initState() {
-    super.initState();
-    selectedRating = widget.technique.maitrise?.toDouble() ?? 0.0;
-    _notesController.text = widget.technique.notes == null ? "" : widget.technique.notes!;
-    
+    Future<void> initializeVideoPlayer() async {
+      final String videoUrl = 'https://self-defense.app/videos/mp4/${widget.technique.gif}.mp4';
+      final String videoCacheKey = 'cachedVideo_${widget.technique.gif}.mp4';
 
-    //_rating = widget.technique.maitrise.toDouble();
-    print('Initializing video player...');
-    _controller = VideoPlayerController.network(
-      'https://self-defense.app/videos/mp4/${widget.technique.gif}.mp4',
-    )
-      ..initialize().then((_) {
-        // Ensure the first frame is shown after the video is initialized
-        setState(() {});
-      })
-      ..setLooping(true)
-      ..setVolume(0) // Mute the video
-      ..play();
-  }
+      final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? cachedVideoPath = prefs.getString(videoCacheKey);
 
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
-  }
+      if (cachedVideoPath != null) {
+      // Load the video from cache
+      _controller = VideoPlayerController.file(File(cachedVideoPath));
+    } else {
+      // Download and cache the video
+      _controller = VideoPlayerController.network(videoUrl);
+      await _controller.initialize();
+
+      final String videoFilePath = _controller.dataSource!;
+      prefs.setString(videoCacheKey, videoFilePath);
+    }
+
+      setState(() {});
+
+      _controller
+        ..setLooping(true)
+        ..setVolume(0)
+        ..play();
+    }
+
+    @override
+    void dispose() {
+      super.dispose();
+      _controller.dispose();
+    }
+
 
   void _togglePlayback() {
     if (_isPlaying) {

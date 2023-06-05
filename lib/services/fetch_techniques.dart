@@ -34,9 +34,8 @@ Future<List<Technique>> fetchTechniques(String language) async {
   final String? cachedTechniques = prefs.getString('cachedTechniques');
   final String? cachedVersion = prefs.getString('cachedVersion');
 
-  if (cachedTechniques != null && cachedVersion != null) {
-    // Les techniques sont en cache, vérifions la version
-    final response = await http.head(
+  try {
+    final response = await http.get(
       Uri.parse('https://self-defense.app/techniques_list_app?lang=$language'),
       headers: <String, String>{
         'Authorization': 'Bearer $token',
@@ -45,47 +44,39 @@ Future<List<Technique>> fetchTechniques(String language) async {
 
     if (response.statusCode == 200) {
       final String version = response.headers['etag'] ?? '';
-      if (version == cachedVersion) {
+      if (cachedVersion != null && version == cachedVersion) {
         // Les techniques sont à jour, renvoyons-les depuis le cache
-        final List<dynamic> cachedTechniquesJson = jsonDecode(cachedTechniques);
+        final List<dynamic> cachedTechniquesJson = jsonDecode(cachedTechniques!);
         return cachedTechniquesJson.map((json) => Technique.fromJson(json)).toList();
       } else {
         // Les techniques ne sont pas à jour, téléchargeons la nouvelle version
-        return _downloadAndSaveTechniques(response.headers['etag'], token, language);
+        final List<dynamic> techniquesJson = jsonDecode(response.body);
+        final List<Technique> techniques = techniquesJson.map((json) => Technique.fromJson(json)).toList();
+
+        prefs.setString('cachedTechniques', response.body);
+        prefs.setString('cachedVersion', version);
+
+        return techniques;
       }
-    } else {
-      // Échec de la vérification de la version, renvoyons les techniques en cache
+    } else if (cachedTechniques != null && cachedVersion != null) {
+      // Échec de téléchargement, renvoyons les techniques en cache
       final List<dynamic> cachedTechniquesJson = jsonDecode(cachedTechniques);
       return cachedTechniquesJson.map((json) => Technique.fromJson(json)).toList();
+    } else {
+      throw Exception('Failed to fetch techniques');
     }
-  } else {
-    // Les techniques ne sont pas en cache, téléchargeons la première version
-    return _downloadAndSaveTechniques(null, token, language);
+  } catch (e) {
+    if (cachedTechniques != null && cachedVersion != null) {
+      // Échec de la connexion, renvoyons les techniques en cache
+      final List<dynamic> cachedTechniquesJson = jsonDecode(cachedTechniques);
+      return cachedTechniquesJson.map((json) => Technique.fromJson(json)).toList();
+    } else {
+      throw Exception('Internet connection required');
+    }
   }
 }
 
-Future<List<Technique>> _downloadAndSaveTechniques(String? version, String? token, String language) async {
-  final response = await http.get(
-    Uri.parse('https://self-defense.app/techniques_list_app?lang=$language'),
-    headers: <String, String>{
-      'Authorization': 'Bearer $token',
-    },
-  );
-
-  if (response.statusCode == 200) {
-    final List<dynamic> techniquesJson = jsonDecode(response.body);
-    final List<Technique> techniques = techniquesJson.map((json) => Technique.fromJson(json)).toList();
-
-    final SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.setString('cachedTechniques', response.body);
-    prefs.setString('cachedVersion', version ?? '');
-
-    return techniques;
-  } else {
-    throw Exception('Failed to fetch techniques');
-  }
-}
-
+/*
 //RECUPERER LA LISTE DES MOTS CLES
 Future<List<Keywords>> fetchKeywords(String language) async {
   final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=$language'));
@@ -104,10 +95,61 @@ Future<List<Keywords>> fetchKeywords(String language) async {
     throw Exception('Failed to fetch keywords');
   }
 }
+*/
+Future<List<Keywords>> fetchKeywords(String language) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? cachedKeywords = prefs.getString('cachedKeywords');
+  final String cachedLanguage = prefs.getString('cachedLanguage') ?? '';
 
+  try {
+    final response = await http.get(Uri.parse('https://self-defense.app/techniques_kw?lang=$language'));
 
+    if (response.statusCode == 200) {
+      final List<dynamic> keywordsJson = jsonDecode(response.body);
+      List<Keywords> keywordsList = [];
+      for (var keywordJson in keywordsJson) {
+        if (keywordJson['kw'] != null) {
+          Keywords keyword = Keywords.fromJson(keywordJson);
+          keywordsList.add(keyword);
+        }
+      }
+
+      prefs.setString('cachedKeywords', response.body);
+      prefs.setString('cachedLanguage', language);
+
+      return keywordsList;
+    } else if (cachedKeywords != null && cachedLanguage == language) {
+      final List<dynamic> cachedKeywordsJson = jsonDecode(cachedKeywords);
+      List<Keywords> keywordsList = [];
+      for (var keywordJson in cachedKeywordsJson) {
+        if (keywordJson['kw'] != null) {
+          Keywords keyword = Keywords.fromJson(keywordJson);
+          keywordsList.add(keyword);
+        }
+      }
+      return keywordsList;
+    } else {
+      throw Exception('Failed to fetch keywords');
+    }
+  } catch (e) {
+    if (cachedKeywords != null && cachedLanguage == language) {
+      final List<dynamic> cachedKeywordsJson = jsonDecode(cachedKeywords);
+      List<Keywords> keywordsList = [];
+      for (var keywordJson in cachedKeywordsJson) {
+        if (keywordJson['kw'] != null) {
+          Keywords keyword = Keywords.fromJson(keywordJson);
+          keywordsList.add(keyword);
+        }
+      }
+      return keywordsList;
+    } else {
+      throw Exception('Internet connection required');
+    }
+  }
+}
 
 // RECUPERER LA LISTE DES GRADES
+/*
 Future<List<Grade>> fetchGrade(String language) async {
   final response = await http.get(Uri.parse('https://self-defense.app/techniques_grade?lang=$language'));
 
@@ -125,6 +167,60 @@ Future<List<Grade>> fetchGrade(String language) async {
     throw Exception('Failed to fetch grades');
   }
 }
+*/
+Future<List<Grade>> fetchGrade(String language) async {
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? cachedGrades = prefs.getString('cachedGrades');
+  final String cachedLanguage = prefs.getString('cachedLanguage') ?? '';
+
+  try {
+    final response = await http.get(Uri.parse('https://self-defense.app/techniques_grade?lang=$language'));
+
+    if (response.statusCode == 200) {
+      final List<dynamic> gradesJson = jsonDecode(response.body);
+      List<Grade> gradeList = [];
+      for (var gradeJson in gradesJson) {
+        if (gradeJson['grade'] != null) {
+          Grade grade = Grade.fromJson(gradeJson);
+          gradeList.add(grade);
+        }
+      }
+
+      prefs.setString('cachedGrades', response.body);
+      prefs.setString('cachedLanguage', language);
+
+      return gradeList;
+    } else if (cachedGrades != null && cachedLanguage == language) {
+      final List<dynamic> cachedGradesJson = jsonDecode(cachedGrades);
+      List<Grade> gradeList = [];
+      for (var gradeJson in cachedGradesJson) {
+        if (gradeJson['grade'] != null) {
+          Grade grade = Grade.fromJson(gradeJson);
+          gradeList.add(grade);
+        }
+      }
+      return gradeList;
+    } else {
+      throw Exception('Failed to fetch grades');
+    }
+  } catch (e) {
+    if (cachedGrades != null && cachedLanguage == language) {
+      final List<dynamic> cachedGradesJson = jsonDecode(cachedGrades);
+      List<Grade> gradeList = [];
+      for (var gradeJson in cachedGradesJson) {
+        if (gradeJson['grade'] != null) {
+          Grade grade = Grade.fromJson(gradeJson);
+          gradeList.add(grade);
+        }
+      }
+      return gradeList;
+    } else {
+      throw Exception('Internet connection required');
+    }
+  }
+}
+
+
 /*
 //TEST LOGIN
 Future<void> testProtectedRoute() async {

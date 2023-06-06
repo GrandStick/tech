@@ -5,6 +5,8 @@ import 'package:tech/views/techniques_list.dart';
 import 'package:tech/views/login_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/technique.dart';
+import '../services/fetch_techniques.dart';
 
 
 class ParametersPage extends StatefulWidget {
@@ -30,7 +32,6 @@ class _ParametersPageState extends State<ParametersPage> {
       (route) => false,
     );
   }
-
 
 
   @override
@@ -61,6 +62,10 @@ class _ParametersPageState extends State<ParametersPage> {
             title: const Text('Télécharger videos'),
             // Code for the third ListTile
           ),
+          ElevatedButton(
+            onPressed: () => fetchAndDownloadTechniques(),
+            child: Text('Mode off-line (télécharge les vidéos)'),
+          )
         ],
       ),
       bottomNavigationBar: BottomNavigationBar(

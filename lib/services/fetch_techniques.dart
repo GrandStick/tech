@@ -1,9 +1,12 @@
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:http/http.dart' as http;
 import '../models/technique.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+//import 'package:flutter_localizations/flutter_localizations.dart';
+//import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:path_provider/path_provider.dart';
 
 
 //RECUPERER LA LISTE DES TECHNIQUES
@@ -242,3 +245,72 @@ Future<void> testProtectedRoute() async {
   }
 }
 */
+
+//DOWNLOAD ALL VIDEOS
+
+
+void fetchAndDownloadTechniques() async {
+  try {
+    // Récupérer la liste des techniques en utilisant la fonction fetchTechniques
+    List<Technique> techniques = await fetchTechniques('fr'); // Remplacez 'fr' par la langue souhaitée
+
+    // Appeler la fonction downloadAllVideos avec la liste des techniques
+    downloadAllVideos(techniques);
+  } catch (e) {
+    print('Erreur lors de la récupération des techniques : $e');
+  }
+}
+
+void downloadAllVideos(List<Technique> techniques) async {
+  for (var technique in techniques) {
+    await downloadVideo(technique.id, technique.gif);
+  }
+}
+/*
+
+Future<void> downloadVideo(int id, String gif) async {
+  final String videoUrl = 'https://self-defense.app/videos/mp4/$gif.mp4';
+  final String videoFileName = '$id.mp4';
+  final String videoPath = '${(await getApplicationDocumentsDirectory()).path}/$videoFileName';
+
+  try {
+    final HttpClient httpClient = HttpClient();
+    final HttpClientRequest request = await httpClient.getUrl(Uri.parse(videoUrl));
+    final HttpClientResponse response = await request.close();
+    final File file = File(videoPath);
+    final IOSink sink = file.openWrite();
+
+    await response.pipe(sink);
+    await sink.close();
+    httpClient.close();
+
+    print('Vidéo téléchargée : $gif');
+  } catch (e) {
+    print('Erreur lors du téléchargement de la vidéo : $gif');
+  }
+}
+
+
+
+*/
+
+Future<void> downloadVideo(int id, String gif) async {
+  // Logique de téléchargement de la vidéo
+ print('Téléchargement de la vidéo : $gif');
+}
+
+// Définir la classe Technique ici (avec les propriétés nécessaires)
+class Technique_gif {
+  final int id;
+  final String gif;
+
+  Technique_gif({required this.id, required this.gif});
+
+  // Méthode factory pour la conversion à partir du JSON
+  factory Technique_gif.fromJson(Map<String, dynamic> json) {
+    return Technique_gif(
+      id: json['id'],
+      gif: json['gif'],
+    );
+  }
+}

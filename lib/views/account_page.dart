@@ -25,10 +25,10 @@ class _AccountPageState extends State<AccountPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Profil'),
+        title: Text(AppLocalizations.of(context).account),
         actions: [
           IconButton(
-            icon: Icon(Icons.settings),
+            icon: const Icon(Icons.settings),
             onPressed: () {
               Navigator.push(
                 context,
@@ -41,15 +41,15 @@ class _AccountPageState extends State<AccountPage> {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: const Text('Mot de passe'),
+            title: Text(AppLocalizations.of(context).password_change),
             // Code for the first ListTile
           ),
           ListTile(
-            title: const Text('Club'),
+            title: Text(AppLocalizations.of(context).club),
             // Code for the second ListTile
           ),
           ListTile(
-            title: const Text('Abonnement'),
+            title: Text(AppLocalizations.of(context).my_subscription),
             // Code for the third ListTile
           ),
         ],
@@ -92,10 +92,6 @@ class _AccountPageState extends State<AccountPage> {
           label: AppLocalizations.of(context).account,
         ),
       ],
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _Addsomething,
-        child: Icon(Icons.add),
       ),
     );
   }

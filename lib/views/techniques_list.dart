@@ -407,8 +407,12 @@ String removeDiacritics(String str) {
                       ],
                       rows: (_isFiltering ? filteredTechniques : techniques)
                           .map((technique) => DataRow( cells: [
-                                DataCell(InkWell(
-                                onTap: () {
+                                DataCell(OutlinedButton(
+                                style:  ButtonStyle(
+                                  side: MaterialStateProperty.all(BorderSide(color: Colors.transparent)), // Définir la couleur du contour sur transparent
+                                  padding: MaterialStateProperty.all(EdgeInsets.zero), // Supprimer le padding par défaut
+                                ),
+                                onPressed: () {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
                                       transitionDuration: Duration(milliseconds: 200),
@@ -432,9 +436,15 @@ String removeDiacritics(String str) {
                                     ),
                                   );
                                 },
-                                  child: Text('${technique.grade} - ${technique.ref.substring(3)}'))),
-                                DataCell(InkWell(
-                                   onTap: () {
+                                  child: Align(
+                                    alignment: Alignment.centerLeft, // Aligner le texte à gauche
+                                    child: Text('${technique.grade} - ${technique.ref.substring(3)}')))),
+                                DataCell(OutlinedButton(
+                                  style:  ButtonStyle(
+                                    side: MaterialStateProperty.all(BorderSide(color: Colors.transparent)), // Définir la couleur du contour sur transparent
+                                    padding: MaterialStateProperty.all(EdgeInsets.zero), // Supprimer le padding par défaut
+                                  ),
+                                   onPressed: () {
                                     Navigator.of(context).push(
                                       PageRouteBuilder(
                                         transitionDuration: Duration(milliseconds: 200),
@@ -458,8 +468,20 @@ String removeDiacritics(String str) {
                                       ),
                                     );
                                   },
-                                  child: Text(technique.nom,
-                                    style: TextStyle(fontSize:16 ,fontFamily: 'depot'),))),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft, // Aligner le texte à gauche
+                                      child: Text(technique.nom,
+                                        style: TextStyle(
+                                          fontSize:16 ,
+                                          fontFamily: 'depot',
+                                          ),
+                                        ),
+                                    ),
+                                  )
+                                )
+                              ),
                                 if (showKeywordsColumn)
                                   DataCell(Wrap(
                                     spacing: 4.0, // Espacement entre les boutons

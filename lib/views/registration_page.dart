@@ -133,12 +133,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 TextFormField(
                   controller: _codeController,
                   decoration: InputDecoration(
-                    labelText: 'Code d\'accès*',
-                    hintText: 'Code d\'inscription qui vous a été donné pour vous inscrire.',
+                    labelText: AppLocalizations.of(context).code,
+                    hintText: AppLocalizations.of(context).code_hint,
                   ),
                   validator: (value) {
                     if (value?.isEmpty ?? true) {
-                      return 'Veuillez saisir le code d\'accès';
+                      return AppLocalizations.of(context).code_error;
                     }
                     return null;
                   },
@@ -150,12 +150,12 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: TextFormField(
                         controller: _emailController,
                         decoration: InputDecoration(
-                          labelText: 'E-mail*',
-                          hintText: 'Votre adresse email',
+                          labelText: AppLocalizations.of(context).email,
+                          hintText: AppLocalizations.of(context).email_hint,
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Veuillez saisir votre adresse email';
+                            return AppLocalizations.of(context).mail_error;
                           }
                           // TODO: Add email validation logic if needed
                           return null;
@@ -167,14 +167,14 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: TextFormField(
                         controller: _emailVerController,
                         decoration: InputDecoration(
-                          labelText: 'Retapez votre adresse email',
+                          labelText: AppLocalizations.of(context).mail_ver,
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Veuillez retaper votre adresse email';
+                            return AppLocalizations.of(context).mail_ver_error1;
                           }
                           if (value != _emailController.text) {
-                            return 'Les adresses email ne correspondent pas';
+                            return AppLocalizations.of(context).mail_ver_error2;
                           }
                           return null;
                         },
@@ -189,13 +189,13 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: TextFormField(
                         controller: _passwordController,
                         decoration: InputDecoration(
-                          labelText: 'Mot de passe*',
-                          hintText: 'Votre mot de passe',
+                          labelText: AppLocalizations.of(context).password,
+                          hintText: AppLocalizations.of(context).password_hint,
                         ),
                         obscureText: true,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Veuillez saisir votre mot de passe';
+                            return AppLocalizations.of(context).password_error;
                           }
                           // TODO: Add password validation logic if needed
                           return null;
@@ -207,15 +207,15 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: TextFormField(
                         controller: _passwordVerController,
                         decoration: InputDecoration(
-                          labelText: 'Retapez votre mot de passe',
+                          labelText: AppLocalizations.of(context).password_ver,
                         ),
                         obscureText: true,
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Veuillez retaper votre mot de passe';
+                            return AppLocalizations.of(context).password_error_vide;
                           }
                           if (value != _passwordController.text) {
-                            return 'Les mots de passe ne correspondent pas';
+                            return AppLocalizations.of(context).password_error_corr;
                           }
                           return null;
                         },
@@ -230,11 +230,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: TextFormField(
                         controller: _nomController,
                         decoration: InputDecoration(
-                          labelText: 'Nom*',
+                          labelText: AppLocalizations.of(context).name,
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Veuillez saisir votre nom';
+                            return AppLocalizations.of(context).name_error;
                           }
                           return null;
                         },
@@ -245,11 +245,11 @@ class _RegistrationFormState extends State<RegistrationForm> {
                       child: TextFormField(
                         controller: _prenomController,
                         decoration: InputDecoration(
-                          labelText: 'Prénom*',
+                          labelText: AppLocalizations.of(context).surname,
                         ),
                         validator: (value) {
                           if (value?.isEmpty ?? true) {
-                            return 'Veuillez saisir votre prénom';
+                            return AppLocalizations.of(context).surname_error;
                           }
                           return null;
                         },
@@ -271,7 +271,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                         items: [
                           DropdownMenuItem<String>(
                             value: '0',
-                            child: Text('Aucun'),
+                            child: Text(AppLocalizations.of(context).none),
                           ),
                           DropdownMenuItem<String>(
                             value: '1',
@@ -354,12 +354,16 @@ class _RegistrationFormState extends State<RegistrationForm> {
                             child: Text(''),
                           ),
                           DropdownMenuItem<String>(
+                            value: 'Student',
+                            child: Text(AppLocalizations.of(context).student),
+                          ),
+                          DropdownMenuItem<String>(
                             value: 'SDT',
                             child: Text('Self Defense Trainer'),
                           ),
                           DropdownMenuItem<String>(
                             value: 'Instructeur',
-                            child: Text('Instructeur'),
+                            child: Text(AppLocalizations.of(context).instructor),
                           ),
                           // DropdownMenuItem<String>(
                           //   value: 'élève',
@@ -367,7 +371,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                           // ),
                         ],
                         decoration: InputDecoration(
-                          labelText: 'Statut',
+                          labelText: AppLocalizations.of(context).status,
                         ),
                       ),
                     ),
@@ -377,8 +381,8 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 TextFormField(
                   controller: _clubController,
                   decoration: InputDecoration(
-                    labelText: 'Club',
-                    hintText: 'Votre club principal',
+                    labelText: AppLocalizations.of(context).club,
+                    hintText: AppLocalizations.of(context).club_hint,
                   ),
                 ),
                 SizedBox(height: 32.0),

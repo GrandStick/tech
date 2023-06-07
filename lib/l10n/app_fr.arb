@@ -28,6 +28,13 @@
 "save" : "Sauvegarder",
 "register" : "S'enregister",
 "email_hint":"Entrez votre adresse email",
-"password_hint":"Entrez votre mot de passe"
+"password_hint":"Entrez votre mot de passe",
+"no_account": "Vous n'avez pas encore de compte ?",
+"error_login":"Erreur de connexion. Votre email et mot de passe sont-ils correctes ? ",
+"error":"Erreur",
+"close":"Fermer",
+"success_registration":"Inscription réussie",
+"error_registration":"Une erreur s'est produite lors de l'inscription",
+"registration_intro":"Vous devez créer un compte pour accéder au contenu de cette application. Pour vous inscrire vous aurez besoin d'un code d'accès qui vous est donné par le gestionnaire de l'application. Adressez-vous à support@self-defense.app ou à Sébastien pour obtenir un accès."
 }
 

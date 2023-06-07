@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:tech/views/login_page.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
 
 
 class RegistrationForm extends StatefulWidget {
@@ -75,7 +76,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
 
          ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
-           content: Center(child: Text('Inscription réussie', style: TextStyle(color: Colors.white))),
+           content: Center(child: Text(AppLocalizations.of(context).success_registration, style: TextStyle(color: Colors.white))),
            backgroundColor: Colors.green,
            duration: Duration(seconds: 2),
           ),
@@ -113,7 +114,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Créer un compte'),
+        title: Text(AppLocalizations.of(context).register),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -125,7 +126,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 Text(
-                  'Vous devez créer un compte pour accéder au contenu de cette application. Pour vous inscrire vous aurez besoin d\'un code d\'accès qui vous est donné par le gestionnaire de l\'application. Adressez-vous à support@self-defense.app ou à Sébastien pour obtenir un accès.',
+                  AppLocalizations.of(context).registration_intro,
                   style: TextStyle(fontSize: 16.0),
                 ),
                 SizedBox(height: 16.0),
@@ -383,7 +384,7 @@ class _RegistrationFormState extends State<RegistrationForm> {
                 SizedBox(height: 32.0),
                 ElevatedButton(
                   onPressed: _submitForm,
-                  child: Text('S\'inscrire'),
+                  child: Text(AppLocalizations.of(context).register),
                 ),
               ],
             ),

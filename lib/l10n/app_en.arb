@@ -28,5 +28,13 @@
 "save" : "Save",
 "register":"Register",
 "email_hint":"Enter your email adress",
-"password_hint":"Enter your password"
+"password_hint":"Enter your password",
+"no_account": "Do not have an account yet ?",
+"error_login":"Failed to login",
+"error":"Error",
+"close":"Close",
+"success_registration":"successful registration",
+"error_registration":"Registration failed", 
+"registration_intro":"You must create an account to access the content of this app. To register you will need an access code given to you by the application manager. Contact support@self-defense.app or Sébastien to get access."
+
 }

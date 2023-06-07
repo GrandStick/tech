@@ -5,6 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tech/views/techniques_list.dart';
 import '../services/fetch_techniques.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import 'registration_page.dart'; 
 
 class LoginPage extends StatefulWidget {
   final String language;
@@ -12,6 +13,8 @@ class LoginPage extends StatefulWidget {
   @override
   _LoginPageState createState() => _LoginPageState();
 }
+
+
 
 class _LoginPageState extends State<LoginPage> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
@@ -37,6 +40,13 @@ class _LoginPageState extends State<LoginPage> {
         MaterialPageRoute(builder: (context) => TechniquesList(language: widget.language)),
       );
     }
+  }
+   // Method to navigate to the registration page
+  void navigateToRegistrationPage() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => RegistrationForm(language: widget.language)), // Create an instance of the registration page class
+    );
   }
 
   Future<void> login(String username, String password) async {
@@ -69,7 +79,7 @@ class _LoginPageState extends State<LoginPage> {
           MaterialPageRoute(builder: (context) => TechniquesList(language: widget.language)),
         );
       } else {
-        throw Exception('Failed to login');
+        throw Exception(AppLocalizations.of(context).error_login);
       }
     } catch (e) {
       setState(() {
@@ -80,14 +90,14 @@ class _LoginPageState extends State<LoginPage> {
         context: context,
         builder: (BuildContext context) {
           return AlertDialog(
-            title: const Text('Error'),
+            title: Text(AppLocalizations.of(context).error),
             content: Text(e.toString()),
             actions: <Widget>[
               TextButton(
                 onPressed: () {
                   Navigator.pop(context);
                 },
-                child: const Text('Close'),
+                child:  Text(AppLocalizations.of(context).close)
               ),
             ],
           );
@@ -153,9 +163,10 @@ class _LoginPageState extends State<LoginPage> {
                     : Text(AppLocalizations.of(context).login),
               ),
               const SizedBox(height: 24),
+              Text(AppLocalizations.of(context).no_account),
               TextButton(
-                onPressed: logout,
-                child:  Text(AppLocalizations.of(context).register),
+                onPressed: navigateToRegistrationPage,
+                child: Text(AppLocalizations.of(context).register), // Customize the button label as needed
               ),
             ],
           ),

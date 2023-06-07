@@ -276,11 +276,21 @@ void downloadAllVideos(List<Technique> techniques) async {
 }
 
 
-Future<void> downloadVideo(int id, String gif) async {
+Future<bool> downloadVideo(int id, String gif) async {
   final String videoUrl = 'https://self-defense.app/videos/mp4/$gif.mp4';
-  final String videoFileName = '$id.mp4';
-  final String videoPath = '${(await getApplicationDocumentsDirectory()).path}/$videoFileName';
+  final String videoFileName = '$gif.mp4';
+  String videoPath = '';
 
+  // Récupération du chemin du cache depuis les SharedPreferences
+  final SharedPreferences prefs = await SharedPreferences.getInstance();
+  final String? cachedPath = prefs.getString('cachePath');
+  print(cachedPath);
+  if (cachedPath != null) {
+    videoPath = cachedPath;
+  } else {
+    videoPath = '${(await getApplicationDocumentsDirectory()).path}/$videoFileName';
+  }
+  videoPath = '${(await getApplicationDocumentsDirectory()).path}/$videoFileName';
   try {
     final HttpClient httpClient = HttpClient();
     final HttpClientRequest request = await httpClient.getUrl(Uri.parse(videoUrl));
@@ -291,10 +301,11 @@ Future<void> downloadVideo(int id, String gif) async {
     await response.pipe(sink);
     await sink.close();
     httpClient.close();
-
-    print('Vidéo téléchargée : $gif');
+    print('Vidéo téléchargée : $gif ai répertoire $videoPath');
+    return true; // Téléchargement réussi
   } catch (e) {
     print('Erreur lors du téléchargement de la vidéo : $gif');
+    return false; // Erreur de téléchargement
   }
 }
 

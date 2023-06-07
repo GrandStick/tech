@@ -5,29 +5,28 @@ import 'package:intl/intl.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/snackbar_manager.dart';
 import 'views/parameters_page.dart';
+import 'package:flutter/services.dart' show SystemChrome, SystemUiOverlayStyle;
 
-void main() {
-  Locale initialLocale = Locale('en'); // Langue par défaut
-  runApp(MyApp(initialLocale: initialLocale));
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
+  // Retrieve the device's locale
+  Locale initialLocale = WidgetsBinding.instance!.window.locale;
+
+  // Set the default language
+  Locale systemLocale = initialLocale;
+  if (systemLocale == null) {
+    systemLocale = Locale('en');
+  }
+
+  runApp(MyApp(initialLocale: systemLocale));
 }
 
-class MyApp extends StatefulWidget {
+class MyApp extends StatelessWidget {
   final Locale initialLocale;
 
   const MyApp({Key? key, required this.initialLocale}) : super(key: key);
-
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  late Future<String> _languageFuture;
-
-  @override
-  void initState() {
-    super.initState();
-    _languageFuture = Future.value(widget.initialLocale.languageCode);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -43,6 +42,7 @@ class _MyAppState extends State<MyApp> {
         Locale('en', ''), // Anglais
         Locale('fr', ''), // Français
       ],
+      locale: initialLocale, // Utilisez la langue initiale ici
       theme: ThemeData.dark().copyWith(
         primaryColor: Colors.grey[800],
         colorScheme: const ColorScheme.dark(
@@ -52,7 +52,7 @@ class _MyAppState extends State<MyApp> {
       ),
       home: ScaffoldMessenger(
         key: SnackbarManager.scaffoldMessengerKey,
-        child: LoginPage(language: widget.initialLocale.languageCode),
+        child: LoginPage(language: initialLocale.languageCode),
       ),
     );
   }

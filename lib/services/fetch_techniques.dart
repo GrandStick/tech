@@ -260,13 +260,21 @@ void fetchAndDownloadTechniques() async {
     print('Erreur lors de la récupération des techniques : $e');
   }
 }
-
+/*
 void downloadAllVideos(List<Technique> techniques) async {
   for (var technique in techniques) {
     await downloadVideo(technique.id, technique.gif);
   }
 }
-/*
+*/
+void downloadAllVideos(List<Technique> techniques) async {
+  for (var technique in techniques) {
+    if (technique.id == 1 || technique.id == 2) {
+      await downloadVideo(technique.id, technique.gif);
+    }
+  }
+}
+
 
 Future<void> downloadVideo(int id, String gif) async {
   final String videoUrl = 'https://self-defense.app/videos/mp4/$gif.mp4';
@@ -292,7 +300,7 @@ Future<void> downloadVideo(int id, String gif) async {
 
 
 
-*/
+/*
 
 Future<void> downloadVideo(int id, String gif) async {
   // Logique de téléchargement de la vidéo
@@ -314,3 +322,4 @@ class Technique_gif {
     );
   }
 }
+*/

@@ -29,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void checkLoginStatus() async {
-    SharedPreferences.setMockInitialValues({});
+    //SharedPreferences.setMockInitialValues({});
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString('token');
 

@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/techniques_list.dart';
-//import 'package:tech/views/login_page.dart'; 
 import 'package:tech/views/parameters_page.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
-//import 'package:intl/intl.dart';
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
 class AccountPage extends StatefulWidget {
   @override
@@ -14,12 +12,23 @@ class AccountPage extends StatefulWidget {
 class _AccountPageState extends State<AccountPage> {
   int _currentIndex = 2;
 
-  void _Addsomething() {
-    // Add your logout logic here
-    // For example, clearing user session or token
+  final _codeController = TextEditingController();
+  final _emailController = TextEditingController();
+  final _emailVerController = TextEditingController();
+  final _passwordController = TextEditingController();
+  final _passwordVerController = TextEditingController();
+  final _nomController = TextEditingController();
+  final _prenomController = TextEditingController();
+  final _clubController = TextEditingController();
+  final _gradeController = TextEditingController();
+  final _statutController = TextEditingController();
 
-   
+
+  void _Addsomething() {
+    // Ajoutez votre logique de déconnexion ici
+    // Par exemple, effacer la session utilisateur ou le jeton d'authentification
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -41,16 +50,44 @@ class _AccountPageState extends State<AccountPage> {
       body: ListView(
         children: <Widget>[
           ListTile(
-            title: Text(AppLocalizations.of(context).password_change),
-            // Code for the first ListTile
+            title: Text(AppLocalizations.of(context).email),
+            subtitle: TextFormField(
+              controller: _emailController,
+            ),
+          ),
+          
+          ListTile(
+            title: Text(AppLocalizations.of(context).password),
+            subtitle: TextFormField(
+              controller: _passwordController,
+            ),
+          ),
+          
+          ListTile(
+            title: Text(AppLocalizations.of(context).surname),
+            subtitle: TextFormField(
+              controller: _nomController,
+            ),
+          ),
+          ListTile(
+            title: Text(AppLocalizations.of(context).name),
+            subtitle: TextFormField(
+              controller: _prenomController,
+            ),
           ),
           ListTile(
             title: Text(AppLocalizations.of(context).club),
-            // Code for the second ListTile
+            subtitle: TextFormField(
+              controller: _clubController,
+            ),
+          ),
+          ListTile(
+            title: Text(AppLocalizations.of(context).password_change),
+            // Code pour le premier ListTile
           ),
           ListTile(
             title: Text(AppLocalizations.of(context).my_subscription),
-            // Code for the third ListTile
+            // Code pour le deuxième ListTile
           ),
         ],
       ),
@@ -71,7 +108,7 @@ class _AccountPageState extends State<AccountPage> {
               );
               break;
             case 2:
-              // Do nothing, user is already on the 'Account' page
+              // Ne rien faire, l'utilisateur se trouve déjà sur la page 'Account'
               break;
           }
           setState(() {
@@ -79,19 +116,19 @@ class _AccountPageState extends State<AccountPage> {
           });
         },
         items: [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: AppLocalizations.of(context).home,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.sports_kabaddi),
-          label: AppLocalizations.of(context).techniques,
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: AppLocalizations.of(context).account,
-        ),
-      ],
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: AppLocalizations.of(context).home,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.sports_kabaddi),
+            label: AppLocalizations.of(context).techniques,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: AppLocalizations.of(context).account,
+          ),
+        ],
       ),
     );
   }

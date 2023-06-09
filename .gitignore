@@ -61,3 +61,4 @@ macos/Flutter/GeneratedPluginRegistrant.swift
 .gitignore
 windows/flutter/generated_plugin_registrant.h
 windows/flutter/generated_plugins.cmake
+pubspec.lock

@@ -16,7 +16,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Acceuil'),
+        title:  Text(AppLocalizations.of(context).home),
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
@@ -33,7 +33,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 16.0),
             Center(
               child: Text(
-                'Bienvenue sur l\'application Self-defense . app.',
+                AppLocalizations.of(context).home_text1,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 24.0,
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 16.0),
             Center(
               child: Text(
-                'Cette application a été développée afin d\'offrir aux instructeurs de la fédération SMART Krav Maga une base de données de techniques.',
+                AppLocalizations.of(context).home_text2,
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
@@ -52,7 +52,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 16.0),
             Center(
               child: Text(
-                'La base de données est faite selon le canvas SMART Krav Maga et comprend pour chaque technique :',
+                AppLocalizations.of(context).home_text3,
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
@@ -63,18 +63,18 @@ class _HomePageState extends State<HomePage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text('- une vidéo'),
-                  Text('- les mots-clés'),
-                  Text('- les points clés'),
-                  Text('- la possibilité d\'encoder votre niveau de maîtrise'),
-                  Text('- la possibilité d\'encoder vos notes personnelles'),
+                  Text(AppLocalizations.of(context).home_text4),
+                  Text(AppLocalizations.of(context).home_text5),
+                  Text(AppLocalizations.of(context).home_text6),
+                  Text(AppLocalizations.of(context).home_text7),
+                  Text(AppLocalizations.of(context).home_text8),
                 ],
               ),
             ),
             SizedBox(height: 16.0),
             Center(
               child: Text(
-                'Un système de mots-clés, de tri et de recherche vous permet de classer les techniques.',
+                AppLocalizations.of(context).home_text9,
                 style: TextStyle(
                   fontSize: 16.0,
                 ),
@@ -83,7 +83,7 @@ class _HomePageState extends State<HomePage> {
             SizedBox(height: 16.0),
             Center(
               child: Text(
-                'Créez un compte pour accéder à la liste complète des techniques.',
+                AppLocalizations.of(context).home_text10,
                 style: TextStyle(
                   fontSize: 16.0,
                   fontWeight: FontWeight.bold,

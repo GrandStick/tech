@@ -5,6 +5,8 @@ import 'package:tech/views/techniques_list.dart';
 import 'package:tech/views/login_page.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../models/technique.dart';
+import '../services/fetch_techniques.dart';
 
 
 class ParametersPage extends StatefulWidget {
@@ -32,34 +34,35 @@ class _ParametersPageState extends State<ParametersPage> {
   }
 
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Paramètres'),
+        title: Text(AppLocalizations.of(context).parameters),
       ),
       body: ListView(
         children: <Widget>[
-          ListTile(
-            title: const Text('Mes coordonnées'),
-            // Code for the first ListTile
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () => {},
+              child: Text(AppLocalizations.of(context).language),
+            ),
           ),
-          ListTile(
-            title: const Text('Grade'),
-            // Code for the second ListTile
+          
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: () => fetchAndDownloadTechniques(),
+              child: Text(AppLocalizations.of(context).offline_mode),
+            ),
           ),
-          ListTile(
-            title: const Text('Club'),
-            // Code for the third ListTile
-          ),
-          ListTile(
-            title: const Text('Langue'),
-            // Code for the third ListTile
-          ),
-          ListTile(
-            title: const Text('Télécharger videos'),
-            // Code for the third ListTile
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: ElevatedButton(
+              onPressed: _logout,
+              child: Text(AppLocalizations.of(context).logoff),
+            ),
           ),
         ],
       ),
@@ -105,10 +108,12 @@ class _ParametersPageState extends State<ParametersPage> {
           ),
         ],
       ),
+      /*
       floatingActionButton: FloatingActionButton(
         onPressed: _logout,
         child: Icon(Icons.logout),
       ),
+      */
     );
   }
 }

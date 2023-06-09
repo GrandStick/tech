@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import '../models/technique.dart';
 import '../services/fetch_techniques.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-import 'package:video_player/video_player.dart';
+//import 'package:video_player/video_player.dart';
+import 'package:better_player/better_player.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/account_page.dart';
 import 'package:tech/views/parameters_page.dart'; 
@@ -10,9 +11,9 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
-import 'package:dio/dio.dart';
-import 'package:path_provider/path_provider.dart';
-import 'dart:io';
+//import 'package:dio/dio.dart';
+//import 'package:path_provider/path_provider.dart';
+//import 'dart:io';
 
 
 
@@ -406,8 +407,12 @@ String removeDiacritics(String str) {
                       ],
                       rows: (_isFiltering ? filteredTechniques : techniques)
                           .map((technique) => DataRow( cells: [
-                                DataCell(InkWell(
-                                onTap: () {
+                                DataCell(OutlinedButton(
+                                style:  ButtonStyle(
+                                  side: MaterialStateProperty.all(BorderSide(color: Colors.transparent)), // Définir la couleur du contour sur transparent
+                                  padding: MaterialStateProperty.all(EdgeInsets.zero), // Supprimer le padding par défaut
+                                ),
+                                onPressed: () {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
                                       transitionDuration: Duration(milliseconds: 200),
@@ -431,9 +436,15 @@ String removeDiacritics(String str) {
                                     ),
                                   );
                                 },
-                                  child: Text('${technique.grade} - ${technique.ref.substring(3)}'))),
-                                DataCell(InkWell(
-                                   onTap: () {
+                                  child: Align(
+                                    alignment: Alignment.centerLeft, // Aligner le texte à gauche
+                                    child: Text('${technique.grade} - ${technique.ref.substring(3)}')))),
+                                DataCell(OutlinedButton(
+                                  style:  ButtonStyle(
+                                    side: MaterialStateProperty.all(BorderSide(color: Colors.transparent)), // Définir la couleur du contour sur transparent
+                                    padding: MaterialStateProperty.all(EdgeInsets.zero), // Supprimer le padding par défaut
+                                  ),
+                                   onPressed: () {
                                     Navigator.of(context).push(
                                       PageRouteBuilder(
                                         transitionDuration: Duration(milliseconds: 200),
@@ -457,8 +468,20 @@ String removeDiacritics(String str) {
                                       ),
                                     );
                                   },
-                                  child: Text(technique.nom,
-                                    style: TextStyle(fontSize:16 ,fontFamily: 'depot'),))),
+                                  child: Padding(
+                                    padding: EdgeInsets.symmetric(vertical: 0),
+                                    child: Align(
+                                      alignment: Alignment.centerLeft, // Aligner le texte à gauche
+                                      child: Text(technique.nom,
+                                        style: TextStyle(
+                                          fontSize:16 ,
+                                          fontFamily: 'depot',
+                                          ),
+                                        ),
+                                    ),
+                                  )
+                                )
+                              ),
                                 if (showKeywordsColumn)
                                   DataCell(Wrap(
                                     spacing: 4.0, // Espacement entre les boutons
@@ -723,62 +746,60 @@ class TechniqueDetail extends StatefulWidget {
 }
 
 class _TechniqueDetailState extends State<TechniqueDetail> {
-  late VideoPlayerController _controller;
+  late BetterPlayerController _betterPlayerController;
   bool _isPlaying = true;
   double _playbackSpeed = 1.0;
   double? selectedRating = 0;
   TextEditingController _notesController = TextEditingController();
-  
 
-   @override
-    void initState() {
-      super.initState();
-      selectedRating = widget.technique.maitrise?.toDouble() ?? 0.0;
-      _notesController.text = widget.technique.notes == null ? "" : widget.technique.notes!;
+  @override
+  void initState() {
+    super.initState();
+    selectedRating = widget.technique.maitrise?.toDouble() ?? 0.0;
+    _notesController.text = widget.technique.notes == null ? "" : widget.technique.notes!;
 
-      _controller = VideoPlayerController.network('');
-      initializeVideoPlayer();
-    }
+    final String videoUrl = 'https://self-defense.app/videos/mp4/${widget.technique.gif}.mp4';
+    final String videoCacheKey = 'cachedVideo_${widget.technique.gif}.mp4';
+    
 
-    Future<void> initializeVideoPlayer() async {
-      final String videoUrl = 'https://self-defense.app/videos/mp4/${widget.technique.gif}.mp4';
-      final String videoCacheKey = 'cachedVideo_${widget.technique.gif}.mp4';
+    _betterPlayerController = BetterPlayerController(
+      BetterPlayerConfiguration(
+        aspectRatio: 16 / 9,
+        fit: BoxFit.contain,
+        autoPlay: true, // Activation de l'autoplay
+        looping: true, // Activation de l'autoloop
+        controlsConfiguration: BetterPlayerControlsConfiguration(
+          showControlsOnInitialize: false, // Masquer les contrôles à l'ouverture
+        ),
+      ),
+      betterPlayerDataSource: BetterPlayerDataSource(
+        BetterPlayerDataSourceType.network,
+        videoUrl,
+        cacheConfiguration: BetterPlayerCacheConfiguration(
+          useCache: true,
+          key: videoCacheKey,
+          preCacheSize: 100 * 1024 * 1024, // Taille du cache en octets (ici 100 Mo)
+          maxCacheSize: 500 * 1024 * 1024, // Taille maximale du cache en octets (ici 500 Mo)
+        ),
+      ),
+    );
+    _betterPlayerController.setVolume(0); // Désactivation du son (muted)
+    _betterPlayerController.play();
+  }
 
-      final SharedPreferences prefs = await SharedPreferences.getInstance();
-    final String? cachedVideoPath = prefs.getString(videoCacheKey);
 
-      if (cachedVideoPath != null) {
-      // Load the video from cache
-      _controller = VideoPlayerController.file(File(cachedVideoPath));
-    } else {
-      // Download and cache the video
-      _controller = VideoPlayerController.network(videoUrl);
-      await _controller.initialize();
 
-      final String videoFilePath = _controller.dataSource!;
-      prefs.setString(videoCacheKey, videoFilePath);
-    }
-
-      setState(() {});
-
-      _controller
-        ..setLooping(true)
-        ..setVolume(0)
-        ..play();
-    }
-
-    @override
-    void dispose() {
-      super.dispose();
-      _controller.dispose();
-    }
-
+  @override
+  void dispose() {
+    super.dispose();
+    _betterPlayerController.dispose();
+  }
 
   void _togglePlayback() {
     if (_isPlaying) {
-      _controller.pause();
+      _betterPlayerController.pause();
     } else {
-      _controller.play();
+      _betterPlayerController.play();
     }
     setState(() {
       _isPlaying = !_isPlaying;
@@ -786,12 +807,12 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
   }
 
   void _setPlaybackSpeed(double speed) {
-    _controller.setPlaybackSpeed(speed);
+    _betterPlayerController.setSpeed(speed);
     setState(() {
       _playbackSpeed = speed;
     });
   }
-  
+
 
  
   @override
@@ -896,16 +917,13 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   child: Stack(
                     children: [
                       AspectRatio(
-                        aspectRatio: _controller.value.aspectRatio,
+                        aspectRatio: 16 / 9,
                         child: ClipRRect(
                           borderRadius: BorderRadius.circular(10.0),
-                          child: VideoPlayer(_controller),
+                          child: BetterPlayer(controller: _betterPlayerController),
                         ),
                       ),
-                      if (!_controller.value.isInitialized)
-                        Center(
-                          child: CircularProgressIndicator(),
-                        ),
+                    
                       Positioned(
                         bottom: 0,
                         left: 0,
@@ -915,45 +933,6 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: [
-                              IconButton(
-                                icon: Icon(
-                                  Icons.replay,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _controller.seekTo(Duration.zero);
-                                    _controller.play();
-                                  });
-                                },
-                              ),
-                              IconButton(
-                                icon: Icon(
-                                  _controller.value.isPlaying ? Icons.pause : Icons.play_arrow,
-                                  color: Colors.white,
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    if (_controller.value.isPlaying) {
-                                      _controller.pause();
-                                    } else {
-                                      _controller.play();
-                                    }
-                                  });
-                                },
-                              ),
-                              TextButton(
-                                child: Text(
-                                  _controller.value.playbackSpeed == 1.0 ? "1x" : "${_controller.value.playbackSpeed}x",
-                                  style: TextStyle(
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                onPressed: () {
-                                  setState(() {
-                                    _controller.setPlaybackSpeed(_controller.value.playbackSpeed == 1.0 ? 0.5 : 1.0);
-                                  });
-                                },
-                              ),
                             ],
                           ),
                         ),

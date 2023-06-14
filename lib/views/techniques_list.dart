@@ -236,6 +236,8 @@ class _TechniquesListState extends State<TechniquesList> {
 
   bool get _isFiltering => selectedKeyword != null;
 
+  bool _isAscending = true;
+
    
 
   List<Keywords> _keywords = [];
@@ -243,7 +245,7 @@ class _TechniquesListState extends State<TechniquesList> {
   List<Technique> techniques = []; // Declare an empty list initially
   late KeywordIndex keywordIndex; // Déclarer l'instance de KeywordIndex
   
-
+  
   
   
 
@@ -399,11 +401,62 @@ String removeDiacritics(String str) {
                       columnSpacing: 10,
                       dataRowHeight: 85.0,
                       columns: <DataColumn>[
-                        DataColumn(label: Text(AppLocalizations.of(context).ref,style: TextStyle(fontFamily: 'depot'),)),
-                        DataColumn(label: Text(AppLocalizations.of(context).name, style: TextStyle(fontFamily: 'depot'),)),
+                        DataColumn(
+                          label: Text(AppLocalizations.of(context).ref, style: TextStyle(fontFamily: 'depot')),
+                          onSort: (int columnIndex, bool ascending) {
+                            setState(() {
+                              _isAscending = ascending;
+                              print('sort_ref');
+                              if (_isAscending) {
+                                techniques.sort((a, b) => a.ref.compareTo(b.ref));
+                              } else {
+                                techniques.sort((a, b) => b.ref.compareTo(a.ref));
+                              }
+                            });
+                          },
+                        ),
+                        DataColumn(
+                          label: Text(AppLocalizations.of(context).name, style: TextStyle(fontFamily: 'depot')),
+                          onSort: (int columnIndex, bool ascending) {
+                            setState(() {
+                              _isAscending = ascending;
+                              print('sort_nom');
+                              if (_isAscending) {
+                                techniques.sort((a, b) => a.nom.compareTo(b.nom));
+                              } else {
+                                techniques.sort((a, b) => b.nom.compareTo(a.nom));
+                              }
+                            });
+                          },
+                        ),
                         if (showKeywordsColumn)
-                          DataColumn(label: Text(AppLocalizations.of(context).keywords)),
-                        DataColumn(label: Text(AppLocalizations.of(context).mastery)),
+                          DataColumn(
+                            label: Text(AppLocalizations.of(context).keywords),
+                            onSort: (int columnIndex, bool ascending) {
+                              setState(() {
+                                _isAscending = ascending;
+                                if (_isAscending) {
+                                  techniques.sort((a, b) => a.keywords.join(', ').compareTo(b.keywords.join(', ')));
+                                } else {
+                                  techniques.sort((a, b) => b.keywords.join(', ').compareTo(a.keywords.join(', ')));
+                                }
+                              });
+                            },
+                          ),
+                        DataColumn(
+                          label: Text(AppLocalizations.of(context).mastery),
+                          onSort: (int columnIndex, bool ascending) {
+                            setState(() {
+                              _isAscending = ascending;
+                              print('sort_mastery');
+                              if (_isAscending) {
+                                techniques.sort((a, b) => (a.maitrise ?? 0).compareTo(b.maitrise ?? 0));
+                              } else {
+                                techniques.sort((a, b) => (b.maitrise ?? 0).compareTo(a.maitrise ?? 0));
+                              }
+                            });
+                          },
+                        ),
                       ],
                       rows: (_isFiltering ? filteredTechniques : techniques)
                           .map((technique) => DataRow( cells: [

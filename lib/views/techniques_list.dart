@@ -283,7 +283,17 @@ class _TechniquesListState extends State<TechniquesList> {
 
     filterTechniques('P1');
   }
-  
+
+   // Méthode pour mettre à jour la liste filteredTechniques
+   void updateFilteredTechniques(Technique updatedTechnique) {
+    setState(() {
+      int index = filteredTechniques.indexWhere((technique) => technique.id == updatedTechnique.id);
+      if (index != -1) {
+        filteredTechniques[index] = updatedTechnique;
+      }
+    });
+  }
+
 void filterTechniques(String? keyword) {
   print('Filtering techniques with keyword: $keyword');
 
@@ -404,8 +414,9 @@ String removeDiacritics(String str) {
                     child: DataTable(
                       horizontalMargin: 24,
                       columnSpacing: 10,
-                      dataRowMinHeight: 50.0,
-                      dataRowMaxHeight: 100.0,
+                      //dataRowMinHeight: 50.0,
+                      //dataRowMaxHeight: 100.0,
+                      dataRowHeight: 85.0,
                       sortColumnIndex: _sortColumnIndex,
                       sortAscending: _sortAsc,                    
                       columns: <DataColumn>[
@@ -514,6 +525,7 @@ String removeDiacritics(String str) {
                                         return TechniqueDetail(
                                           technique: technique,
                                           filterTechniques: filterTechniques, // Passer la fonction filterTechniques ici
+                                          updateFilteredTechniques: updateFilteredTechniques ,
 
 
                                         );
@@ -546,6 +558,7 @@ String removeDiacritics(String str) {
                                           return TechniqueDetail(
                                             technique: technique,
                                             filterTechniques: filterTechniques, // Passer la fonction filterTechniques ici
+                                            updateFilteredTechniques: updateFilteredTechniques ,
 
 
                                           );
@@ -658,6 +671,7 @@ String removeDiacritics(String str) {
                                             if (response.statusCode == 200) {
                                               // Le serveur a répondu avec succès
                                               print('Changement de rating enregistré avec succès');
+                                              
                                               ScaffoldMessenger.of(context).showSnackBar(
                                                 SnackBar(
                                                   content: Center(child: Text(AppLocalizations.of(context).success_rating, style: TextStyle(color: Colors.white))),
@@ -824,6 +838,7 @@ String removeDiacritics(String str) {
 class TechniqueDetail extends StatefulWidget {
   final Technique technique;
   final Function(String?) filterTechniques; // Ajoutez cette propriété
+  final Function(Technique) updateFilteredTechniques;
 
   
   
@@ -833,6 +848,8 @@ class TechniqueDetail extends StatefulWidget {
     Key? key,
     required this.technique,
     required this.filterTechniques, 
+    required this.updateFilteredTechniques,
+
   }) : super(key: key);
 
   @override
@@ -1150,7 +1167,10 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                               if (response.statusCode == 200) {
                                 // Le serveur a répondu avec succès
                                 print('Changement de rating enregistré avec succès');
+                                //Envoyer la modification au widget TechniqueList
                                 widget.technique.maitrise = rating;
+                                widget.updateFilteredTechniques(widget.technique);
+                                //Message indicant le succes de la modification de matrise
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
                                     content: Center(child: Text(AppLocalizations.of(context).success_rating, style: TextStyle(color: Colors.white))),

@@ -4,6 +4,7 @@ class Technique {
   final String ref;
   final String gif;
   final String? grade;
+  final String grade_n;
   final String? kw1;
   final String? kw2;
   final String? kw3;
@@ -32,6 +33,7 @@ class Technique {
     required this.ref,
     required this.gif,
     required this.grade,
+    required this.grade_n,
     required this.kw1,
     required this.kw2,
     required this.kw3,
@@ -69,6 +71,7 @@ class Technique {
       ref: json['ref'],
       gif: json['gif'],
       grade: json['grade'],
+      grade_n: json['grade_n'],
       kw1: json['kw1'],
       kw2: json['kw2'],
       kw3: json['kw3'],

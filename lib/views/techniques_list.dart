@@ -236,7 +236,12 @@ class _TechniquesListState extends State<TechniquesList> {
 
   bool get _isFiltering => selectedKeyword != null;
 
-  bool _isAscending = true;
+  bool _sortRefAsc = true;
+  bool _sortNameAsc = true;
+  bool _sortMasteryAsc = true;
+    bool _sortKeywordsAsc = true;
+  bool _sortAsc = true;
+  int _sortColumnIndex=0;
 
    
 
@@ -399,32 +404,55 @@ String removeDiacritics(String str) {
                     child: DataTable(
                       horizontalMargin: 24,
                       columnSpacing: 10,
-                      dataRowHeight: 85.0,
+                      dataRowMinHeight: 50.0,
+                      dataRowMaxHeight: 100.0,
+                      sortColumnIndex: _sortColumnIndex,
+                      sortAscending: _sortAsc,                    
                       columns: <DataColumn>[
                         DataColumn(
                           label: Text(AppLocalizations.of(context).ref, style: TextStyle(fontFamily: 'depot')),
-                          onSort: (int columnIndex, bool ascending) {
+                          onSort: (int columnIndex, sortAscending) {
                             setState(() {
-                              _isAscending = ascending;
                               print('sort_ref');
-                              if (_isAscending) {
-                                techniques.sort((a, b) => a.ref.compareTo(b.ref));
+                              if (columnIndex == _sortColumnIndex) {
+                                _sortAsc = _sortRefAsc = sortAscending;
                               } else {
-                                techniques.sort((a, b) => b.ref.compareTo(a.ref));
+                                _sortColumnIndex = columnIndex;
+                                _sortAsc = _sortRefAsc;
+                              }
+                              filteredTechniques.sort((a, b) {
+                                final int gradeA = a.grade_n != null ? int.tryParse(a.grade_n) ?? 0 : 0;
+                                final int gradeB = b.grade_n != null ? int.tryParse(b.grade_n) ?? 0 : 0;
+
+                                if (gradeA != gradeB) {
+                                  return gradeA.compareTo(gradeB);
+                                } else {
+                                  return a.ref.compareTo(b.ref);
+                                }
+                              });
+
+                              if (!_sortAsc) {
+                                filteredTechniques = filteredTechniques.reversed.toList();
                               }
                             });
                           },
                         ),
                         DataColumn(
                           label: Text(AppLocalizations.of(context).name, style: TextStyle(fontFamily: 'depot')),
-                          onSort: (int columnIndex, bool ascending) {
+                          onSort: (columnIndex, sortAscending) {
                             setState(() {
-                              _isAscending = ascending;
                               print('sort_nom');
-                              if (_isAscending) {
-                                techniques.sort((a, b) => a.nom.compareTo(b.nom));
+                              if (columnIndex == _sortColumnIndex) {
+                                _sortAsc = _sortNameAsc = sortAscending;
                               } else {
-                                techniques.sort((a, b) => b.nom.compareTo(a.nom));
+                                _sortColumnIndex = columnIndex;
+                                _sortAsc = _sortNameAsc;
+                              }
+                              //techniques.sort((a, b) => a.nom.compareTo(b.nom));
+                              filteredTechniques.sort((a, b) => a.nom.compareTo(b.nom));
+                              if (!_sortAsc) {
+                                //techniques = techniques.reversed.toList();
+                                filteredTechniques = filteredTechniques.reversed.toList();
                               }
                             });
                           },
@@ -432,34 +460,47 @@ String removeDiacritics(String str) {
                         if (showKeywordsColumn)
                           DataColumn(
                             label: Text(AppLocalizations.of(context).keywords),
-                            onSort: (int columnIndex, bool ascending) {
+                            onSort: (columnIndex, sortAscending) {
                               setState(() {
-                                _isAscending = ascending;
-                                if (_isAscending) {
-                                  techniques.sort((a, b) => a.keywords.join(', ').compareTo(b.keywords.join(', ')));
+                                print('sort_colomn');
+                                if (columnIndex == _sortColumnIndex) {
+                                  _sortAsc = _sortKeywordsAsc = sortAscending;
                                 } else {
-                                  techniques.sort((a, b) => b.keywords.join(', ').compareTo(a.keywords.join(', ')));
+                                  _sortColumnIndex = columnIndex;
+                                  _sortAsc = _sortKeywordsAsc;
+                                }
+                                //techniques.sort((a, b) => (a.kw1 ?? '').compareTo(b.kw1 ?? ''));
+                                filteredTechniques.sort((a, b) => (a.kw1 ?? '').compareTo(b.kw1 ?? ''));
+                                if (!_sortAsc) {
+                                  //techniques = techniques.reversed.toList();
+                                  filteredTechniques = filteredTechniques.reversed.toList();
                                 }
                               });
                             },
                           ),
                         DataColumn(
                           label: Text(AppLocalizations.of(context).mastery),
-                          onSort: (int columnIndex, bool ascending) {
+                          onSort: (int columnIndex, sortAscending) {
                             setState(() {
-                              _isAscending = ascending;
                               print('sort_mastery');
-                              if (_isAscending) {
-                                techniques.sort((a, b) => (a.maitrise ?? 0).compareTo(b.maitrise ?? 0));
+                              if (columnIndex == _sortColumnIndex) {
+                                _sortAsc = _sortMasteryAsc = sortAscending;
                               } else {
-                                techniques.sort((a, b) => (b.maitrise ?? 0).compareTo(a.maitrise ?? 0));
+                                _sortColumnIndex = columnIndex;
+                                _sortAsc = _sortMasteryAsc;
+                              }
+                              //techniques.sort((a, b) => (a.maitrise ?? 0.0).compareTo(b.maitrise ?? 0.0));
+                              filteredTechniques.sort((a, b) => (a.maitrise ?? 0.0).compareTo(b.maitrise ?? 0.0));
+                              if (!_sortAsc) {
+                                //techniques = techniques.reversed.toList();
+                                filteredTechniques = filteredTechniques.reversed.toList();
                               }
                             });
                           },
                         ),
                       ],
-                      rows: (_isFiltering ? filteredTechniques : techniques)
-                          .map((technique) => DataRow( cells: [
+                      rows: (filteredTechniques)
+                          .map<DataRow>((technique) => DataRow(cells: [
                                 DataCell(OutlinedButton(
                                 style:  ButtonStyle(
                                   side: MaterialStateProperty.all(BorderSide(color: Colors.transparent)), // Définir la couleur du contour sur transparent

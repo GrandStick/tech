@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../models/technique.dart';
 import '../services/fetch_techniques.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
-//import 'package:video_player/video_player.dart';
 import 'package:better_player/better_player.dart';
 import 'package:tech/views/home_page.dart';
 import 'package:tech/views/account_page.dart';
@@ -12,9 +10,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
 import '../models/rating_bar.dart';
-//import 'package:dio/dio.dart';
-//import 'package:path_provider/path_provider.dart';
-//import 'dart:io';
 
 
 
@@ -414,8 +409,8 @@ String removeDiacritics(String str) {
                   SizedBox(
                     width: MediaQuery.of(context).size.width,
                     child: DataTable(
-                      horizontalMargin: 24,
-                      columnSpacing: 10,
+                      horizontalMargin: 10,
+                      columnSpacing: 5,
                       //dataRowMinHeight: 50.0,
                       //dataRowMaxHeight: 100.0,
                       dataRowHeight: 85.0,
@@ -635,63 +630,66 @@ String removeDiacritics(String str) {
                                   )),
                                   DataCell(
                                     SizedBox(
-                                      width: 80, // Largeur souhaitée pour votre cellule
+                                      width: 60, // Largeur souhaitée pour votre cellule
                                       child: 
-                                      CustomRatingBar(
-                                        initialRating: technique.maitrise ?? 0.0,
-                                        barWidth: 9,  
-                                        barHeight: 7,  
-                                        onRatingUpdate: (rating) async {
-                                          setState(() {
-                                            technique.maitrise = rating;
-                                          });
-
-                                          // Récupération du token depuis les préférences partagées
-                                          SharedPreferences prefs = await SharedPreferences.getInstance();
-                                          final String? token = prefs.getString('token');
-
-                                          if (token != null) {
-                                            // Envoie de la requête POST au serveur Node.js
-                                            Uri url = Uri.parse('https://self-defense.app/save_maitrise');
-                                            final response = await http.post(
-                                              url,
-                                              headers: {
-                                                'Authorization': 'Bearer $token',
-                                              },
-                                              body: {
-                                                'technique_ref': technique.ref,
-                                                'maitrise': rating.toString(),
-                                              },
-                                            );
-
-                                            if (response.statusCode == 200) {
-                                              // Le serveur a répondu avec succès
-                                              print('Changement de rating enregistré avec succès');
-                                              
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Center(child: Text(AppLocalizations.of(context).success_rating, style: TextStyle(color: Colors.white))),
-                                                  backgroundColor: Colors.green,
-                                                  duration: Duration(seconds: 2),
-                                                ),
+                                      Align(
+                                        alignment: Alignment.centerRight,
+                                        child: CustomRatingBar(
+                                          initialRating: technique.maitrise ?? 0.0,
+                                          barWidth: 8,  
+                                          barHeight: 7,  
+                                          onRatingUpdate: (rating) async {
+                                            setState(() {
+                                              technique.maitrise = rating;
+                                            });
+                                      
+                                            // Récupération du token depuis les préférences partagées
+                                            SharedPreferences prefs = await SharedPreferences.getInstance();
+                                            final String? token = prefs.getString('token');
+                                      
+                                            if (token != null) {
+                                              // Envoie de la requête POST au serveur Node.js
+                                              Uri url = Uri.parse('https://self-defense.app/save_maitrise');
+                                              final response = await http.post(
+                                                url,
+                                                headers: {
+                                                  'Authorization': 'Bearer $token',
+                                                },
+                                                body: {
+                                                  'technique_ref': technique.ref,
+                                                  'maitrise': rating.toString(),
+                                                },
                                               );
-                                            } else {
-                                              // Une erreur s'est produite lors de la requête
-                                              print('Erreur lors de l\'enregistrement du changement de rating');
-                                              ScaffoldMessenger.of(context).showSnackBar(
-                                                SnackBar(
-                                                  content: Center(child: Text(AppLocalizations.of(context).error_save, style: TextStyle(color: Colors.white))),
-                                                  backgroundColor: Colors.red,
-                                                  duration: Duration(seconds: 2),
-                                                ),
-                                              );
+                                      
+                                              if (response.statusCode == 200) {
+                                                // Le serveur a répondu avec succès
+                                                print('Changement de rating enregistré avec succès');
                                                 
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: Center(child: Text(AppLocalizations.of(context).success_rating, style: TextStyle(color: Colors.white))),
+                                                    backgroundColor: Colors.green,
+                                                    duration: Duration(seconds: 2),
+                                                  ),
+                                                );
+                                              } else {
+                                                // Une erreur s'est produite lors de la requête
+                                                print('Erreur lors de l\'enregistrement du changement de rating');
+                                                ScaffoldMessenger.of(context).showSnackBar(
+                                                  SnackBar(
+                                                    content: Center(child: Text(AppLocalizations.of(context).error_save, style: TextStyle(color: Colors.white))),
+                                                    backgroundColor: Colors.red,
+                                                    duration: Duration(seconds: 2),
+                                                  ),
+                                                );
+                                                  
+                                              }
+                                            } else {
+                                              // Le token n'est pas disponible dans les préférences partagées
+                                              print('Token introuvable dans les préférences partagées');
                                             }
-                                          } else {
-                                            // Le token n'est pas disponible dans les préférences partagées
-                                            print('Token introuvable dans les préférences partagées');
-                                          }
-                                        },
+                                          },
+                                        ),
                                       ),
                                     ),
                                   ),

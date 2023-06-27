@@ -11,6 +11,7 @@ import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart'; 
+import '../models/rating_bar.dart';
 //import 'package:dio/dio.dart';
 //import 'package:path_provider/path_provider.dart';
 //import 'dart:io';
@@ -327,6 +328,7 @@ void filterTechniques(String? keyword) {
       } else {
         title = 'Techniques - $selectedKeyword';
       }
+      
 
     });
   });
@@ -520,7 +522,7 @@ String removeDiacritics(String str) {
                                 onPressed: () {
                                   Navigator.of(context).push(
                                     PageRouteBuilder(
-                                      transitionDuration: Duration(milliseconds: 200),
+                                      transitionDuration: Duration(milliseconds: 300),
                                       pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
                                         return TechniqueDetail(
                                           technique: technique,
@@ -553,7 +555,7 @@ String removeDiacritics(String str) {
                                    onPressed: () {
                                     Navigator.of(context).push(
                                       PageRouteBuilder(
-                                        transitionDuration: Duration(milliseconds: 200),
+                                        transitionDuration: Duration(milliseconds: 300),
                                         pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
                                           return TechniqueDetail(
                                             technique: technique,
@@ -634,17 +636,11 @@ String removeDiacritics(String str) {
                                   DataCell(
                                     SizedBox(
                                       width: 80, // Largeur souhaitée pour votre cellule
-                                      child: RatingBar.builder(
+                                      child: 
+                                      CustomRatingBar(
                                         initialRating: technique.maitrise ?? 0.0,
-                                        minRating: 1,
-                                        direction: Axis.horizontal,
-                                        allowHalfRating: false,
-                                        itemCount: 3,
-                                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                                        itemBuilder: (context, _) => Icon(
-                                          Icons.star,
-                                          color: Colors.amber,
-                                        ),
+                                        barWidth: 9,  
+                                        barHeight: 7,  
                                         onRatingUpdate: (rating) async {
                                           setState(() {
                                             technique.maitrise = rating;
@@ -696,7 +692,6 @@ String removeDiacritics(String str) {
                                             print('Token introuvable dans les préférences partagées');
                                           }
                                         },
-                                        itemSize: 20.0, // Définir la taille des étoiles à 20 pixels
                                       ),
                                     ),
                                   ),
@@ -1130,17 +1125,11 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     Center(
                       child: SizedBox(
                         width: 150, // Largeur souhaitée pour votre cellule
-                        child: RatingBar.builder(
-                        initialRating: selectedRating ?? 0.0,
-                        minRating: 1,
-                        direction: Axis.horizontal,
-                        allowHalfRating: false,
-                        itemCount: 3,
-                        itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
-                        itemBuilder: (context, _) => Icon(
-                          Icons.star,
-                            color: Colors.amber,
-                          ),
+                        child: 
+                        CustomRatingBar(
+                          initialRating: selectedRating ?? 0.0,
+                          barWidth: 25,  
+                          barHeight: 20,                   
                           onRatingUpdate: (rating) async {
                             setState(() {
                               selectedRating = rating;
@@ -1169,7 +1158,10 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                                 print('Changement de rating enregistré avec succès');
                                 //Envoyer la modification au widget TechniqueList
                                 widget.technique.maitrise = rating;
-                                widget.updateFilteredTechniques(widget.technique);
+                                // Différer légèrement l'exécution de la mise à jour de la technique filtrée pour performances
+                                Future.delayed(Duration(milliseconds: 300)).then((_) {
+                                  widget.updateFilteredTechniques(widget.technique);
+                                });
                                 //Message indicant le succes de la modification de matrise
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   SnackBar(
@@ -1197,7 +1189,6 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                               print('Token introuvable dans les préférences partagées');
                             }
                           },
-                        itemSize: 45.0, // Définir la taille des étoiles à 20 pixels
                           ),
                         ),
                     ),

@@ -281,14 +281,16 @@ class _TechniquesListState extends State<TechniquesList> {
   }
 
    // Méthode pour mettre à jour la liste filteredTechniques
-   void updateFilteredTechniques(Technique updatedTechnique) {
-    setState(() {
-      int index = filteredTechniques.indexWhere((technique) => technique.id == updatedTechnique.id);
-      if (index != -1) {
-        filteredTechniques[index] = updatedTechnique;
-      }
-    });
-  }
+  void updateFilteredTechniques(Technique updatedTechnique) {
+  setState(() {
+    int index = filteredTechniques.indexWhere((technique) => technique.id == updatedTechnique.id);
+    if (index != -1) {
+      filteredTechniques[index] = updatedTechnique;
+      // Mettre à jour les ratings dans filteredTechniques avec la dernière valeur
+      filteredTechniques[index].maitrise = updatedTechnique.maitrise;
+    }
+  });
+}
 
 void filterTechniques(String? keyword) {
   print('Filtering techniques with keyword: $keyword');
@@ -521,8 +523,8 @@ String removeDiacritics(String str) {
                                       pageBuilder: (BuildContext context, Animation<double> animation, Animation<double> secondaryAnimation) {
                                         return TechniqueDetail(
                                           technique: technique,
-                                          filterTechniques: filterTechniques, // Passer la fonction filterTechniques ici
-                                          updateFilteredTechniques: updateFilteredTechniques ,
+                                          filterTechniques: filterTechniques, // Passer la fonction filterTechniques ici pour permettre la mise ç jour de filteredtechnique lors d'une update dans détail
+                                          updateFilteredTechniques: updateFilteredTechniques ,//mettre à jour la liste filteredtechniques si modification
 
 
                                         );

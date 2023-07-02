@@ -28,6 +28,16 @@ class _CustomRatingBarState extends State<CustomRatingBar> {
   }
 
   @override
+  void didUpdateWidget(CustomRatingBar oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialRating != oldWidget.initialRating) {
+      setState(() {
+        rating = widget.initialRating;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.end,

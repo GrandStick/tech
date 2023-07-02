@@ -74,6 +74,12 @@
 "offline_mode":"Mode hors ligne (télécharge les videos)",
 "password_change":"Modifier mon mot de passe",
 "my_subscription":"Mon abonnement",
-"logoff" : "Se déconnecter"
+"logoff" : "Se déconnecter",
+"mastery_text_null" : "Définissez votre niveau de maîtrise de la technique (auto-évaluation).",
+"mastery_text_1" : "Je ne maîtrise pas la technique.",
+"mastery_text_2" : "Je peux executer la technique lentement lors d'un entrainement.",
+"mastery_text_3" : "Je peux executer la technique de manière réaliste mais en étant préparé.",
+"mastery_text_4" : "Je peux executer la technique sous stress et sans préparation, avec des erreurs mineurs.",
+"mastery_text_5" : "La technique est devenue un vrai réflexe. Je peux l'exécuter parfaitement sous stress et sans préparation."
 }
 

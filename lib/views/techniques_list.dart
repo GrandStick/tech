@@ -857,6 +857,25 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
   double _playbackSpeed = 1.0;
   double? selectedRating = 0;
   TextEditingController _notesController = TextEditingController();
+  // Déclarer un TextEditingController
+  TextEditingController ratingTextController = TextEditingController();
+  // Fonction pour obtenir le texte personnalisé en fonction du niveau de maîtrise
+    String getMasteryText(double rating) {
+      if (rating == 1.0) {
+        return AppLocalizations.of(context).mastery_text_1;
+      } else if (rating == 2.0) {
+        return AppLocalizations.of(context).mastery_text_2;
+      } else if (rating == 3.0) {
+        return AppLocalizations.of(context).mastery_text_3;
+      } else if (rating == 4.0) {
+        return AppLocalizations.of(context).mastery_text_4;
+      } else if (rating == 5.0) {
+        return AppLocalizations.of(context).mastery_text_5;
+      } else {
+        return AppLocalizations.of(context).mastery_text_null;
+      }
+    }
+
 
   @override
   void initState() {
@@ -1112,6 +1131,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       title: Text('${widget.technique.kp10}.'),
                     ),
                     SizedBox(height: 20),
+                    //Titre Niveau de maitrise
                     Center(
                       child: Text(
                         AppLocalizations.of(context).mastery,
@@ -1122,6 +1142,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       ),
                     ),
                     SizedBox(height: 10),
+                    //Rating bar pour le niveau de maitrise
                     Center(
                       child: SizedBox(
                         width: 150, // Largeur souhaitée pour votre cellule
@@ -1133,6 +1154,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           onRatingUpdate: (rating) async {
                             setState(() {
                               selectedRating = rating;
+                              ratingTextController.text = rating.toString(); // Mettre à jour la valeur du texte
                             });
 
                             // Récupération du token depuis les préférences partagées
@@ -1191,6 +1213,17 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           },
                           ),
                         ),
+                    ),
+                    SizedBox(height: 10),
+                    // Afficher un texte décrivant le niveau de maitrise
+                    Center(
+                      child: Text(
+                        getMasteryText(selectedRating ?? 0),
+                        style: TextStyle(
+                          fontSize: 16,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
                     ),
                     SizedBox(height: 20),
                     Center(

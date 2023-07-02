@@ -74,7 +74,11 @@
 "offline_mode":"Offline Mode (download videos)",
 "password_change":"Change password",
 "my_subscription":"My subscription",
-"logoff" : "Log off"
-
-
+"logoff" : "Log off",
+"mastery_text_null" : "Define your level of mastery of the technique (self-assessment).",
+"mastery_text_1" : "I don't know the technique.",
+"mastery_text_2" : "I can execute the technique slowly during practice.",
+"mastery_text_3" : "I can perform the technique in a realistic context but with preparation.",
+"mastery_text_4" : "I can perform the technique under stress and without preparation with minor errors.",
+"mastery_text_5" : "The technique has become a true reflex. I can execute it perfectly under stress and without preparation."
 }

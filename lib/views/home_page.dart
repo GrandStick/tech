@@ -20,77 +20,79 @@ class _HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: <Widget>[
-            Center(
-              child: Image.asset(
-                'assets/images/smartkm.png',
-                width: 300.0, // Réglez la largeur en fonction de vos besoins
-                height: 200.0, // Réglez la hauteur en fonction de vos besoins
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Center(
-              child: Text(
-                AppLocalizations.of(context).home_text1,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 24.0,
+        child: SingleChildScrollView(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: <Widget>[
+              Center(
+                child: Image.asset(
+                  'assets/images/smartkm.png',
+                  width: 300.0, // Réglez la largeur en fonction de vos besoins
+                  height: 200.0, // Réglez la hauteur en fonction de vos besoins
                 ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            Center(
-              child: Text(
-                AppLocalizations.of(context).home_text2,
-                style: TextStyle(
-                  fontSize: 16.0,
+              SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context).home_text1,
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24.0,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            Center(
-              child: Text(
-                AppLocalizations.of(context).home_text3,
-                style: TextStyle(
-                  fontSize: 16.0,
+              SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context).home_text2,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 8.0),
-            Center(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: <Widget>[
-                  Text(AppLocalizations.of(context).home_text4),
-                  Text(AppLocalizations.of(context).home_text5),
-                  Text(AppLocalizations.of(context).home_text6),
-                  Text(AppLocalizations.of(context).home_text7),
-                  Text(AppLocalizations.of(context).home_text8),
-                ],
-              ),
-            ),
-            SizedBox(height: 16.0),
-            Center(
-              child: Text(
-                AppLocalizations.of(context).home_text9,
-                style: TextStyle(
-                  fontSize: 16.0,
+              SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context).home_text3,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
                 ),
               ),
-            ),
-            SizedBox(height: 16.0),
-            Center(
-              child: Text(
-                AppLocalizations.of(context).home_text10,
-                style: TextStyle(
-                  fontSize: 16.0,
-                  fontWeight: FontWeight.bold,
+              SizedBox(height: 8.0),
+              Center(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: <Widget>[
+                    Text(AppLocalizations.of(context).home_text4),
+                    Text(AppLocalizations.of(context).home_text5),
+                    Text(AppLocalizations.of(context).home_text6),
+                    Text(AppLocalizations.of(context).home_text7),
+                    Text(AppLocalizations.of(context).home_text8),
+                  ],
                 ),
               ),
-            ),
-          ],
+              SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context).home_text9,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                  ),
+                ),
+              ),
+              SizedBox(height: 16.0),
+              Center(
+                child: Text(
+                  AppLocalizations.of(context).home_text10,
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
       bottomNavigationBar: BottomNavigationBar(

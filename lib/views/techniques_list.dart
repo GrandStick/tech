@@ -951,17 +951,20 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 20),
+              SizedBox(height: 10),
               Center(
-                child: Text(
-                  '${widget.technique.nom}',
-                  style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
-                      )
-                    ),
+                child: Padding(
+                  padding: const EdgeInsets.all(10.0),
+                  child: Text(
+                    '${widget.technique.nom}',
+                    style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 20.0,
+                        )
+                      ),
+                ),
               ),
-               SizedBox(height: 10),
+               SizedBox(height: 0),
                Text(
                 '${widget.technique.grade} - ${widget.technique.ref.substring(3)}',
                 style: TextStyle(

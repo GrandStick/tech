@@ -420,7 +420,7 @@ String removeDiacritics(String str) {
                       sortAscending: _sortAsc,                    
                       columns: <DataColumn>[
                         DataColumn(
-                          label: Text(AppLocalizations.of(context).ref, style: TextStyle(fontFamily: 'depot')),
+                          label: Text(AppLocalizations.of(context).ref),
                           onSort: (int columnIndex, sortAscending) {
                             setState(() {
                               print('sort_ref');
@@ -448,7 +448,7 @@ String removeDiacritics(String str) {
                           },
                         ),
                         DataColumn(
-                          label: Text(AppLocalizations.of(context).name, style: TextStyle(fontFamily: 'depot')),
+                          label: Text(AppLocalizations.of(context).name),
                           onSort: (columnIndex, sortAscending) {
                             setState(() {
                               print('sort_nom');
@@ -581,7 +581,6 @@ String removeDiacritics(String str) {
                                       child: Text(technique.nom,
                                         style: TextStyle(
                                           fontSize:16 ,
-                                          fontFamily: 'depot',
                                           ),
                                         ),
                                     ),

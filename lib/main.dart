@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../services/snackbar_manager.dart';
 //import 'views/parameters_page.dart';
 //import 'package:flutter/services.dart' show SystemChrome, SystemUiOverlayStyle;
+import 'package:google_fonts/google_fonts.dart';
 
 
 void main() async {
@@ -45,6 +46,11 @@ class MyApp extends StatelessWidget {
       locale: initialLocale, // Utilisez la langue initiale ici
       theme: ThemeData.dark().copyWith(
         primaryColor: Colors.grey[800],
+        textTheme: GoogleFonts.staatlichesTextTheme(
+          Theme.of(context).textTheme,
+        ).apply(
+          bodyColor: Colors.white, // Définir la couleur du texte normal ici
+        ),
         colorScheme: const ColorScheme.dark(
           primary: Colors.white,
           secondary: Colors.white,

@@ -20,6 +20,7 @@ dependencies:
   dio: ^5.1.2
   path_provider: ^2.0.15
   better_player: ^0.0.63
+  google_fonts: ^4.0.4
   
 
 dev_dependencies:
@@ -32,4 +33,14 @@ flutter:
   assets:
     - assets/images/
   generate: true # Add this line
-  
+  fonts:
+    - family: Depot
+      fonts:
+        - asset: assets/fonts/depot.tff
+    - family: Lato
+      fonts:
+        - asset: fonts/Lato-Regular.ttf
+        - asset: fonts/Lato-Bold.ttf
+          weight: 700
+
+    

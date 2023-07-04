@@ -1216,18 +1216,21 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           ),
                         ),
                     ),
-                    SizedBox(height: 10),
+                    SizedBox(height: 4),
                     // Afficher un texte décrivant le niveau de maitrise
-                    Center(
-                      child: Text(
-                        getMasteryText(selectedRating ?? 0),
-                        style: TextStyle(
-                          fontSize: 16,
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Center(
+                        child: Text(
+                          getMasteryText(selectedRating ?? 0),
+                          style: TextStyle(
+                            fontSize: 16,
+                          ),
+                          textAlign: TextAlign.center,
                         ),
-                        textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 20),
+                    SizedBox(height: 12),
                     Center(
                       child: Text(
                         AppLocalizations.of(context).personal_notes,

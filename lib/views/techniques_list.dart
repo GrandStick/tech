@@ -1071,15 +1071,17 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  SizedBox(height: 20),
-                  Center(
-                    child: Text(
-                      AppLocalizations.of(context).modus_operandi,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                  if (widget.technique.kp1 != null)
+                    SizedBox(height: 20),
+                  if (widget.technique.kp1 != null)  
+                    Center(
+                      child: Text(
+                        AppLocalizations.of(context).modus_operandi,
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
                   ),
                   SizedBox(height: 10),
                   if (widget.technique.kp1 != null)

@@ -33,14 +33,5 @@ flutter:
   assets:
     - assets/images/
   generate: true # Add this line
-  fonts:
-    - family: Depot
-      fonts:
-        - asset: assets/fonts/depot.tff
-    - family: Lato
-      fonts:
-        - asset: fonts/Lato-Regular.ttf
-        - asset: fonts/Lato-Bold.ttf
-          weight: 700
 
     

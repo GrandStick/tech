@@ -46,7 +46,8 @@ class MyApp extends StatelessWidget {
       locale: initialLocale, // Utilisez la langue initiale ici
       theme: ThemeData.dark().copyWith(
         primaryColor: Colors.grey[800],
-        textTheme: GoogleFonts.caveatTextTheme(
+        textTheme: GoogleFonts.patrickHandScTextTheme(
+          //OverlockSC, ecode sans sc, anton, bebasneue, !staatliches, roboto, !patrick hand,  !Architectsdaugther
           Theme.of(context).textTheme,
         ).apply(
           bodyColor: Colors.white, // Définir la couleur du texte normal ici

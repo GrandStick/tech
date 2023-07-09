@@ -1073,7 +1073,9 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
+                  if (widget.technique.kp1 != null) 
                   SizedBox(height: 20),
+                  if (widget.technique.kp1 != null) 
                   Center(
                     child: Text(
                       AppLocalizations.of(context).modus_operandi,
@@ -1083,7 +1085,9 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       ),
                     ),
                   ),
+                  if (widget.technique.kp1 != null)
                   SizedBox(height: 10),
+                  
                   if (widget.technique.kp1 != null)
                     ListTile(
                       leading: Text('-'),

@@ -303,34 +303,38 @@ void filterTechniques(String? keyword) {
       } else {
         final keywordWithoutAccents = removeDiacritics(keyword.toLowerCase());
 
-        // Rechercher les techniques correspondant au mot-clé depuis l'index
-        final techniquesForKeyword = keywordIndex.getTechniquesForKeyword(keywordWithoutAccents);
+        // Utiliser un ensemble pour stocker les techniques filtrées
+        Set<Technique> distinctTechniques = {};
 
-        if (techniquesForKeyword != null) {
-          // Si des techniques sont trouvées, les utiliser comme résultat filtré
-          filteredTechniques = techniquesForKeyword;
-        } else {
-          // Si aucune technique n'est trouvée, effectuer une recherche "en direct"
-          filteredTechniques = techniques.where((technique) =>
-              technique.nameWithoutAccents.contains(keywordWithoutAccents)).toList();
+        for (var technique in techniques) {
+          if (technique.nameWithoutAccents.contains(keywordWithoutAccents)) {
+            distinctTechniques.add(technique);
+          } else {
+            for (var keyword in technique.keywords) {
+              if (removeDiacritics(keyword.toLowerCase()) == keywordWithoutAccents) {
+                distinctTechniques.add(technique);
+                break;
+              }
+            }
+          }
         }
+
+        // Convertir l'ensemble en liste pour maintenir l'ordre
+        filteredTechniques = distinctTechniques.toList();
       }
 
       // Enregistrer le mot-clé sélectionné
       selectedKeyword = keyword;
-      //Changer le titre pour inclure le mot clé
-            
+
+      // Changer le titre pour inclure le mot clé
       if (selectedKeyword == null) {
         title = AppLocalizations.of(context).tech_all;
       } else {
         title = 'Techniques - $selectedKeyword';
       }
-      
-
     });
   });
 }
-
 
 
 //RENDRE INSENSIBLE AUX ACCENTS
@@ -580,7 +584,8 @@ String removeDiacritics(String str) {
                                       alignment: Alignment.centerLeft, // Aligner le texte à gauche
                                       child: Text(technique.nom,
                                         style: TextStyle(
-                                          fontSize:16 ,
+                                          fontSize: 18,
+                                          
                                           ),
                                         ),
                                     ),
@@ -950,20 +955,17 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
         child: SingleChildScrollView(
           child: Column(
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 20),
               Center(
-                child: Padding(
-                  padding: const EdgeInsets.all(10.0),
-                  child: Text(
-                    '${widget.technique.nom}',
-                    style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 20.0,
-                        )
-                      ),
-                ),
+                child: Text(
+                  '${widget.technique.nom}',
+                  style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20.0,
+                      )
+                    ),
               ),
-               SizedBox(height: 0),
+               SizedBox(height: 10),
                Text(
                 '${widget.technique.grade} - ${widget.technique.ref.substring(3)}',
                 style: TextStyle(
@@ -1071,17 +1073,15 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  if (widget.technique.kp1 != null)
-                    SizedBox(height: 20),
-                  if (widget.technique.kp1 != null)  
-                    Center(
-                      child: Text(
-                        AppLocalizations.of(context).modus_operandi,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                  SizedBox(height: 20),
+                  Center(
+                    child: Text(
+                      AppLocalizations.of(context).modus_operandi,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
                       ),
+                    ),
                   ),
                   SizedBox(height: 10),
                   if (widget.technique.kp1 != null)
@@ -1218,21 +1218,18 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                           ),
                         ),
                     ),
-                    SizedBox(height: 4),
+                    SizedBox(height: 10),
                     // Afficher un texte décrivant le niveau de maitrise
-                    Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Center(
-                        child: Text(
-                          getMasteryText(selectedRating ?? 0),
-                          style: TextStyle(
-                            fontSize: 16,
-                          ),
-                          textAlign: TextAlign.center,
+                    Center(
+                      child: Text(
+                        getMasteryText(selectedRating ?? 0),
+                        style: TextStyle(
+                          fontSize: 16,
                         ),
+                        textAlign: TextAlign.center,
                       ),
                     ),
-                    SizedBox(height: 12),
+                    SizedBox(height: 20),
                     Center(
                       child: Text(
                         AppLocalizations.of(context).personal_notes,

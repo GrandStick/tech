@@ -107,7 +107,7 @@ class _FilterButtonsState extends State<FilterButtons> {
             style: TextStyle(
               color: Colors.black,
               backgroundColor: Colors.white,
-              fontSize: 16.0,
+              //fontSize: 16.0,
             ),
             decoration: InputDecoration(
               hintText: AppLocalizations.of(context).tech_search,
@@ -173,7 +173,10 @@ class _FilterButtonsState extends State<FilterButtons> {
                                   widget.onGradeSelected(grade.grade);
                                   _toggleGradesList();
                                 },
-                                child: Text(grade.grade),
+                                child: Text(grade.grade,
+                                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                          color: Colors.black,
+                                        ),),
                               ),
                             )
                             .toList(),
@@ -191,7 +194,11 @@ class _FilterButtonsState extends State<FilterButtons> {
                             widget.onKeywordSelected(null);
                             _toggleKWList();
                           },
-                          child: Text(AppLocalizations.of(context).all),
+                          child: Text(AppLocalizations.of(context).all,
+                            style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                          color: Colors.black,
+                                    ),
+                            ),
                         ),
                         ...widget.keywords
                             .map(
@@ -200,7 +207,11 @@ class _FilterButtonsState extends State<FilterButtons> {
                                   widget.onKeywordSelected(kw.kw);
                                   _toggleKWList();
                                 },
-                                child: Text(kw.kw),
+                                child: Text(kw.kw,
+                                  style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                          color: Colors.black,
+                                   ),
+                                ),
                               ),
                             )
                             .toList(),
@@ -547,7 +558,10 @@ String removeDiacritics(String str) {
                                 },
                                   child: Align(
                                     alignment: Alignment.centerLeft, // Aligner le texte à gauche
-                                    child: Text('${technique.grade} - ${technique.ref.substring(3)}')))),
+                                    child: Text('${technique.grade} - ${technique.ref.substring(3)}',
+                                    style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                          color: Colors.white,
+                                        ),)))),
                                 DataCell(OutlinedButton(
                                   style:  ButtonStyle(
                                     side: MaterialStateProperty.all(BorderSide(color: Colors.transparent)), // Définir la couleur du contour sur transparent
@@ -583,10 +597,9 @@ String removeDiacritics(String str) {
                                     child: Align(
                                       alignment: Alignment.centerLeft, // Aligner le texte à gauche
                                       child: Text(technique.nom,
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          
-                                          ),
+                                        style: Theme.of(context).textTheme.bodyLarge!.copyWith(
+                                          color: Colors.white,
+                                        ),
                                         ),
                                     ),
                                   )
@@ -958,19 +971,14 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
               SizedBox(height: 20),
               Center(
                 child: Text(
-                  '${widget.technique.nom}',
-                  style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20.0,
-                      )
-                    ),
+                  widget.technique.nom,
+                  style: Theme.of(context).textTheme.titleLarge,
+                  ),
               ),
                SizedBox(height: 10),
                Text(
                 '${widget.technique.grade} - ${widget.technique.ref.substring(3)}',
-                style: TextStyle(
-                      fontSize: 14.0,
-                    )
+                  style: Theme.of(context).textTheme.titleSmall,
                   ),   
               SizedBox(height: 10),
               Wrap(
@@ -1079,10 +1087,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   Center(
                     child: Text(
                       AppLocalizations.of(context).modus_operandi,
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Theme.of(context).textTheme.titleMedium,
                     ),
                   ),
                   if (widget.technique.kp1 != null)
@@ -1091,62 +1096,89 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                   if (widget.technique.kp1 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp1}.'),
-                    ),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp1}.'),
+                      ),
+                  ),    
                   if (widget.technique.kp2 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp2}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp2}.'),
+                      ),
                     ),
                   if (widget.technique.kp3 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp3}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp3}.'),
+                      ),
                     ),
                   if (widget.technique.kp4 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp4}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp4}.'),
+                      ),
                     ),
                   if (widget.technique.kp5 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp5}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp5}.'),
+                      ),
                     ),
                   if (widget.technique.kp6 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp6}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp6}.'),
+                      ),
                     ),
                   if (widget.technique.kp7 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp7}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp7}.'),
+                      ),
                     ),
                   if (widget.technique.kp8 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp8}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp8}.'),
+                      ),
                     ),
                   if (widget.technique.kp9 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp9}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp9}.'),
+                      ),
                     ),
                   if (widget.technique.kp10 != null)
                     ListTile(
                       leading: Text('-'),
-                      title: Text('${widget.technique.kp10}.'),
+                      title: DefaultTextStyle(
+                        style: Theme.of(context).textTheme.bodyMedium ?? TextStyle(), // Use the bodyText2 style or an empty TextStyle if it is null
+                        child: Text('${widget.technique.kp10}.'),
+                      ),
                     ),
                     SizedBox(height: 20),
                     //Titre Niveau de maitrise
                     Center(
                       child: Text(
                         AppLocalizations.of(context).mastery,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -1227,8 +1259,8 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     Center(
                       child: Text(
                         getMasteryText(selectedRating ?? 0),
-                        style: TextStyle(
-                          fontSize: 16,
+                        style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                          color: Colors.white,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -1237,10 +1269,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                     Center(
                       child: Text(
                         AppLocalizations.of(context).personal_notes,
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: Theme.of(context).textTheme.titleMedium,
                       ),
                     ),
                     SizedBox(height: 10),
@@ -1248,9 +1277,7 @@ class _TechniqueDetailState extends State<TechniqueDetail> {
                       padding: const EdgeInsets.all(8.0),
                       child: TextField(
                         maxLines: 5, // Permet à l'utilisateur de saisir plusieurs lignes
-                        style: TextStyle(
-                          color: Colors.black,
-                        ),
+                        style: Theme.of(context).textTheme.bodySmall,
                         controller: _notesController, // pass the controller to the TextField
                         decoration: InputDecoration(
                           filled: true,

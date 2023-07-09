@@ -29,9 +29,14 @@ dev_dependencies:
   flutter_lints: ^2.0.0
 
 flutter:
+  fonts:
+    - family: Depot
+      fonts:
+        - asset: assets/fonts/Depot-Regular.ttf
+    - family: PatrickHandSC
+      fonts:
+        - asset: assets/fonts/PatrickHandSC-Regular.ttf
   uses-material-design: true
   assets:
     - assets/images/
-  generate: true # Add this line
-
-    
+  generate: true

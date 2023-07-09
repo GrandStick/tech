@@ -50,8 +50,28 @@ class MyApp extends StatelessWidget {
           //OverlockSC, ecode sans sc, anton, bebasneue, !staatliches, roboto, !patrick hand,  !Architectsdaugther
           Theme.of(context).textTheme,
         ).apply(
-          bodyColor: Colors.white, // Définir la couleur du texte normal ici
+          bodyColor: Colors.white,
+          fontSizeFactor: 1.3 // Définir la couleur du texte normal ici
         ),
+                  /*
+          textTheme: const TextTheme(
+            displayLarge: TextStyle(fontFamily: 'Depot'),
+            displayMedium: TextStyle(fontFamily: 'Depot'),
+            displaySmall: TextStyle(fontFamily: 'Depot'),
+            headlineLarge: TextStyle(fontFamily: 'Depot'),
+            headlineMedium: TextStyle(fontFamily: 'Depot'),
+            headlineSmall: TextStyle(fontFamily: 'Depot'),
+            titleLarge: TextStyle( fontFamily: 'Depot' ),
+            titleMedium: TextStyle( fontFamily: 'Depot' ),
+            titleSmall: TextStyle( fontFamily: 'Depot' ),
+            bodyLarge: TextStyle( fontFamily: 'Depot'),
+            bodyMedium: TextStyle(fontFamily: 'Depot'),
+            labelLarge: TextStyle(fontFamily: 'Depot'),
+            labelMedium: TextStyle(fontFamily: 'Depot'),
+            labelSmall: TextStyle(fontFamily: 'Depot'),
+
+          ).apply(fontSizeFactor: 1.0),
+          */
         colorScheme: const ColorScheme.dark(
           primary: Colors.white,
           secondary: Colors.white,
